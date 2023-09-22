@@ -9,11 +9,11 @@
      
     </div>
 
-    <!-- Second Column (5 columns wide)
+    
     <div id="content" class="col-span-5 bg-black p-4">
       <h2 id="Login" class="text-xl font-semibold text-white flex flex-col justify-center items-center ">Log in</h2>
 
-      <!-- Form for Sign Up -->
+      
       <form>
         <div class="mb-4">
           <input type="text" id="username" name="username" class="form-input mt-1 block w-full rounded-md border-black-300" placeholder="Username">

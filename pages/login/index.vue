@@ -9,10 +9,18 @@
       <h2 class="text-xl font-semibold">LOGO</h2>
     </div>
 
+<<<<<<< HEAD
 
     <div id="content" class="col-span-5 bg-black p-4 border-l border-white h-full">
       <h2 id="Login" class="text-xl font-semibold text-white flex flex-col justify-center items-center ">Log in</h2>
 
+=======
+    
+    <div id="content" class="col-span-5 bg-black p-4">
+      <h2 id="Login" class="text-xl font-semibold text-white flex flex-col justify-center items-center ">Log in</h2>
+
+      
+>>>>>>> b0fcab8fcf4e2d30452d0501c5cb95c4506b3c7c
       <form>
         <div class="mb-4">
           <input type="text" id="username" name="username" class="form-input mt-1 block w-full rounded-md border-black-300" placeholder="Username">

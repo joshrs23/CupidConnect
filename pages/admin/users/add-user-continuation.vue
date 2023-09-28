@@ -18,35 +18,30 @@
 
         <form class="mt-8 md:mt-8 md:pr-20% text-white">
         <div class="mb-8">
-          <input type="text" id="username" name="username" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Username">
+          <input type="text" id="country" name="country" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Country">
         </div>
   
         <div class="mb-8">
-          <input type="password" id="password" name="password" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Password">
+          <input type="text" id="province" name="province" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Province">
         </div>
         <div class="mb-8">
-          <input type="password" id="confirmationPassword" name="confirmationPassword" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Confirm Password">
+          <input type="text" id="city" name="city" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="City">
         </div>
         <div class="mb-8">
-          <input type="text" id="firstName" name="firstName" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="First name">
+          <input type="text" id="address" name="address" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Address">
         </div>
-        <div class="mb-8">
-          <input type="text" id="lastName" name="lastName" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Last name">
-        </div>
-        <div class="mb-8">
-          <input type="text" id="birthDate" name="birthDate" class="form-input mt-1 block w-10/12 border-black-300 border-b white pr-10" placeholder="Date of birth">
-          <font-awesome-icon
-        icon="calendar"
-        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
-        style="color: #a0a0a2;"
-        />
-        </div>
+        
 
-        <div id="arrow-right" class="mt-4">
-          <button type="submit">
-            <img src="@/img/arrow-right.png" alt="arrowIcon" />
+        <div  class="mt-75%">
+          <button id="arrow-left" type="submit">
+            <img src="@/img/arrow-left.png" alt="arrowIcon" />
+          </button>
+          <button id="btnFinish" type="submit">
+            Finish
           </button>
         </div>
+    
+        
 
         <div id="btnLogin" class="flex justify-center items-center mb-4">
           <label class="cursor-pointer">
@@ -91,8 +86,9 @@
     font-family: 'Lovers Quarrel', serif;
     font-weight: normal;
   }
-  #arrow-right{
-    margin-left: 76%;
+  #btnFinish{
+    margin-left: 53%;
+    font-size: 2em;
   }
     
     #btnLogin{
@@ -101,7 +97,7 @@
       align-items: center; 
       justify-content: center;
       font-size: 4em; 
-      margin-top: 2.5em;
+      margin-top: 47%;
       margin-left: 1.5em;
       font-family: 'Lovers Quarrel', serif;
       font-weight: normal;
@@ -109,7 +105,7 @@
     }
 
     form{
-        padding-top: 5em;
+        
     }
     input{
       background-color: black;

@@ -1,4 +1,5 @@
-div{
-    font-family: 'Lovers Quarrel', serif;
-    background-color: black;
-  }
+#Login{
+  padding-top: 2em;
+   font-size: 2.5em;
+   font-family: 'Lovers Quarrel', serif;
+}

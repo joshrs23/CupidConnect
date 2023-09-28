@@ -17,36 +17,11 @@
 
 
         <form class="mt-8 md:mt-8 md:pr-20% text-white">
-        <div class="mb-8">
-          <input type="text" id="username" name="username" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Username">
+        <div id="welcomeText" class="mb-4 align-items center">
+          <p>Welcome to the <b>community</b>! <br> Please verify your <b>email</b> to <br>  start connecting.</p>
         </div>
   
-        <div class="mb-8">
-          <input type="password" id="password" name="password" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Password">
-        </div>
-        <div class="mb-8">
-          <input type="password" id="confirmationPassword" name="confirmationPassword" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Confirm Password">
-        </div>
-        <div class="mb-8">
-          <input type="text" id="firstName" name="firstName" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="First name">
-        </div>
-        <div class="mb-8">
-          <input type="text" id="lastName" name="lastName" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Last name">
-        </div>
-        <div class="mb-8">
-          <input type="text" id="birthDate" name="birthDate" class="form-input mt-1 block w-10/12 border-black-300 border-b white pr-10" placeholder="Date of birth">
-          <font-awesome-icon
-        icon="calendar"
-        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
-        style="color: #a0a0a2;"
-        />
-        </div>
 
-        <div id="arrow-right" class="mt-4">
-          <button type="submit">
-            <img src="@/img/arrow-right.png" alt="arrowIcon" />
-          </button>
-        </div>
 
         <div id="btnLogin" class="flex justify-center items-center mb-4">
           <label class="cursor-pointer">
@@ -62,8 +37,18 @@
 </div>
 </template>
 
+<style scoped>
+  strong, b {
+    font-weight: bold;
+  }
+</style>
 
 <style>
+    #welcomeText{
+      margin-top: 10%;
+      font-size: 2em;
+      text-align: center;
+    }
     #content{
       margin-left: 5%;
       @screen lg {
@@ -80,19 +65,14 @@
       align-items: center; 
       background-color: black;
       color: white;
+      margin-top: 0%;
     }
-    icon {
-    font-size: 24px;
-    color: white;
-    }
+
     #Register{
     padding-top: 1.5em;
     font-size: 5em;
     font-family: 'Lovers Quarrel', serif;
     font-weight: normal;
-  }
-  #arrow-right{
-    margin-left: 76%;
   }
     
     #btnLogin{
@@ -101,16 +81,13 @@
       align-items: center; 
       justify-content: center;
       font-size: 4em; 
-      margin-top: 2.5em;
+      margin-top: 65%;
       margin-left: 1.5em;
       font-family: 'Lovers Quarrel', serif;
       font-weight: normal;
       margin-inline-start: 3%;
     }
 
-    form{
-        padding-top: 5em;
-    }
     input{
       background-color: black;
     }

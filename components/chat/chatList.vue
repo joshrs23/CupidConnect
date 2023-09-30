@@ -1,0 +1,60 @@
+<template>
+    <div class="chat-list">
+      <div class="mx-auto">
+        <h1 class="text-2xl font-semibold text-white text-center pb-4 border-b">Chat List</h1>
+        <div v-for="(user, index) in users" :key="index" class="chat-item">
+          <!-- Use Nuxt's <nuxt-link> to create router links -->
+          <nuxt-link :to="'/chats/' + user.userId" class="no-underline">
+            <div class="flex items-center space-x-4 p-4 border-b">
+              <div class="flex-shrink-0">
+                <img :src="user.profilePicture" alt="Profile" class="w-12 h-12 rounded-full">
+              </div>
+              <div class="flex-grow">
+                <h2 class="text-lg font-semibold text-white">{{ user.name }}</h2>
+                <p class="text-gray-500">@{{ user.userId }}</p>
+              </div>
+            </div>
+          </nuxt-link>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    data() {
+      return {
+        users: [
+          {
+            name: 'John Doe',
+            userId: 'john_doe123',
+            profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+          },
+          {
+            name: 'Jane Smith',
+            userId: 'jane_smith456',
+            profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+          },
+          // Add more user objects as needed
+        ],
+      };
+    },
+  };
+  </script>
+  
+  <style scoped>
+  *{
+    border-color:#686262;
+  }
+  .chat-list {
+    padding: 40px 0;
+  }
+  
+  .chat-item:hover {
+    background-color: #68626264;
+
+  }
+  </style>
+
+  
+  

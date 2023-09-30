@@ -1,7 +1,6 @@
 <template>
     <div class="chat-list">
       <div class="mx-auto">
-        <h1 class="text-2xl font-semibold text-white text-center pb-4 border-b">Chat List</h1>
         <div v-for="(user, index) in users" :key="index" class="chat-item">
           <!-- Use Nuxt's <nuxt-link> to create router links -->
           <nuxt-link :to="'/chats/' + user.userId" class="no-underline">
@@ -25,17 +24,51 @@
     data() {
       return {
         users: [
-          {
-            name: 'John Doe',
-            userId: 'john_doe123',
-            profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-          },
-          {
-            name: 'Jane Smith',
-            userId: 'jane_smith456',
-            profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-          },
-          // Add more user objects as needed
+            {
+                name: 'John Doe',
+                userId: 'john_doe123',
+                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+            },
+            {
+                name: 'Jane Smith',
+                userId: 'jane_smith456',
+                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+            },
+            {
+                name: 'Alice Johnson',
+                userId: 'alice_johnson789',
+                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+            },
+            {
+                name: 'Bob Brown',
+                userId: 'bob_brown010',
+                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+            },
+            {
+                name: 'Ella Davis',
+                userId: 'ella_davis789',
+                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+            },
+            {
+                name: 'Michael Johnson',
+                userId: 'michael_johnson007',
+                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+            },
+            {
+                name: 'Olivia Williams',
+                userId: 'olivia_williams123',
+                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+            },
+            {
+                name: 'David Smith',
+                userId: 'david_smith456',
+                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+            },
+            {
+                name: 'Sophia Brown',
+                userId: 'sophia_brown789',
+                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+            },
         ],
       };
     },
@@ -43,18 +76,13 @@
   </script>
   
   <style scoped>
-  *{
-    border-color:#686262;
-  }
   .chat-list {
-    padding: 40px 0;
+    max-height: 400px; /* Adjust the maximum height as needed */
+    overflow-y: auto;
   }
   
   .chat-item:hover {
     background-color: #68626264;
-
   }
   </style>
-
-  
   

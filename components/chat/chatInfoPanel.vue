@@ -8,7 +8,7 @@
           <h2 class="text-lg font-semibold text-white">{{ user.name }}</h2>
           <p class="text-gray-500">@{{ user.userId }}</p>
         </div>
-        <p class="text-gray-500">{{ user.age }} years old</p>
+        <p class="text-gray-500 text-7xl">{{ user.age }}</p>
       </div>
     </div>
   </template>

@@ -1,7 +1,7 @@
 <template>
     <div class="flex">
       <div class="w-1/5">
-        <ChatList />
+        <ChatList class="chat-list"/>
       </div>
       <div class="w-4/5">
         <div class="chat">
@@ -74,6 +74,9 @@
   </script>
   
   <style scoped>
+  .chat-list{
+    max-height: 100vh;
+  }
   .chat-input{
     max-height: 8%;
   }

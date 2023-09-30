@@ -26,9 +26,10 @@ export default defineComponent({
 
 
 <style>
-
+  *{
+    border-color:#686262;
+  }
   .container {
-    
     height: fit-content;
     min-height: 100vh;
     min-width: 100vw;

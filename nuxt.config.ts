@@ -16,7 +16,6 @@ export default ({
   },
   css: [
     '@fortawesome/fontawesome-free/css/all.css',
-    'bootstrap/dist/css/bootstrap.css',
   ],
   buildModules: [
     // Add the @nuxtjs/google-fonts module

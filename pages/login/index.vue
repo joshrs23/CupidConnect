@@ -17,16 +17,16 @@
       
       <form class=" md:mt-8 md:pr-20% text-white">
         <div class="mb-8">
-          <input type="text" id="username" name="username" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Username">
+          <input type="text" id="username" name="username" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Username" v-model="username" required>
         </div>
 
         <div class="mb-8">
-          <input type="password" id="password" name="password" class="form-input mt-1 block w-10/12  border-gray-300 border-b white" placeholder="Password">
+          <input type="password" id="password" name="password" class="form-input mt-1 block w-10/12  border-gray-300 border-b white" placeholder="Password" v-model="password" required>
         </div>
 
 
          <div id="arrow-right" class="mt-4">
-          <button  @click="goToAddUser" type="submit">
+          <button  type="submit">
             <img src="@/img/arrow-right.png" alt="arrowIcon" />
           </button>
         </div>
@@ -34,10 +34,10 @@
           <div id="btnRegister" class="flex justify-center items-center mb-4">
             <label for="registerButton" class="cursor-pointer">
               <button id="registerButton" type="submit" class="bg-black-200 text-white flex items-center">
-                Register
+               <nuxt-link to="admin/users/add-user?username=&password=&password=&password=&password=&password=">Register</nuxt-link>
                 <img src="@/img/arrow-right.png" alt="arrowIcon" class="mx-2" />
               </button>
-            </label>
+            </label>  
           </div>
    
       </form>
@@ -85,7 +85,7 @@
       align-items: center; 
       justify-content: center;
       font-size: 3em; 
-      margin-top: 50%;
+      margin-top: 55%;
       margin-left: 1.5em;
       font-family: 'Lovers Quarrel', serif;
       font-weight: normal;
@@ -121,7 +121,7 @@
         methods:{
 
           goToAddUser(){
-            
+            this.$router.push('admin/users/add-user?username=&password=&password=&password=&password=&password=');
           },
             
             async post_SignIn() {

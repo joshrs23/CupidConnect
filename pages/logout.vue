@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      message: 'Vue.js'
+      message: 'you have logged out'
     };
   }
 }

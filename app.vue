@@ -1,13 +1,13 @@
 <template>
-  <div class="app-container">
+  <div class="app-container bg-black">
       <div class="containerNav grid grid-cols-12">
         <div class="col-span-12">
-          <navbar class="" v-if=" $route.name != 'authentication'"/>
+          <menu class="" v-if=" $route.name != 'authentication'"/>
         </div>
     </div>
     <div class="content-container grid grid-cols-12 min-h-screen">
       <div class="dos col-span-12">
-        <NuxtPage class="pb-8"/>
+        <NuxtPage class=""/>
       </div>
     </div>
     
@@ -26,9 +26,10 @@ export default defineComponent({
 
 
 <style>
-
+  *{
+    border-color:#686262;
+  }
   .container {
-    
     height: fit-content;
     min-height: 100vh;
     min-width: 100vw;

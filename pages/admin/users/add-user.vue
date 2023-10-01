@@ -18,41 +18,39 @@
 
         <form class="mt-8 md:mt-8 md:pr-20% text-white">
         <div class="mb-8">
-          <input type="text" id="username" name="username" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Username">
+          <input type="text" id="username" name="username" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Username" v-model="username" required>
         </div>
   
         <div class="mb-8">
-          <input type="password" id="password" name="password" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Password">
+          <input type="password" id="password" name="password" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Password"  v-model="password" required>
         </div>
         <div class="mb-8">
-          <input type="password" id="confirmationPassword" name="confirmationPassword" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Confirm Password">
+          <input type="password" id="confirmationPassword" name="confirmationPassword" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Confirm Password" v-model="confirmPassword" required>
         </div>
         <div class="mb-8">
-          <input type="text" id="firstName" name="firstName" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="First name">
+          <input type="text" id="firstName" name="firstName" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="First name" v-model="firstName" required>
         </div>
         <div class="mb-8">
-          <input type="text" id="lastName" name="lastName" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Last name">
+          <input type="text" id="lastName" name="lastName" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Last name" v-model="lastName" required>
         </div>
-        <div class="mb-8">
-          <input type="text" id="birthDate" name="birthDate" class="form-input mt-1 block w-10/12 border-black-300 border-b white pr-10" placeholder="Date of birth">
-          <font-awesome-icon
-        icon="calendar"
-        class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
-        style="color: #a0a0a2;"
-        />
+        <div class="mb-8 grid grid-cols-12 items-center relative">
+          <input type="text" id="birthDate" name="birthDate" class="form-input col-span-9 block border-black-300 border-b white" placeholder="Date of birth" v-model="birthDate" required>
+          <img src="@/img/calendar.png" alt="calendarImg" class="col-span-3 mb-2 h-8 w-8"/>
         </div>
 
         <div id="arrow-right" class="mt-4">
           <button type="submit">
-            <img src="@/img/arrow-right.png" alt="arrowIcon" />
+            <img src="@/img/arrow-right.png" alt="arrowImg" />
+            <nuxt-link to="admin/users/add-user?username=&password=&password=&password=&password=&password="></nuxt-link>
           </button>
         </div>
 
         <div id="btnLogin" class="flex justify-center items-center mb-4">
           <label class="cursor-pointer">
-            <button  type="submit" class="bg-black-200 text-white flex items-center">
-            <img src="@/img/arrow-left.png" alt="arrowIcon" class="mx-2" />
-              Log in  
+            <button  type="submit" @click="goToLogin" class="bg-black-200 text-white flex items-center">
+            <img src="@/img/arrow-left.png" alt="arrowImg" class="mx-2" />
+            <nuxt-link to="/Login">Login</nuxt-link>
+            
             </button>
           </label>
         </div>
@@ -137,6 +135,9 @@
       
     },
     methods: {
+      goToLogin(){
+        this.$router.go('/Login');
+      },
       
       async submitForm() {
 

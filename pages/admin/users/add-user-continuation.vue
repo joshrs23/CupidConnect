@@ -17,18 +17,21 @@
 
 
         <form class="mt-8 md:mt-8 md:pr-20% text-white">
-        <div class="mb-8">
-          <input type="text" id="country" name="country" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Country">
+        <div class="mb-8 grid grid-cols-12 items-center relative">
+          <input type="text" id="country" name="country" class="form-input mt-1  col-span-10 block border-black-300 border-b white" placeholder="Country" v-model="country" required>
+          <img src="@/img/arrow-down.png" alt="calendarImg" class="col-span-2 mb-2 h-8 w-8"/>
         </div>
   
-        <div class="mb-8">
-          <input type="text" id="province" name="province" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Province">
+        <div class="mb-8 grid grid-cols-12 items-center relative">
+          <input type="text" id="province" name="province" class="form-input mt-1  col-span-10 block border-black-300 border-b white" placeholder="Province" v-model="province" required>
+          <img src="@/img/arrow-down.png" alt="calendarImg" class="col-span-2 mb-2 h-8 w-8"/>
+        </div>
+        <div class="mb-8 grid grid-cols-12 items-center relative">
+          <input type="text" id="city" name="city" class="form-input mt-1  col-span-10 block border-black-300 border-b white" placeholder="City" v-model="city" required>
+          <img src="@/img/arrow-down.png" alt="calendarImg" class="col-span-2 mb-2 h-8 w-8"/>
         </div>
         <div class="mb-8">
-          <input type="text" id="city" name="city" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="City">
-        </div>
-        <div class="mb-8">
-          <input type="text" id="address" name="address" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Address">
+          <input type="text" id="address" name="address" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Address" v-model="address" required>          
         </div>
         
 
@@ -47,7 +50,7 @@
           <label class="cursor-pointer">
             <button  type="submit" class="bg-black-200 text-white flex items-center">
             <img src="@/img/arrow-left.png" alt="arrowIcon" class="mx-2" />
-              Log in  
+               <nuxt-link to="/Login">Login</nuxt-link>
             </button>
           </label>
         </div>

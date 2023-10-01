@@ -1,54 +1,50 @@
 <template>
-  <div class=" min-h-screen flex items-center justify-center">
-    <div class="text-white text-center ">
-      <div class=" relative min-h-screen bg-black/50 w-screen text-left flex  flex-col justify-center p-32	 ">
-        <div ref="title" class="transition-opacity duration-1000 opacity-0 ">
-          <h1 class="text-9xl font-bold gradient-title">&nbsp;&nbsp;CupidConnect Index</h1>
-          <p class="text-4xl mb-8 font-bold "> hola prueba cupid 1.</p>
-        </div>
-        <div class="column-2 sm: column-3 gap-6">
-            <input type="text" class="username" name="username" value="Username">
-            <input type="text" class="password" name="username" value="Password">
-          </div>
+  <div class=" min-h-screen">
+    <div class="grid grid-cols-12">
+      <div id="menu" class="col-span-1 text-white mt-5% border border-white p-5">
+        <button @click="showMenu" id="btnMenu" type="submit" class="hover:bg-gray-700 p-5 l-10">
+         Options
+        </button>
+
+        <ul v-if="isListVisible" id="hiddenMenu">
+          <li class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="Logout">Logout</NuxtLink></li>          
+          <li  class="hover:bg-gray-700 p-5"> <NuxtLink to="DeleteProfile">DeleteProfile</NuxtLink></li>     
+
+        </ul>
+
+
       </div>
-      <div class="h-96 min-w-screen shadow-inner shadow-lg shadow-black/50 bg-black/75 flex">
-        <div class="w-1/2 h-full flex items-center justify-center">
-          
-          
-        </div>
-      </div>
+
+       
     </div>
   </div>
-
 </template>
 
+<style>
+
+</style>
 
 <style scoped>
 
-  .mb-6{
-      display: grid;
-    }
-    .username{
-      background-color: black;
-    }
-    .password{
-      background-color: black;
-    }
 </style>
 
   <script>
-  import { defineComponent } from '@vue/composition-api'
 
   export default defineComponent({
     data() {
       return {
+        isListVisible: false,
         
-      }
+      };
     },
     mounted() {
       
     },
     methods: {
+      showMenu(){
+
+        this.isListVisible = !this.isListVisible;
+    },
       
     },
     beforeDestroy() {

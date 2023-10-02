@@ -26,9 +26,25 @@ export default defineComponent({
 
 
 <style>
-  *{
-    border-color:#686262;
-  }
+  /* Reset all styles for all elements */
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  font-family: inherit;
+  box-sizing: border-box;
+  border-color:#686262;
+}
+
+/* Additional resets for specific elements if needed */
+/* For example, removing list styles from ul and ol */
+ul, ol {
+  list-style: none;
+  padding-left: 0;
+}
+
   .container {
     height: fit-content;
     min-height: 100vh;

@@ -1,7 +1,10 @@
 <template>
     <div class="flex">
+      <div  class="w-1/6">
+        <GeneralMenu />
+      </div>
       <div class="w-1/5">
-        <ChatList class="chat-list"/>
+        <ChatList />
       </div>
       <div class="w-4/5">
         <div class="chat">

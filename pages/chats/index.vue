@@ -1,5 +1,8 @@
 <template>
   <div class="flex">
+    <div  class="w-1/6">
+      <GeneralMenu />
+    </div>
     <div class="w-1/5">
       <ChatList />
     </div>
@@ -36,7 +39,7 @@ export default {
   max-width: 100%;
   height: 100vh;
   margin: 0 auto;
-  border: 1px solid #ddd;
+  border-left: 1px solid #686262;
   border-radius: 8px;
   overflow: hidden;
 }

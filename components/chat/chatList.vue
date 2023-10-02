@@ -2,7 +2,6 @@
     <div class="chat-list">
       <div class="mx-auto">
         <div v-for="(user, index) in users" :key="index" class="chat-item">
-          <!-- Use Nuxt's <nuxt-link> to create router links -->
           <nuxt-link :to="'/chats/' + user.userId" class="no-underline">
             <div class="flex items-center space-x-4 p-4 border-b">
               <div class="flex-shrink-0">
@@ -77,7 +76,7 @@
   
   <style scoped>
   .chat-list {
-    max-height: 400px; /* Adjust the maximum height as needed */
+    max-height: 100vh;
     overflow-y: auto;
   }
   

@@ -2,7 +2,7 @@
   <div class="app-container bg-black">
       <div class="containerNav grid grid-cols-12">
         <div class="col-span-12">
-          <menu class="" v-if=" $route.name != 'authentication'"/>
+          
         </div>
     </div>
     <div class="content-container grid grid-cols-12 min-h-screen">
@@ -42,7 +42,7 @@ export default defineComponent({
 /* For example, removing list styles from ul and ol */
 ul, ol {
   list-style: none;
-  padding-left: 0;
+  padding-left: ;
 }
 
   .container {

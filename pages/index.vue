@@ -1,7 +1,7 @@
 <template>
   <div class=" min-h-screen">
-    <div class="grid grid-cols-12">
-      <div id="menu" class="col-span-1 text-white mt-5% border border-white p-5">
+    <div class="flex">
+      <!-- <div id="menu" class="col-span-1 text-white mt-5% border border-white p-5">
         <button @click="showMenu" id="btnMenu" type="submit" class="hover:bg-gray-700 p-5 l-10">
          Options
         </button>
@@ -12,17 +12,18 @@
 
         </ul>
 
+      </div> -->
+      <div  class="w-1/6">
+          <GeneralMenu />
       </div>
-
-       
-    </div>
-    <h1>Welcome to CuppidConnect</h1>
-    <div class="w-full">
-      <img
-        class="w-full h-auto"
-        src="@/img/back.png"
-        alt="backGroundHome"
-      />
+      <!-- <h1>Welcome to CuppidConnect</h1> -->
+      <div class="w-full">
+        <img
+          class="w-full h-screen"
+          src="@/img/back.png"
+          alt="backGroundHome"
+        />
+      </div>
     </div>
   </div>
 

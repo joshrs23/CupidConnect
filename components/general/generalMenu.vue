@@ -1,23 +1,27 @@
 <template>
   <div class="flex flex-col menuOverall p-4 cont">
     <div class="w-fit">
-      <ul class="flex flex-column">
-        <nuxt-link to="/" class="mb-4 w-3/4"><img :src="logo" class=""/></nuxt-link>
-        <li><nuxt-link to="/profile"><i class="fas fa-user"></i> Profile</nuxt-link></li>
-        <li><nuxt-link to="/likes"><i class="fas fa-heart"></i> Likes</nuxt-link></li>
-        <li><nuxt-link to="/chats"><i class="fas fa-comments"></i> Chats</nuxt-link></li>
-        <li><nuxt-link to="/"><i class="fas fa-home"></i> Home</nuxt-link></li>
+      <ul class="flex flex-col">
+        <li><nuxt-link to="/" class="mb-4 w-3/4"><img :src="logo" class="h-16"/></nuxt-link></li>
+        <li :class="{ 'font-bold': isProfileRoute }"><nuxt-link to="/profile"><i class="fas fa-user"></i> Profile</nuxt-link></li>
+        <li :class="{ 'font-bold': isLikesRoute }"><nuxt-link to="/likes"><i class="fas fa-heart"></i> Likes</nuxt-link></li>
+        <li :class="{ 'font-bold': isChatsRoute }"><nuxt-link to="/chats"><i class="fas fa-comments"></i> Chats</nuxt-link></li>
+        <li :class="{ 'font-bold': isHomeRoute }"><nuxt-link to="/"><i class="fas fa-home"></i> Home</nuxt-link></li>
       </ul>
     </div>
     <div class="">
-      <i class="fa-solid fa-bars"></i> Menu
+      <button @click="showMenu"> <i class="fa-solid fa-bars"></i> Menu </button>
+      <ul v-if="isListVisible" id="hiddenMenu" class="relative">
+          <li class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="Logout">Logout</NuxtLink></li>          
+          <li  class="hover:bg-gray-700 p-5"> <NuxtLink to="DeleteProfile">DeleteProfile</NuxtLink></li>     
+      </ul>
     </div>
   </div>
 </template>
 
 <style scoped>
-.cont{
-  border-right: 1px solid #686262;;
+.cont {
+  border-right: 1px solid #686262;
 }
 * {
   color: white;
@@ -33,7 +37,7 @@ li {
   margin-top: 0.5rem !important;
   width: fit-content;
 }
-i{
+i {
   min-width: 35px;
 }
 /* Remove underlines from anchor elements within li */
@@ -50,7 +54,28 @@ export default {
   data() {
     return {
       logo: logo,
+      isListVisible: false,
     }
   },
+  computed: {
+    isProfileRoute() {
+      return this.$route.path.startsWith('/profile');
+    },
+    isLikesRoute() {
+      return this.$route.path.startsWith('/likes');
+    },
+    isChatsRoute() {
+      return this.$route.path.startsWith('/chats');
+    },
+    isHomeRoute() {
+      return this.$route.path === '/';
+    },
+  },
+  methods: {
+      showMenu(){
+
+        this.isListVisible = !this.isListVisible;
+    },
+  }
 }
 </script>

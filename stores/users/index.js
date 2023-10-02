@@ -5,6 +5,7 @@ export const useUserStore = defineStore('user', {
   state: () => ({
 
     user: '',
+    email: '',
 
   }),
 
@@ -13,9 +14,13 @@ export const useUserStore = defineStore('user', {
     setuser(user) {
       this.user = user;
     },
+    setEmail(email) {
+      this.email = email;
+    },
 
     logOutUser(){
 
+      localStorage.removeItem('CupidConnectEmail');
       localStorage.removeItem('CupidConnectuser');
       localStorage.removeItem('CupidConnectToken');
       localStorage.removeItem('CupidConnectType');

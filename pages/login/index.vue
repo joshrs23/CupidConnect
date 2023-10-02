@@ -1,8 +1,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Lovers+Quarrel&display=swap" rel="stylesheet">
 <link href="../../../assets/styles.css" rel="stylesheet">
 
-
-
 <template>
 <div class="container mx-auto mt-4">
   <div class="grid grid-cols-12 gap-5">
@@ -15,32 +13,37 @@
       <h2 id="Login" class="text-xl font-semibold text-white flex flex-col justify-center items-center">Log in</h2>
 
       
-      <form class=" md:mt-8 md:pr-20% text-white">
+      <form class=" md:mt-8 md:pr-20% text-white" @submit.prevent="login">
+
         <div class="mb-8">
-          <input type="text" id="username" name="username" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Username" v-model="username" required>
+          <input type="email" id="username" name="username" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Username" v-model="username" required>
         </div>
 
         <div class="mb-8">
           <input type="password" id="password" name="password" class="form-input mt-1 block w-10/12  border-gray-300 border-b white" placeholder="Password" v-model="password" required>
         </div>
 
+        <div class="w-full text-center">
+            <a class="text-red-600" v-if="wrongPass">{{ errorMessage }}</a>
+        </div>
 
-         <div id="arrow-right" class="mt-4">
+        <div id="arrow-right" class="mt-4">
           <button  type="submit">
             <img src="@/img/arrow-right.png" alt="arrowIcon" />
           </button>
         </div>
 
-          <div id="btnRegister" class="flex justify-center items-center mb-4">
-            <label for="registerButton" class="cursor-pointer">
-              <button id="registerButton" type="submit" class="bg-black-200 text-white flex items-center">
-               <nuxt-link to="admin/users/add-user?username=&password=&password=&password=&password=&password=">Register</nuxt-link>
-                <img src="@/img/arrow-right.png" alt="arrowIcon" class="mx-2" />
-              </button>
-            </label>  
-          </div>
+        <div id="btnRegister" class="flex justify-center items-center mb-4">
+          <label for="registerButton" class="cursor-pointer">
+            <button id="registerButton" type="submit" class="bg-black-200 text-white flex items-center">
+             <nuxt-link to="admin/users/add-user?username=&password=&password=&password=&password=&password=">Register</nuxt-link>
+              <img src="@/img/arrow-right.png" alt="arrowIcon" class="mx-2" />
+            </button>
+          </label>  
+        </div>
    
       </form>
+
     </div>
   </div>
 </div>
@@ -102,32 +105,93 @@
 
   </style>
   <script lang="ts">
-//bg-black bg-opacity-70
+
     import { defineComponent, ref} from 'vue';
+    import { useUserStore } from '../../stores/users'
     import axios from 'axios';
 
-    export default defineComponent({
+    export default defineComponent({      
         components: {
             
         },
-        mounted(){
+        created() {
 
+          
+          
+        },
+        mounted() {
+
+          if(localStorage.getItem('CupidConnectToken')){
+              this.$router.push('/home');
+          }        
+          
         },
         data(){
             return {
-            
+              
+              username : '',
+              password : '',
+              wrongPass: false,
+              errorMessage: '',
+              userData : useUserStore(),
+
             }
         },
         methods:{
 
-          goToAddUser(){
+          /*goToAddUser(){
             this.$router.push('admin/users/add-user?username=&password=&password=&password=&password=&password=');
-          },
+          },*/
             
-            async post_SignIn() {
+            async login() {
 
                 try {
 
+                      
+                      const data = {
+
+                        _email: this.username,
+                        _password: this.password
+
+                      };
+
+                      const response = await axios.post('https://espacionebula.com:8000/sign-in', data, {
+
+                      headers: {
+
+                        'Access-Control-Allow-Origin': '*',
+
+                      },
+                      mode: 'cors',
+
+                    });
+
+                    //console.log(response); debugger;
+
+                    if(response.data.success){
+
+                      //crear variable de sesion
+                      //mover a home
+                      this.wrongPassword = false;
+                      localStorage.setItem('CupidConnectToken', response.data.token);
+                      localStorage.setItem('CupidConnectEmail', response.data.user._email);
+                      localStorage.setItem('CupidConnectuser', response.data.user._username);
+                      localStorage.setItem('CupidConnectType', response.data.user._type);
+                      localStorage.setItem('CupidConnectId', response.data.user._id);
+                      this.userData.setEmail(localStorage.getItem('CupidConnectEmail'));
+                      this.userData.setuser(localStorage.getItem('CupidConnectuser'));
+
+                      //console.log(localStorage.getItem('CupidConnectToken')+" "+localStorage.getItem('CupidConnectId')+" "+localStorage.getItem('CupidConnectType'));debugger;
+                      this.$router.push('/home');
+                      
+
+                    }else{
+
+                      this.wrongPass = true;
+                      this.errorMessage = response.error;
+                      console.log("usuario erroneo");
+                    
+                    }
 
                 } catch (error) {
 
@@ -140,6 +204,6 @@
         setup() {
 
         },
-    });
+    });
 </script>
 

@@ -12,12 +12,23 @@
 
         </ul>
 
-
       </div>
 
        
     </div>
+    <h1>Welcome to CuppidConnect</h1>
+    <div class="w-full">
+      <img
+        class="w-full h-auto"
+        src="@/img/back.png"
+        alt="backGroundHome"
+      />
+    </div>
   </div>
+
+
+  
+
 </template>
 
 <style>

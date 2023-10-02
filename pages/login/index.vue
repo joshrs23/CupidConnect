@@ -33,16 +33,17 @@
           </button>
         </div>
 
-        <div id="btnRegister" class="flex justify-center items-center mb-4">
-          <label for="registerButton" class="cursor-pointer">
-            <button id="registerButton" type="submit" class="bg-black-200 text-white flex items-center">
-             <nuxt-link to="admin/users/add-user?username=&password=&password=&password=&password=&password=">Register</nuxt-link>
-              <img src="@/img/arrow-right.png" alt="arrowIcon" class="mx-2" />
-            </button>
-          </label>  
-        </div>
-   
       </form>
+      
+      <div id="btnRegister" class="flex justify-center items-center mb-4">
+        <label for="registerButton" class="cursor-pointer">
+          <button id="registerButton" type="submit" class="bg-black-200 text-white flex items-center">
+           <nuxt-link to="admin/users/add-user">Register</nuxt-link>
+            <img src="@/img/arrow-right.png" alt="arrowIcon" class="mx-2" />
+          </button>
+        </label>  
+      </div>
+   
 
     </div>
   </div>

@@ -13,6 +13,7 @@
       <button @click="showMenu"> <i class="fa-solid fa-bars"></i> Menu </button>
       <ul id="hiddenMenu" class="relative">
           <li v-if="isListVisible && !isLogin" class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="Login">LogIn</NuxtLink></li>
+          <li v-if="isListVisible && !isLogin" class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="/admin/users/add-user">SignUp</NuxtLink></li>
           <li v-if="isListVisible && isLogin" class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="logout" @click="logout">Logout</NuxtLink></li>          
           <li v-if="isListVisible && isLogin" class="hover:bg-gray-700 p-5"> <NuxtLink to="DeleteProfile">DeleteProfile</NuxtLink></li>     
       </ul>

@@ -21,7 +21,7 @@
                 <h2 id="Register" class="text-xl font-semibold text-white flex flex-col justify-center items-center">Register</h2>
 
 
-                <form class="mt-8 md:mt-8 md:pr-20% text-white">
+                <form class="mt-8 md:mt-8 md:pr-20% text-white" @submit.prevent="submitForm">
 
                     <div class="mb-8 grid grid-cols-12 items-center relative">
 

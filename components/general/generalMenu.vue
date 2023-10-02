@@ -11,9 +11,10 @@
     </div>
     <div class="">
       <button @click="showMenu"> <i class="fa-solid fa-bars"></i> Menu </button>
-      <ul v-if="isListVisible" id="hiddenMenu" class="relative">
-          <li class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="Logout">Logout</NuxtLink></li>          
-          <li  class="hover:bg-gray-700 p-5"> <NuxtLink to="DeleteProfile">DeleteProfile</NuxtLink></li>     
+      <ul id="hiddenMenu" class="relative">
+          <li v-if="isListVisible && !isLogin" class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="Login">LogIn</NuxtLink></li>
+          <li v-if="isListVisible && isLogin" class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="logout" @click="logout">Logout</NuxtLink></li>          
+          <li v-if="isListVisible && isLogin" class="hover:bg-gray-700 p-5"> <NuxtLink to="DeleteProfile">DeleteProfile</NuxtLink></li>     
       </ul>
     </div>
   </div>
@@ -49,14 +50,26 @@ li a {
 
 <script>
 import logo from '@/assets/logoCupid.svg'
+import { useUserStore } from '../../stores/users'
 
 export default {
   data() {
     return {
       logo: logo,
       isListVisible: false,
+      isLogin: false,
+      userData : useUserStore(),
     }
   },
+  mounted() {
+
+        if(localStorage.getItem('CupidConnectToken')){
+
+            this.isLogin = true;
+
+        }    
+      
+    },
   computed: {
     isProfileRoute() {
       return this.$route.path.startsWith('/profile');
@@ -76,6 +89,12 @@ export default {
 
         this.isListVisible = !this.isListVisible;
     },
+    logout() {
+
+        this.userData.logOutUser();
+        this.$router.push('/logout');
+
+    }
   }
 }
 </script>

@@ -171,7 +171,7 @@
                     if(response.data.success){
 
                       //crear variable de sesion
-                      //mover a home
+                      //mover a principal
                       this.wrongPassword = false;
                       localStorage.setItem('CupidConnectToken', response.data.token);
                       localStorage.setItem('CupidConnectEmail', response.data.user._email);
@@ -182,7 +182,7 @@
                       this.userData.setuser(localStorage.getItem('CupidConnectuser'));
 
                       //console.log(localStorage.getItem('CupidConnectToken')+" "+localStorage.getItem('CupidConnectId')+" "+localStorage.getItem('CupidConnectType'));debugger;
-                      this.$router.push('/home');
+                      this.$router.push('/');
                       
 
                     }else{

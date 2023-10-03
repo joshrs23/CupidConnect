@@ -54,6 +54,15 @@ import axios from 'axios';
             };
 
         },
+        mounted() {
+          
+            if(!localStorage.getItem('CupidConnectToken')){
+
+                this.$router.push('/login');
+
+            }
+
+        },
         methods: {
 
             async deleteMessage(){

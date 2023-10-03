@@ -62,18 +62,14 @@
 
                     <div class="mb-8">
 
-                        <input type="text" id="address" name="address" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Address" v-model="address" required>    
+                        <input type="text" id="address" name="address" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Address" v-model="address" minlength="8" required>    
 
                     </div>
                 
 
                     <div  class="mt-75%">
 
-                        <button id="arrow-left" type="submit">
-
-                            <img src="@/img/arrow-left.png" alt="arrowIcon" />
-
-                        </button>
+                        
 
                         <button id="btnFinish" type="submit">
 
@@ -83,24 +79,28 @@
 
                     </div>
             
-                
-
-                    <div id="btnLogin" class="flex justify-center items-center mb-4">
-
-                        <label class="cursor-pointer">
-
-                            <button  type="submit" class="bg-black-200 text-white flex items-center">
-
-                                <img src="@/img/arrow-left.png" alt="arrowIcon" class="mx-2" />
-                                <nuxt-link to="/Login">Login</nuxt-link>
-
-                            </button>
-
-                        </label>
-
+                    <!-- error -->
+                    <div v-if="error" class="text-red-500 text-center my-4">
+                      {{ error }}
                     </div>
 
                 </form>
+
+
+                <div id="btnLogin" class="flex justify-center items-center mb-4">
+
+                    <label class="cursor-pointer">
+
+                        <button  type="submit" class="bg-black-200 text-white flex items-center">
+
+                            <img src="@/img/arrow-left.png" alt="arrowIcon" class="mx-2" />
+                            <nuxt-link to="/Login">Login</nuxt-link>
+
+                        </button>
+
+                    </label>
+
+                </div>
 
             </div>
 
@@ -213,9 +213,10 @@
 
   
   <script>
-
-      import axios from 'axios';
-      import Swal from 'sweetalert2'
+    import { defineComponent, ref} from 'vue';
+    import axios from 'axios';
+    import { useUserStore } from '../../../stores/users'
+    import Swal from 'sweetalert2'
   
     export default {
 
@@ -231,18 +232,13 @@
                 citiesData : [],
                 selectedCity: null,
                 address : '',
+                error : '',
+                userData : useUserStore(),
 
             };
 
         },
     created() {
-
-        const validate = this.$route.query.data;//debugger;
-        if (!validate) {
-            
-            this.$router.push('/admin/users/add-user');
-
-        }
 
     },
     mounted() {
@@ -251,7 +247,15 @@
 
             this.$router.push('/home');
 
-        }    
+        }   
+
+        
+        
+        if (localStorage.getItem('CupidConnectFirstRegisterData')) {
+            
+            this.data = JSON.parse(localStorage.getItem('CupidConnectFirstRegisterData'));
+
+        } 
 
         this.fetchCountries();
       
@@ -260,7 +264,56 @@
       
         async submitForm() {
 
-            this.data = this.$route.query.data;
+            if(this.verify()){
+
+                const dataf = {
+                    _email: this.data._email,
+                    _username: this.data._username,
+                    _fname: this.data._fname,
+                    _lname: this.data._lname,                    
+                    _password: this.data._password,
+                    country : this.selectedCountry,
+                    province : this.selectedProvince,
+                    city : this.selectedCity,
+                    _address : this.address,                    
+                    _dob: this.data._dob
+
+                };
+
+                const response = await axios.post('https://espacionebula.com:8000/create-user', dataf, {
+
+                    headers: {
+
+                        'Access-Control-Allow-Origin': '*',
+
+                    },
+                    mode: 'cors',
+
+                });
+                
+                //console.log(response); debugger;
+                if(response.data.success){
+
+                    localStorage.setItem('CupidConnectToken', response.data.token);
+                    localStorage.setItem('CupidConnectEmail', response.data.user._email);
+                    localStorage.setItem('CupidConnectuser', response.data.user._username);
+                    localStorage.setItem('CupidConnectType', response.data.user._type);
+                    localStorage.setItem('CupidConnectId', response.data.user._id);
+                    this.userData.setEmail(localStorage.getItem('CupidConnectEmail'));
+                    this.userData.setuser(localStorage.getItem('CupidConnectuser'));
+
+                    localStorage.removeItem('CupidConnectFirstRegisterData');
+                    this.$router.push('/');
+
+                }else{
+
+                    this.error = "There was an error creating user : "+response.data.error;
+                    console.log("There was an error creating user : "+response.data.error);
+                    this.clearErrorMessageAfterDelay();
+
+                }
+
+            }
 
         },
         async fetchCountries() {
@@ -294,6 +347,57 @@
             }
 
         },
+        verify(){
+
+            if (!this.selectedCountry){
+
+                this.error = "Please select a country";
+                console.log("Please select a country");
+                return false;
+
+            }
+
+            if(!this.selectedProvince){
+
+                this.error = "Please select a province";
+                console.log("Please select a province");
+                return false;
+
+            }
+
+            if(!this.selectedCity){
+
+                this.error = "Please select a city";
+                console.log("Please select a city");
+                return false;
+
+            }
+
+            if(!this.address){
+
+                this.error = "Please write your address";
+                console.log("Please write your address");
+                return false;
+
+            }
+
+            if(this.address.length < 8){
+
+                this.error = "Your address must have at least 8 characters";
+                console.log("Your address must have at least 8 characters");
+                return false;
+
+            }
+
+            return true;
+
+        },
+        clearErrorMessageAfterDelay() {
+      
+            setTimeout(() => {
+                this.error = "";
+            }, 5000);
+        },
 
         async handleSelectChange() {
 
@@ -310,7 +414,7 @@
 
                     };
 
-                    console.log(this.selectedCountry);
+                    //console.log(this.selectedCountry);
 
                     const response = await axios.post('https://espacionebula.com:8000/get-province-by-country', dataf, {
 
@@ -360,7 +464,7 @@
 
                 };
 
-                console.log(this.selectedProvince);
+                //console.log(this.selectedProvince);
 
                 const response = await axios.post('https://espacionebula.com:8000/get-cities-by-province', dataf, {
 

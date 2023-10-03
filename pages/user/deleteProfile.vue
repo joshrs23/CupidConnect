@@ -62,7 +62,6 @@ import axios from 'axios';
 
                     const _userId = localStorage.getItem('CupidConnectId'); 
                     const token = localStorage.getItem('CupidConnectToken'); 
-                    console.log(_userId);
                     const dataf = {
 
                         userId: _userId,
@@ -80,7 +79,7 @@ import axios from 'axios';
                         mode: 'cors',
 
                     });
-                    debugger;
+                    //debugger;
                     if(response.data.success){
 
                         this.userData.logOutUser();

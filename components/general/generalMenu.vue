@@ -1,20 +1,21 @@
 <template>
   <div class="flex flex-col menuOverall p-4 cont">
-    <div class="w-fit">
+    <div class="w-fit mx-auto">
       <ul class="flex flex-col">
-        <li><nuxt-link to="/" class="mb-4 w-3/4"><img :src="logo" class="h-16"/></nuxt-link></li>
+        <li class="mb-4"><nuxt-link to="/" class="w-3/4"><img :src="logo" class="h-16"/></nuxt-link></li>
         <li :class="{ 'font-bold': isProfileRoute }"><nuxt-link to="/profile"><i class="fas fa-user"></i> Profile</nuxt-link></li>
         <li :class="{ 'font-bold': isLikesRoute }"><nuxt-link to="/likes"><i class="fas fa-heart"></i> Likes</nuxt-link></li>
         <li :class="{ 'font-bold': isChatsRoute }"><nuxt-link to="/chats"><i class="fas fa-comments"></i> Chats</nuxt-link></li>
         <li :class="{ 'font-bold': isHomeRoute }"><nuxt-link to="/"><i class="fas fa-home"></i> Home</nuxt-link></li>
       </ul>
     </div>
-    <div class="">
+    <div class="mx-auto">
       <button @click="showMenu"> <i class="fa-solid fa-bars"></i> Menu </button>
       <ul id="hiddenMenu" class="relative">
-          <li v-if="isListVisible && !isLogin" class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="Login">LogIn</NuxtLink></li>
-          <li v-if="isListVisible && isLogin" class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="logout" @click="logout">Logout</NuxtLink></li>          
-          <li v-if="isListVisible && isLogin" class="hover:bg-gray-700 p-5"> <NuxtLink to="DeleteProfile">DeleteProfile</NuxtLink></li>     
+          <li v-if="isListVisible && !isLogin" class="hover:bg-gray-700 text-xs"> <NuxtLink to="Login">LogIn</NuxtLink></li>
+          <li v-if="isListVisible && !isLogin" class="hover:bg-gray-700 text-xs"> <NuxtLink to="/admin/users/add-user">SignUp</NuxtLink></li>
+          <li v-if="isListVisible && isLogin" class="hover:bg-gray-700"> <NuxtLink to="logout" @click="logout">Logout</NuxtLink></li>          
+          <li v-if="isListVisible && isLogin" class="hover:bg-gray-700"> <NuxtLink to="DeleteProfile">DeleteProfile</NuxtLink></li>     
       </ul>
     </div>
   </div>

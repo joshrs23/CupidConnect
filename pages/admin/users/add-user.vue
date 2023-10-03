@@ -56,20 +56,20 @@
                     <div id="arrow-right" class="mt-4">
                     <button type="submit">
                         <img src="@/img/arrow-right.png" alt="arrowImg" />
-                        <nuxt-link to="admin/users/add-user?username=&password=&password=&password=&password=&password="></nuxt-link>
+                        <nuxt-link to="admin/users/add-user"></nuxt-link>
                     </button>
                     </div>
 
-                    <div id="btnLogin" class="flex justify-center items-center mb-4">
-                        <label class="cursor-pointer">
-                        <button  type="submit" @click="goToLogin" class="bg-black-200 text-white flex items-center">
-                        <img src="@/img/arrow-left.png" alt="arrowImg" class="mx-2" />
-                        <nuxt-link to="/Login">Login</nuxt-link>              
-                        </button>
-                        </label>
-                    </div>
-
                 </form>
+
+                <div id="btnLogin" class="flex justify-center items-center mb-4">
+                    <label class="cursor-pointer">
+                    <button  type="submit" @click="goToLogin" class="bg-black-200 text-white flex items-center">
+                    <img src="@/img/arrow-left.png" alt="arrowImg" class="mx-2" />
+                    <nuxt-link to="/Login">Login</nuxt-link>              
+                    </button>
+                    </label>
+                </div>
 
             </div>
 
@@ -198,6 +198,8 @@
 
             if(this.verify()){
 
+                localStorage.removeItem('CupidConnectFirstRegisterData');
+
                 const data = {
 
                     _email: this.email,
@@ -208,14 +210,16 @@
                     _dob: this.birthDate,
 
                 };
-
-                 this.$router.push({
-                  path: '/admin/users/add-user-continuation',
-                  query: {
-                    data: data
-                  }
-                });
                 
+                const serializedData = JSON.stringify(data);
+
+                localStorage.setItem('CupidConnectFirstRegisterData', serializedData);
+                this.$router.push('/admin/users/add-user-continuation');
+                
+            }else{
+
+                this.clearErrorMessageAfterDelay();
+
             }
         
         },
@@ -302,7 +306,7 @@
         clearErrorMessageAfterDelay() {
       
             setTimeout(() => {
-                this.errorMessage = "";
+                this.error = "";
             }, 5000);
         }
 

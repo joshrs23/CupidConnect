@@ -13,8 +13,11 @@
         </ul>
 
       </div> -->
-      <div  class="w-1/6">
-          <GeneralMenu />
+      <div class="lg:hidden">
+        <GeneralMenuPhone />
+      </div>
+      <div class="hidden lg:block w-1/6">
+        <GeneralMenu />
       </div>
       <!-- <h1>Welcome to CuppidConnect</h1> -->
       <div class="w-full">

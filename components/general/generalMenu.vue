@@ -15,7 +15,8 @@
           <li v-if="isListVisible && !isLogin" class="hover:bg-gray-700 text-xs"> <NuxtLink to="Login">LogIn</NuxtLink></li>
           <li v-if="isListVisible && !isLogin" class="hover:bg-gray-700 text-xs"> <NuxtLink to="/admin/users/add-user">SignUp</NuxtLink></li>
           <li v-if="isListVisible && isLogin" class="hover:bg-gray-700"> <NuxtLink to="logout" @click="logout">Logout</NuxtLink></li>          
-          <li v-if="isListVisible && isLogin" class="hover:bg-gray-700"> <NuxtLink to="DeleteProfile">DeleteProfile</NuxtLink></li>     
+          <li v-if="isListVisible && isLogin" class="hover:bg-gray-700"> <NuxtLink to="/user/DeleteProfile">DeleteProfile</NuxtLink></li>   
+          <li v-if="isListVisible && isLogin" class="hover:bg-gray-700 text-xs"> <NuxtLink to="/user/changePassword">Change Password</NuxtLink></li>  
       </ul>
     </div>
   </div>

@@ -23,8 +23,9 @@
           <input type="password" id="password" name="password" class="form-input mt-1 block w-10/12  border-gray-300 border-b white" placeholder="Password" v-model="password" required>
         </div>
 
-        <div class="w-full text-center">
-            <a class="text-red-600" v-if="wrongPass">{{ errorMessage }}</a>
+        <!-- error -->
+        <div v-if="error" class="text-red-500 text-center my-4">
+          {{ error }}
         </div>
 
         <div id="arrow-right" class="mt-4">
@@ -133,7 +134,7 @@
               username : '',
               password : '',
               wrongPass: false,
-              errorMessage: '',
+              error : '',
               userData : useUserStore(),
 
             }
@@ -189,8 +190,8 @@
                     }else{
 
                       this.wrongPass = true;
-                      this.errorMessage = response.error;
-                      console.log("usuario erroneo");
+                      this.error = response.data.error;
+                      console.log(response.data.error);
                     
                     }
 

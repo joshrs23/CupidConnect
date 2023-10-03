@@ -1,6 +1,9 @@
 <template>
   <div class="flex">
-    <div  class="w-1/6">
+    <div class="lg:hidden">
+      <GeneralMenuPhone />
+    </div>
+    <div class="hidden lg:block w-1/6">
       <GeneralMenu />
     </div>
     <div class="w-1/5">

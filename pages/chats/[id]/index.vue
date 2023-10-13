@@ -29,7 +29,7 @@
   </template>
   
   <script>
-  import ChatInfoPanel from '@/components/chat/chatInfoPanel.vue'; // Adjust the import path as needed
+  import ChatInfoPanel from '@/components/chat/chatInfoPanel.vue'; 
   
   export default {
     components: {

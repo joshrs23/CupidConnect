@@ -16,7 +16,7 @@
       <form class=" md:mt-8 md:pr-20% text-white" @submit.prevent="login">
 
         <div class="mb-8">
-          <input type="email" id="username" name="username" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Username" v-model="username" required>
+          <input type="email" id="username" name="username" class="form-input mt-1 block w-10/12 border-black-300 border-b white" placeholder="Email" v-model="username" required>
         </div>
 
         <div class="mb-8">

@@ -1,38 +1,26 @@
 <template>
-  <div class=" min-h-screen">
-    <div class="flex">
-      <!-- <div id="menu" class="col-span-1 text-white mt-5% border border-white p-5">
-        <button @click="showMenu" id="btnMenu" type="submit" class="hover:bg-gray-700 p-5 l-10">
-         Options
-        </button>
-
-        <ul v-if="isListVisible" id="hiddenMenu">
-          <li class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="Logout">Logout</NuxtLink></li>          
-          <li  class="hover:bg-gray-700 p-5"> <NuxtLink to="DeleteProfile">DeleteProfile</NuxtLink></li>     
-
-        </ul>
-
-      </div> -->
+  <div>
+    <div class="flex min-h-screen">
       <div class="lg:hidden">
         <GeneralMenuPhone />
       </div>
-      <div class="hidden lg:block w-1/6">
+      <div class="hidden lg:block w-1/6 z-20">
         <GeneralMenu />
       </div>
-      <!-- <h1>Welcome to CuppidConnect</h1> -->
-      <div class="w-full">
-        <img
-          class="w-full h-screen"
-          src="@/img/back.png"
-          alt="backGroundHome"
-        />
+      <div class="w-4/6 relative">
+        <div>
+            <div id="swiper" class=" translate-x-1/2 translate-y-1/2">
+              <Card v-for="(prospect, index) in prospects" 
+              class=""
+              :key="index" 
+              :index="index"
+              :prospect="prospect" 
+              />
+            </div>
+          </div>
       </div>
     </div>
   </div>
-
-
-  
-
 </template>
 
 <style>
@@ -44,20 +32,27 @@
 </style>
 
   <script>
+  import Swiper from 'swiper';
+  import Card from '@/components/general/generalCard.vue'; // Adjust the import path as needed
+  import { useUserStore } from '@/stores/users'
 
-  export default defineComponent({
+  export default {
     data() {
       return {
         isListVisible: false,
-        
+        prospects: useUserStore().getArrayOfProspects()
       };
     },
-    mounted() {
-      
+    computed: {
+      sortedProspects() {
+    return this.prospects.slice().sort((a, b) => b.id - a.id);
+  },
+    },
+    components: {
+      Card,
     },
     methods: {
       showMenu(){
-
         this.isListVisible = !this.isListVisible;
     },
       
@@ -65,6 +60,11 @@
     beforeDestroy() {
     
   }
-  })
+  };
   </script>
   
+  <style scoped>
+  *{
+    color: white;
+  }
+  </style>

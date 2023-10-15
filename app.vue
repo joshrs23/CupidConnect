@@ -42,7 +42,6 @@ export default defineComponent({
 /* For example, removing list styles from ul and ol */
 ul, ol {
   list-style: none;
-  padding-left: ;
 }
 
   .container {

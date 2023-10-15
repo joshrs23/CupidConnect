@@ -1,8 +1,16 @@
 <template>
-  <div class="prospect-card card" @mousedown="startDragging" @touchstart="startDragging" :style="cardStyle">
+  <div class="prospect-card card" 
+    @mousedown="startDragging" 
+    @touchstart="startDragging" 
+    :style="cardStyle"
+  >
     <div class="image-container">
       <div class="bg-transparent w-full h-full absolute"></div>
-      <img :src="prospect.image" alt="Profile Picture" class="profile-image" />
+      <img
+        :src="prospect.images[currentImageIndex]"
+        alt="Profile Picture"
+        class="profile-image"
+      />
     </div>
     <div class="text-overlay">
       <h2 class="name">{{ prospect.name }}</h2>
@@ -10,7 +18,7 @@
     </div>
   </div>
 </template>
-  
+
   <script>
   import { useUserStore } from '@/stores/users'
 
@@ -25,6 +33,7 @@
         offsetX: 0,
         offsetY: 0,
         zIndex: 0,
+        currentImageIndex: 0,
       };
     },
     computed: {
@@ -40,6 +49,13 @@
     },
     },
     methods: {
+      changeImage() {
+        if (this.currentImageIndex < this.prospect.images.length - 1) {
+          this.currentImageIndex += 1;
+        } else {
+          this.currentImageIndex = 0;
+        }
+      },
       resetRotation() {
         const cards = document.querySelectorAll('.prospect-card');
         cards.forEach((card, idx) => {
@@ -56,7 +72,9 @@
         if (this.isTouchDevice()) {
           event.preventDefault();
           const touch = event.changedTouches[0];
-          if (!touch) return;
+          if (!touch) {
+            return;
+          }
           this.startPoint = { x: touch.clientX, y: touch.clientY };
           document.addEventListener('touchmove', this.handleTouchMove);
           this.$el.style.transition = 'transform 0s';
@@ -99,7 +117,9 @@
       handleTouchMove(event) {
         if (!this.startPoint) return;
         const touch = event.changedTouches[0];
-        if (!touch) return;
+        if (!touch) {
+          return;
+        }
         const { clientX, clientY } = touch;
         this.handleMove(clientX, clientY);
       },
@@ -125,7 +145,7 @@
         this.$el.style.transform = `translate(${direction * window.innerWidth}px, ${this.offsetY}px) rotate(${90 * direction}deg)`;
         this.$el.classList.add('dismissing');
         setTimeout(() => {
-          this.$el.remove();
+          this.$emit('dismissed');
         }, 1000);
       },
       isTouchDevice() {
@@ -154,6 +174,12 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   color: white;
+}
+@media screen and (max-width: 1024px) {
+  .prospect-card {
+    width: 350px;
+    height: 480px;
+  }
 }
 
 .image-container {

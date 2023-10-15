@@ -19,57 +19,16 @@
   </template>
   
   <script>
+  import { useUserStore } from '@/stores/users'
+
   export default {
     data() {
       return {
-        users: [
-            {
-                name: 'John Doe',
-                userId: 'john_doe123',
-                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-            },
-            {
-                name: 'Jane Smith',
-                userId: 'jane_smith456',
-                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-            },
-            {
-                name: 'Alice Johnson',
-                userId: 'alice_johnson789',
-                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-            },
-            {
-                name: 'Bob Brown',
-                userId: 'bob_brown010',
-                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-            },
-            {
-                name: 'Ella Davis',
-                userId: 'ella_davis789',
-                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-            },
-            {
-                name: 'Michael Johnson',
-                userId: 'michael_johnson007',
-                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-            },
-            {
-                name: 'Olivia Williams',
-                userId: 'olivia_williams123',
-                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-            },
-            {
-                name: 'David Smith',
-                userId: 'david_smith456',
-                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-            },
-            {
-                name: 'Sophia Brown',
-                userId: 'sophia_brown789',
-                profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-            },
-        ],
+        users: []
       };
+    },
+    created() {
+      this.users = useUserStore().getArrayOfChatHistoryProspects()
     },
   };
   </script>

@@ -38,29 +38,20 @@
     },
     computed: {
       cardStyle() {
-      let rotation = 0;
-      if (this.index >= 1 && this.index <= 2) {
-        rotation = this.index + 2;
-      }
-      return {
-        zIndex: this.index*(-1),
-        transform: `rotate(${rotation}deg)`,
+        let rotation = 0;
+        rotation = this.index * 5;
+        return {
+          transform: `rotate(${rotation}deg) translateX(${rotation * 2.5}px)`,
+          backdropFilter: `blur(${rotation * 5}px)`,
       };
     },
     },
     methods: {
-      changeImage() {
-        if (this.currentImageIndex < this.prospect.images.length - 1) {
-          this.currentImageIndex += 1;
-        } else {
-          this.currentImageIndex = 0;
-        }
-      },
       resetRotation() {
         const cards = document.querySelectorAll('.prospect-card');
         cards.forEach((card, idx) => {
           if (idx !== this.index) {
-            card.style.transition = 'transform 0s';
+            card.style.transition = 'transform 1s';
             if (idx >= 1 && idx <= 2) {
               rotation = idx + 2;
             }
@@ -131,22 +122,25 @@
       },
   
       dismiss(direction) {
-        if(direction== 1){
-          useUserStore().likeProspectById(this.prospect.id)
-        }else if(direction == -1){
-          useUserStore().dislikeProspectById(this.prospect.id)
-        }
-        this.startPoint = null;
-        document.removeEventListener('mouseup', this.handleMoveUp);
-        document.removeEventListener('mousemove', this.handleMouseMove);
-        document.removeEventListener('touchend', this.handleTouchEnd);
-        document.removeEventListener('touchmove', this.handleTouchMove);
-        this.$el.style.transition = 'transform 1s';
-        this.$el.style.transform = `translate(${direction * window.innerWidth}px, ${this.offsetY}px) rotate(${90 * direction}deg)`;
-        this.$el.classList.add('dismissing');
-        setTimeout(() => {
-          this.$emit('dismissed');
-        }, 1000);
+          if(direction== 1){
+            useUserStore().likeProspectById(this.prospect.id)
+          }else if(direction == -1){
+            useUserStore().dislikeProspectById(this.prospect.id)
+          }
+          this.startPoint = null;
+          document.removeEventListener('mouseup', this.handleMoveUp);
+          document.removeEventListener('mousemove', this.handleMouseMove);
+          document.removeEventListener('touchend', this.handleTouchEnd);
+          document.removeEventListener('touchmove', this.handleTouchMove);
+          this.$el.style.transition = 'transform 0.7s';
+          this.$el.style.transform = `translate(${direction * window.innerWidth}px, ${this.offsetY}px) rotate(${90 * direction}deg)`;
+          this.$el.addEventListener('transitionend', this.handleTransitionEnd);
+      },
+      handleTransitionEnd() {
+        this.$el.style.transition = 'transform 0s';
+        this.$el.style.transform = 'translate(0, 0)'; 
+        this.$el.removeEventListener('transitionend', this.handleTransitionEnd);
+        this.$emit('dismissed');
       },
       isTouchDevice() {
         return (

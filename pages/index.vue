@@ -14,6 +14,7 @@
               :key="index" 
               :index="index"
               :prospect="prospect" 
+              :style="{ 'z-index': (index*-1) }"
               @dismissed="removeProspect(index)"
               />
             </div>
@@ -50,6 +51,7 @@
   export default {
     data() {
       return {
+        activeCardIndex: 0,
         isListVisible: false,
         prospects: [],
         showProspects: true
@@ -64,8 +66,8 @@
     methods: {
       removeProspect(index) {
         this.prospects.splice(index, 1);
-        if(this.prospects.length == 0){
-          this.showProspects = false
+        if (this.prospects.length === 0) {
+          this.showProspects = false;
         }
       },
       showMenu(){

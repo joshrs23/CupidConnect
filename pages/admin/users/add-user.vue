@@ -7,7 +7,7 @@
 
         <div class="grid grid-cols-12 gap-5">
 
-            <div id="logo" class="col-span-12 md:col-span-7 bg-black-200 p-4 flex justify-center">
+            <div id="Logo" class="col-span-12 md:col-span-7 bg-black-200 p-4 flex justify-center">
 
                 <h2 class="text-xl font-semibold"><img src="@/img/logo.svg" alt="frameIcon" /></h2>
 
@@ -99,14 +99,7 @@
 
     }
 
-    #logo{
-
-          margin-left: 3em;
-          align-items: center; 
-          background-color: black;
-          color: white;
-
-    }
+   
 
     icon {
         font-size: 24px;
@@ -130,7 +123,7 @@
         align-items: center; 
         justify-content: center;
         font-size: 4em; 
-        margin-top: 2.5em;
+        margin-top: 1.5em;
         margin-left: 1.5em;
         font-family: 'Lovers Quarrel', serif;
         font-weight: normal;
@@ -228,7 +221,7 @@
 
             const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
             const birthDateRegex = /^\d{4}-\d{2}-\d{2}$/;
-            const usernameRegex = /^[a-zA-Z0-9_]{8,19}$/;
+            const usernameRegex = /^[a-zA-Z0-9_]{10,19}$/;
             const nameRegex = /^[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ\s]+$/;
 
             if (!emailRegex.test(this.email)) {

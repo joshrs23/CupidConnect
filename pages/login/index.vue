@@ -4,7 +4,7 @@
 <template>
 <div class="container mx-auto mt-4">
   <div class="grid grid-cols-12 gap-5">
-    <div id="logo" class="col-span-12 bg-black-200 p-4 flex justify-center md:col-span-7">
+    <div id="Logo" class="col-span-12 bg-black-200 p-4 flex justify-center md:col-span-7">
       <h2 class="text-x1 font-semibold"><img src="@/img/logo.svg" alt="frameIcon" /></h2>
     </div>
 
@@ -66,7 +66,7 @@
       line-height: 1em; 
       background-color: black;
     }
-    #logo{
+    #Logo{
       margin-left: 3em;
       align-items: center; 
       background-color: black;
@@ -174,7 +174,7 @@
 
                       //crear variable de sesion
                       //mover a principal
-                      this.wrongPassword = false;
+                      this.wrongPass = false;
                       localStorage.setItem('CupidConnectToken', response.data.token);
                       localStorage.setItem('CupidConnectEmail', response.data.user._email);
                       localStorage.setItem('CupidConnectuser', response.data.user._username);

@@ -10,7 +10,7 @@
 
         <div class="grid grid-cols-12 gap-5">
 
-            <div id="logo" class="col-span-12 md:col-span-7 bg-black-200 p-4 flex justify-center">
+            <div id="Logo" class="col-span-12 md:col-span-7 bg-black-200 p-4 flex justify-center">
 
                 <h2 class="text-xl font-semibold"><img src="@/img/logo.svg" alt="frameIcon" /></h2>
 
@@ -130,14 +130,6 @@
 
     }
 
-    #logo{
-
-        margin-left: 3em;
-        align-items: center; 
-        background-color: black;
-        color: white;
-
-    }
 
     icon {
 
@@ -177,11 +169,6 @@
 
     }
 
-    form{
-        
-
-
-    }
 
     input{
 
@@ -293,7 +280,7 @@
                 
                 //console.log(response); debugger;
                 if(response.data.success){
-
+                    debugger; 
                     localStorage.setItem('CupidConnectToken', response.data.token);
                     localStorage.setItem('CupidConnectEmail', response.data.user._email);
                     localStorage.setItem('CupidConnectuser', response.data.user._username);
@@ -303,7 +290,7 @@
                     this.userData.setuser(localStorage.getItem('CupidConnectuser'));
 
                     localStorage.removeItem('CupidConnectFirstRegisterData');
-                    this.$router.push('/');
+                    this.$router.push('/profile');
 
                 }else{
 

@@ -8,7 +8,7 @@
     <div class="container mx-auto mt-4">
   <div class="grid grid-cols-12 gap-5">
 
-    <div id="logo" class="col-span-12 md:col-span-7 bg-black-200 p-4 flex justify-center">
+    <div id="Logo" class="col-span-12 md:col-span-7 bg-black-200 p-4 flex justify-center">
       <h2 class="text-xl font-semibold"><img src="@/img/logo.svg" alt="frameIcon" /></h2>
     </div>
 
@@ -60,16 +60,10 @@
       line-height: 1em; 
       background-color: black;
     }
-    #logo{
-      margin-left: 3em;
-      align-items: center; 
-      background-color: black;
-      color: white;
-      margin-top: 0%;
-    }
+
 
     #Register{
-    padding-top: 1.5em;
+    padding-top: 3em;
     font-size: 5em;
     font-family: 'Lovers Quarrel', serif;
     font-weight: normal;

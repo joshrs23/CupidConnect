@@ -1,20 +1,53 @@
 <template>
-  <div class="prospect-card card" 
+  <div class="card" 
     @mousedown="startDragging" 
     @touchstart="startDragging" 
     :style="cardStyle"
   >
     <div class="image-container">
-      <div class="bg-transparent w-full h-full absolute"></div>
-      <img
-        :src="prospect.images[currentImageIndex]"
+      <div class="select-none pointer-events-none">
+        <img
+        v-for="(image, index) in prospect.images"
+        :key="index"
+        :src="image"
         alt="Profile Picture"
         class="profile-image"
-      />
-    </div>
-    <div class="text-overlay">
-      <h2 class="name">{{ prospect.name }}</h2>
-      <p class="age">{{ prospect.age }}</p>
+        :style="imageStyle(index)"
+        />
+        <div class="text-overlay bg-gradient-to-b from-transparent to-black">
+          <h2 class="name">{{ prospect.name }}</h2>
+          <p class="age">{{ prospect.age }}</p>
+        </div>
+      </div>
+      <div class="bg-black w-full h-full flex flex-col pl-[24px] pr-[24px]">
+        <div class="w-full flex justify-between">
+          <div class="flex flex-col justify-center">
+            <div class="text-[48px] font-bold">
+              {{ prospect.name }}
+            </div>
+            <div  class="text-[32px]">
+              {{ prospect.gender }}
+            </div>
+          </div>
+          <div class="text-[128px] font-bold	">
+            {{ prospect.age }}
+          </div>
+        </div>
+        <div class="pt-[41px]">
+          <span class="text-[32px] font-bold">About</span>
+          <div class="text-[20px]">{{prospect.description}}</div>
+        </div>
+        <div class="pt-[41px]">
+          <span class="text-[32px] font-bold">Interests</span>
+          <div class="flex mt-[13px]">
+            <div v-for="(interest, index) in prospect.interests"
+            class="text-[20px] border rounded-[90px] border-[#686262] pl-[12px] pr-[12px] mr-[3.5px] ml-[3.5px]"
+            :key="index">
+            {{ interest }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -40,13 +73,25 @@
       cardStyle() {
         let rotation = 0;
         rotation = this.index * 5;
+        let howBlur = 3;
+        if (this.index == 0){
+          howBlur = 0;
+        }
         return {
-          transform: `rotate(${rotation}deg) translateX(${rotation * 2.5}px)`,
-          backdropFilter: `blur(${rotation * 5}px)`,
+          transform: `rotate(${rotation}deg) translateX(${this.index * 10}px)`,
+          filter: `blur(${howBlur}px)`,
       };
     },
     },
     methods: {
+      imageStyle(index) {
+        if (index === this.currentImageIndex) {
+          return {};
+        } else {
+          return {
+          };
+        }
+      },
       resetRotation() {
         const cards = document.querySelectorAll('.prospect-card');
         cards.forEach((card, idx) => {
@@ -154,19 +199,17 @@
   </script>
   
   <style scoped>
+  *{
+    font-family: Inter;
+  }
   .card {
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  position: absolute; /* Changed to absolute positioning */
+  position: absolute; 
   cursor: pointer;
-  user-select: none;
-  transition: transform 0.5s; /* Added transition for smooth movement */
-}
-.prospect-card {
+  transition: transform 0.5s;
   width: 550px;
   height: 680px;
-  border-radius: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
+  border: 1px solid #686262;
   color: white;
 }
 @media screen and (max-width: 1024px) {
@@ -180,36 +223,46 @@
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: auto;
 }
 
 .profile-image {
-  width: 100%;
-  height: 100%;
+  width: 550px;
+  height: 680px;
   object-fit: cover;
   border-radius: 10px;
 }
 
 .text-overlay {
   position: absolute;
-  bottom: 0; /* Position at the bottom */
+  bottom: 0;
   left: 0;
+  height: 20%;
   width: 100%;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.7) 100%);
   border-radius: 0 0 10px 10px;
   padding: 20px;
   text-align: center;
   display: flex;
   justify-content:space-between;
+  align-items: flex-end;
 }
   
   .name {
-    font-size: 24px;
-    margin: 0;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
   }
   
   .age {
-    font-size: 16px;
-    margin: 5px 0;
+    color: #FFF5F5;
+    font-family: Inter;
+    font-size: 96px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
   }
   
   .description {

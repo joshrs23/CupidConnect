@@ -27,6 +27,9 @@ export default defineComponent({
 
 <style>
   /* Reset all styles for all elements */
+  /* html, body {
+  overflow: hidden;
+} */
 * {
   margin: 0;
   padding: 0;

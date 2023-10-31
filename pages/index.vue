@@ -7,16 +7,21 @@
       <div class="hidden lg:block w-1/6 z-20">
         <GeneralMenu />
       </div>
-      <div class="w-5/6 relative">
+      <div class="w-full lg:w-5/6 relative">
         <div v-if="showProspects">
-            <div id="swiper" class="mt-10 translate-x-1/4 ">
+            <div class="mt-10 w-4/6 translate-x-1/2 text-white">
               <Card v-for="(prospect, index) in prospects" 
+              ref="prospectCards"
               :key="index" 
               :index="index"
               :prospect="prospect" 
               :style="{ 'z-index': (index*-1) }"
               @dismissed="removeProspect(index)"
               />
+              <div class="absolute inset-0 flex items-center justify-center">
+                <button class="fas fa-times" @click="dislikeProspect" />
+                <button class="fas fa-heart" @click="likeProspect" />
+              </div>
             </div>
         </div>
         <div v-else>
@@ -73,7 +78,18 @@
       showMenu(){
         this.isListVisible = !this.isListVisible;
     },
-      
+      dislikeProspect() {
+        const firstProspectCard = this.$refs.prospectCards[0];
+        if (firstProspectCard) {
+          firstProspectCard.dismiss(-1);
+        }
+      },
+      likeProspect() {
+        const firstProspectCard = this.$refs.prospectCards[0];
+        if (firstProspectCard) {
+          firstProspectCard.dismiss(1);
+        }
+      },
     },
     created() {
       this.prospects = useUserStore().getArrayOfProspects()

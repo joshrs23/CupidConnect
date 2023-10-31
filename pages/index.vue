@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex min-h-screen min-w-screen">
+    <div class="flex min-h-screen min-w-screen overflow-hidden">
       <div class="lg:hidden">
         <GeneralMenuPhone />
       </div>
@@ -9,18 +9,19 @@
       </div>
       <div class="w-full lg:w-5/6 relative">
         <div v-if="showProspects">
-            <div class="mt-10 w-4/6 translate-x-1/2 text-white">
+            <div class="mt-10 w-4/6 translate-x-1/2 text-white h-[90vh] flex">
               <Card v-for="(prospect, index) in prospects" 
               ref="prospectCards"
+              class="overflow-scroll"
               :key="index" 
               :index="index"
               :prospect="prospect" 
               :style="{ 'z-index': (index*-1) }"
               @dismissed="removeProspect(index)"
               />
-              <div class="absolute inset-0 flex items-center justify-center">
-                <button class="fas fa-times" @click="dislikeProspect" />
-                <button class="fas fa-heart" @click="likeProspect" />
+              <div class="absolute flex self-end justify-around w-[70%]">
+                <button class="fas fa-times fa-3x" @click="dislikeProspect" />
+                <button class="fas fa-heart fa-3x" @click="likeProspect" />
               </div>
             </div>
         </div>

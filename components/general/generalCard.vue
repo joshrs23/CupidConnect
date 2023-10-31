@@ -167,6 +167,7 @@
       },
   
       dismiss(direction) {
+
           if(direction== 1){
             useUserStore().likeProspectById(this.prospect.id)
           }else if(direction == -1){
@@ -177,6 +178,12 @@
           document.removeEventListener('mousemove', this.handleMouseMove);
           document.removeEventListener('touchend', this.handleTouchEnd);
           document.removeEventListener('touchmove', this.handleTouchMove);
+
+          const imageContainer = this.$el.querySelector('.image-container');
+          if (imageContainer) {
+            imageContainer.scrollTop = 0;
+          }
+          
           this.$el.style.transition = 'transform 0.7s';
           this.$el.style.transform = `translate(${direction * window.innerWidth}px, ${this.offsetY}px) rotate(${90 * direction}deg)`;
           this.$el.addEventListener('transitionend', this.handleTransitionEnd);

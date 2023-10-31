@@ -216,7 +216,7 @@
   width: 550px;
   height: 680px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  border: 1px solid #686262;
+  border-radius: 10px;
   color: white;
 }
 @media screen and (max-width: 1024px) {
@@ -237,7 +237,6 @@
   width: 550px;
   height: 680px;
   object-fit: cover;
-  border-radius: 10px;
 }
 
 .text-overlay {
@@ -246,7 +245,6 @@
   left: 0;
   height: 20%;
   width: 100%;
-  border-radius: 0 0 10px 10px;
   padding: 20px;
   text-align: center;
   display: flex;

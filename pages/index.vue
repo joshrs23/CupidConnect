@@ -11,13 +11,13 @@
         <div v-if="showProspects">
             <div class="mt-10 w-4/6 translate-x-1/2 text-white h-[90vh] flex">
               <Card v-for="(prospect, index) in prospects" 
-              ref="prospectCards"
-              class="overflow-scroll"
-              :key="index" 
-              :index="index"
-              :prospect="prospect" 
-              :style="{ 'z-index': (index*-1) }"
-              @dismissed="removeProspect(index)"
+                ref="prospectCards"
+                class="overflow-scroll"
+                :key="index" 
+                :index="index"
+                :prospect="prospect" 
+                :style="{ 'z-index': (index*-1) }"
+                @dismissed="removeProspect(index)"
               />
               <div class="absolute flex self-end justify-around w-[70%]">
                 <button class="fas fa-times fa-3x" @click="dislikeProspect" />

@@ -29,20 +29,16 @@
   </template>
   
   <script>
-  import ChatInfoPanel from '@/components/chat/chatInfoPanel.vue'; // Adjust the import path as needed
-  
+  import ChatInfoPanel from '@/components/chat/chatInfoPanel.vue'; 
+  import { useUserStore } from '@/stores/users'
+
   export default {
     components: {
       ChatInfoPanel,
     },
     data() {
       return {
-        selectedUser: {
-            name: 'John Doe',
-            userId: useRoute().params.id,
-            profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
-            age: 30,
-        }, // Initialize an empty object for the selected user
+        selectedUser: null,
         messages: [
           { text: 'Hello!', sender: 'user' },
           { text: 'Hi there!', sender: 'friend' },
@@ -76,6 +72,9 @@
         chatHistory.scrollTop = chatHistory.scrollHeight;
       },
     },
+    created(){
+        this.selectedUser = useUserStore().getUserById(useRoute().params.id)
+    }
   };
   </script>
   

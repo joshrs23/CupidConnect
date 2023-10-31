@@ -1,38 +1,45 @@
 <template>
-  <div class=" min-h-screen">
-    <div class="flex">
-      <!-- <div id="menu" class="col-span-1 text-white mt-5% border border-white p-5">
-        <button @click="showMenu" id="btnMenu" type="submit" class="hover:bg-gray-700 p-5 l-10">
-         Options
-        </button>
-
-        <ul v-if="isListVisible" id="hiddenMenu">
-          <li class="mt-5 mb-5 hover:bg-gray-700 p-5"> <NuxtLink to="Logout">Logout</NuxtLink></li>          
-          <li  class="hover:bg-gray-700 p-5"> <NuxtLink to="DeleteProfile">DeleteProfile</NuxtLink></li>     
-
-        </ul>
-
-      </div> -->
+  <div>
+    <div class="flex min-h-screen min-w-screen overflow-hidden">
       <div class="lg:hidden">
         <GeneralMenuPhone />
       </div>
-      <div class="hidden lg:block w-1/6">
+      <div class="hidden lg:block w-1/6 z-20">
         <GeneralMenu />
       </div>
-      <!-- <h1>Welcome to CuppidConnect</h1> -->
-      <div class="w-full">
-        <img
-          class="w-full h-screen"
-          src="@/img/back.png"
-          alt="backGroundHome"
-        />
+      <div class="w-full lg:w-5/6 relative">
+        <div v-if="showProspects">
+            <div class="mt-10 w-4/6 translate-x-1/2 text-white h-[90vh] flex">
+              <Card v-for="(prospect, index) in prospects" 
+                ref="prospectCards"
+                class="overflow-scroll"
+                :key="index" 
+                :index="index"
+                :prospect="prospect" 
+                :style="{ 'z-index': (index*-1) }"
+                @dismissed="removeProspect(index)"
+              />
+              <div class="absolute flex self-end justify-around w-[70%]">
+                <button class="fas fa-times fa-3x" @click="dislikeProspect" />
+                <button class="fas fa-heart fa-3x" @click="likeProspect" />
+              </div>
+            </div>
+        </div>
+        <div v-else>
+          <div class="h-screen w-full">
+            <div class="flex items-center justify-center h-full">
+              <div class="text-center text-gray-500">
+                <i class="fas fa-street-view fas-2xl text-4xl mb-4"></i> 
+                <p class="text-2xl">
+                  No more prospects were found at this moment, <br/>please reload the page soon!
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
-
-  
-
 </template>
 
 <style>
@@ -44,27 +51,61 @@
 </style>
 
   <script>
+  import Card from '@/components/general/generalCard.vue'; // Adjust the import path as needed
+  import { useUserStore } from '@/stores/users'
 
-  export default defineComponent({
+  export default {
     data() {
       return {
+        activeCardIndex: 0,
         isListVisible: false,
-        
+        prospects: [],
+        showProspects: true
       };
     },
-    mounted() {
+    computed: {
       
+    },
+    components: {
+      Card,
     },
     methods: {
+      removeProspect(index) {
+        this.prospects.splice(index, 1);
+        if (this.prospects.length === 0) {
+          this.showProspects = false;
+        }
+      },
       showMenu(){
-
         this.isListVisible = !this.isListVisible;
     },
-      
+      dislikeProspect() {
+        const firstProspectCard = this.$refs.prospectCards[0];
+        if (firstProspectCard) {
+          firstProspectCard.dismiss(-1);
+        }
+      },
+      likeProspect() {
+        const firstProspectCard = this.$refs.prospectCards[0];
+        if (firstProspectCard) {
+          firstProspectCard.dismiss(1);
+        }
+      },
     },
-    beforeDestroy() {
-    
-  }
-  })
+    created() {
+      this.prospects = useUserStore().getArrayOfProspects()
+    },
+    watch: {
+      prospects: {
+        handler(newProspects, oldProspects) {
+          console.log('Prospects changed:', newProspects);
+        },
+        deep: true,
+      },
+    },
+  };
   </script>
   
+  <style scoped>
+ 
+  </style>

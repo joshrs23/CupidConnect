@@ -32,6 +32,7 @@
     "nuxt-swiper": "^1.1.0",
     "pinia": "^2.0.35",
     "sweetalert2": "^11.6.13",
+    "swiper": "^10.3.1",
     "three": "^0.150.1",
     "vue": "^3.3.4",
     "vue-router": "^4.2.2",

@@ -3,12 +3,12 @@
       <textarea
         v-model="newMessage"
         @keydown.enter.prevent="handleEnterKey"
-        class="form-control chatInputBox"
+        class="form-control chatInputBox w-full h-full"
         placeholder="Type a message..."
         rows="1"
       ></textarea>
       <button @click="sendMessage" class="send-button">
-        <i class="fas fa-paper-plane fa-2x"></i> 
+        <i class="fas fa-paper-plane fa-2x text-white"></i> 
       </button>
     </div>
   </template>

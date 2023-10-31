@@ -1,0 +1,294 @@
+<template>
+  <div class="card" 
+    @mousedown="startDragging" 
+    @touchstart="startDragging" 
+    :style="cardStyle"
+  >
+    <div class="image-container">
+      <div class="select-none pointer-events-none">
+        <img
+        v-for="(image, index) in prospect.images"
+        :key="index"
+        :src="image"
+        alt="Profile Picture"
+        class="profile-image"
+        :style="imageStyle(index)"
+        />
+        <div class="text-overlay bg-gradient-to-b from-transparent to-black">
+          <h2 class="name">{{ prospect.name }}</h2>
+          <p class="age">{{ prospect.age }}</p>
+        </div>
+      </div>
+      <div class="bg-black w-full h-full flex flex-col pl-[24px] pr-[24px]">
+        <div class="w-full flex justify-between">
+          <div class="flex flex-col justify-center">
+            <div class="text-[48px] font-bold">
+              {{ prospect.name }}
+            </div>
+            <div  class="text-[32px]">
+              {{ prospect.gender }}
+            </div>
+          </div>
+          <div class="text-[128px] font-bold	">
+            {{ prospect.age }}
+          </div>
+        </div>
+        <div class="pt-[41px]">
+          <span class="text-[32px] font-bold">About</span>
+          <div class="text-[20px]">{{prospect.description}}</div>
+        </div>
+        <div class="pt-[41px]">
+          <span class="text-[32px] font-bold">Interests</span>
+          <div class="flex mt-[13px]">
+            <div v-for="(interest, index) in prospect.interests"
+            class="text-[20px] border rounded-[90px] border-[#686262] pl-[12px] pr-[12px] mr-[3.5px] ml-[3.5px]"
+            :key="index">
+            {{ interest }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+  <script>
+  import { useUserStore } from '@/stores/users'
+
+  export default {
+    props: {
+      prospect: Object,
+      index: Number,
+    },
+    data() {
+      return {
+        startPoint: null,
+        offsetX: 0,
+        offsetY: 0,
+        zIndex: 0,
+        currentImageIndex: 0,
+      };
+    },
+    computed: {
+      cardStyle() {
+        let rotation = 0;
+        rotation = this.index * 5;
+        let howBlur = 3;
+        if (this.index == 0){
+          howBlur = 0;
+        }
+        return {
+          transform: `rotate(${rotation}deg) translateX(${this.index * 10}px)`,
+          filter: `blur(${howBlur}px)`,
+      };
+    },
+    },
+    methods: {
+      imageStyle(index) {
+        if (index === this.currentImageIndex) {
+          return {};
+        } else {
+          return {
+          };
+        }
+      },
+      resetRotation() {
+        const cards = document.querySelectorAll('.prospect-card');
+        cards.forEach((card, idx) => {
+          if (idx !== this.index) {
+            card.style.transition = 'transform 1s';
+            if (idx >= 1 && idx <= 2) {
+              rotation = idx + 2;
+            }
+            card.computed.cardStyle();
+          }
+        });
+      },
+      startDragging(event) {
+        if (this.isTouchDevice()) {
+          event.preventDefault();
+          const touch = event.changedTouches[0];
+          if (!touch) {
+            return;
+          }
+          this.startPoint = { x: touch.clientX, y: touch.clientY };
+          document.addEventListener('touchmove', this.handleTouchMove);
+          this.$el.style.transition = 'transform 0s';
+        } else {
+          const { clientX, clientY } = event;
+          this.startPoint = { x: clientX, y: clientY };
+          document.addEventListener('mousemove', this.handleMouseMove);
+          this.$el.style.transition = 'transform 0s';
+        }
+  
+        document.addEventListener('mouseup', this.handleMoveUp);
+        document.addEventListener('touchend', this.handleTouchEnd);
+        document.addEventListener('cancel', this.handleTouchEnd);
+      },
+  
+      handleMove(x, y) {
+        this.offsetX = x - this.startPoint.x;
+        this.offsetY = y - this.startPoint.y;
+        const rotate = this.offsetX * 0.1;
+        this.$el.style.transform = `translate(${this.offsetX}px, ${this.offsetY}px) rotate(${rotate}deg)`;
+  
+        if (Math.abs(this.offsetX) > this.$el.clientWidth * 0.1) {
+          this.dismiss(this.offsetX > 0 ? 1 : -1);
+        }
+      },
+  
+      handleMouseMove(event) {
+        event.preventDefault();
+        if (!this.startPoint) return;
+        const { clientX, clientY } = event;
+        this.handleMove(clientX, clientY);
+      },
+  
+      handleMoveUp() {
+        this.startPoint = null;
+        document.removeEventListener('mousemove', this.handleMouseMove);
+        this.$el.style.transform = '';
+      },
+  
+      handleTouchMove(event) {
+        if (!this.startPoint) return;
+        const touch = event.changedTouches[0];
+        if (!touch) {
+          return;
+        }
+        const { clientX, clientY } = touch;
+        this.handleMove(clientX, clientY);
+      },
+  
+      handleTouchEnd() {
+        this.startPoint = null;
+        document.removeEventListener('touchmove', this.handleTouchMove);
+        this.$el.style.transform = '';
+      },
+  
+      dismiss(direction) {
+
+          if(direction== 1){
+            useUserStore().likeProspectById(this.prospect.id)
+          }else if(direction == -1){
+            useUserStore().dislikeProspectById(this.prospect.id)
+          }
+          this.startPoint = null;
+          document.removeEventListener('mouseup', this.handleMoveUp);
+          document.removeEventListener('mousemove', this.handleMouseMove);
+          document.removeEventListener('touchend', this.handleTouchEnd);
+          document.removeEventListener('touchmove', this.handleTouchMove);
+
+          const imageContainer = this.$el.querySelector('.image-container');
+          if (imageContainer) {
+            imageContainer.scrollTop = 0;
+          }
+          
+          this.$el.style.transition = 'transform 0.7s';
+          this.$el.style.transform = `translate(${direction * window.innerWidth}px, ${this.offsetY}px) rotate(${90 * direction}deg)`;
+          this.$el.addEventListener('transitionend', this.handleTransitionEnd);
+      },
+      handleTransitionEnd() {
+        this.$el.style.transition = 'transform 0s';
+        this.$el.style.transform = 'translate(0, 0)'; 
+        this.$el.removeEventListener('transitionend', this.handleTransitionEnd);
+        this.$emit('dismissed');
+      },
+      isTouchDevice() {
+        return (
+          'ontouchstart' in window ||
+          navigator.maxTouchPoints > 0 ||
+          navigator.msMaxTouchPoints > 0
+        );
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  *{
+    font-family: Inter;
+  }
+  .card {
+  position: absolute; 
+  cursor: pointer;
+  transition: transform 0.5s;
+  width: 550px;
+  height: 680px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  color: white;
+}
+@media screen and (max-width: 1024px) {
+  .prospect-card {
+    width: 350px;
+    height: 480px;
+  }
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.profile-image {
+  width: 550px;
+  height: 680px;
+  object-fit: cover;
+}
+
+.text-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 20%;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  justify-content:space-between;
+  align-items: flex-end;
+}
+  
+  .name {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  
+  .age {
+    color: #FFF5F5;
+    font-family: Inter;
+    font-size: 96px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+  
+  .description {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    margin-bottom: 5px;
+  }
+  
+  .banner {
+    height: 30px; /* Adjust the banner height as needed */
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, #000 100%);
+    border-radius: 0 0 10px 10px;
+  }
+  </style>
+  

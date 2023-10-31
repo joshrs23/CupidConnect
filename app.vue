@@ -27,6 +27,9 @@ export default defineComponent({
 
 <style>
   /* Reset all styles for all elements */
+  /* html, body {
+  overflow: hidden;
+} */
 * {
   margin: 0;
   padding: 0;
@@ -42,7 +45,6 @@ export default defineComponent({
 /* For example, removing list styles from ul and ol */
 ul, ol {
   list-style: none;
-  padding-left: ;
 }
 
   .container {

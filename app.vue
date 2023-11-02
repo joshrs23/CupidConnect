@@ -14,14 +14,19 @@
   </div>
 </template>
 
-<script>
-
-
-export default defineComponent({
-  components: {
-    
-  },
-})
+<script setup >
+  useHead({
+    title: 'Cupid Connect',
+    meta: [
+      { name: 'description', content: '' }
+    ],
+    bodyAttrs: {
+      class: 'test'
+    },
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: 'https://cdn.icon-icons.com/icons2/532/PNG/64/love-stamp-3_icon-icons.com_52687.png' } 
+    ]
+  })
 </script>
 
 

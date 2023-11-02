@@ -8,8 +8,7 @@
                 <img :src="user.profilePicture" alt="Profile" class="w-12 h-12 rounded-full object-cover">
               </div>
               <div class="flex-grow">
-                <h2 class="text-lg font-semibold text-white">{{ user.name }}</h2>
-                <p class="text-gray-500">@{{ user.userId }}</p>
+                <h2 class="text-xl font-semibold text-white">{{ user.name }}</h2>
               </div>
             </div>
           </nuxt-link>

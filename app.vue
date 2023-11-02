@@ -39,10 +39,11 @@ export default defineComponent({
   font-family: inherit;
   box-sizing: border-box;
   border-color:#686262;
+  color: #FFF5F5;
+  font-family: Inter;
+  line-height: normal;
+  font-style: normal;
 }
-
-/* Additional resets for specific elements if needed */
-/* For example, removing list styles from ul and ol */
 ul, ol {
   list-style: none;
 }

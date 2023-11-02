@@ -12,11 +12,9 @@
     <div class="mx-auto">
       <button @click="showMenu"> <i class="fa-solid fa-bars"></i> Menu </button>
       <ul id="hiddenMenu" class="relative">
-          <li v-if="isListVisible && !isLogin" class="hover:bg-gray-700 text-xs"> <NuxtLink to="Login">LogIn</NuxtLink></li>
-          <li v-if="isListVisible && !isLogin" class="hover:bg-gray-700 text-xs"> <NuxtLink to="/admin/users/add-user">SignUp</NuxtLink></li>
-          <li v-if="isListVisible && isLogin" class="hover:bg-gray-700"> <NuxtLink to="logout" @click="logout">Logout</NuxtLink></li>          
-          <li v-if="isListVisible && isLogin" class="hover:bg-gray-700"> <NuxtLink to="/user/DeleteProfile">DeleteProfile</NuxtLink></li>   
-          <li v-if="isListVisible && isLogin" class="hover:bg-gray-700 text-xs"> <NuxtLink to="/user/changePassword">Change Password</NuxtLink></li>  
+        <li v-if="isListVisible" class="hover:font-bold"> <NuxtLink to="logout" @click="logout">Logout</NuxtLink></li>          
+        <li v-if="isListVisible" class="hover:font-bold"> <NuxtLink to="/user/DeleteProfile">Delete Profile</NuxtLink></li>   
+        <li v-if="isListVisible" class="hover:font-bold"> <NuxtLink to="/user/changePassword">Change Password</NuxtLink></li>  
       </ul>
     </div>
   </div>
@@ -66,9 +64,7 @@ export default {
   mounted() {
 
         if(localStorage.getItem('CupidConnectToken')){
-
             this.isLogin = true;
-
         }    
       
     },

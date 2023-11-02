@@ -5,7 +5,7 @@
           <nuxt-link :to="'/chats/' + user.userId" class="no-underline">
             <div class="flex items-center space-x-4 p-4 border-b">
               <div class="flex-shrink-0">
-                <img :src="user.profilePicture" alt="Profile" class="w-12 h-12 rounded-full">
+                <img :src="user.profilePicture" alt="Profile" class="w-12 h-12 rounded-full object-cover">
               </div>
               <div class="flex-grow">
                 <h2 class="text-lg font-semibold text-white">{{ user.name }}</h2>

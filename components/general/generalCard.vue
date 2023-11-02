@@ -12,7 +12,7 @@
         :src="image"
         alt="Profile Picture"
         class="profile-image"
-        :style="imageStyle(index)"
+        :style="imageStyle"
         />
         <div class="text-overlay bg-gradient-to-b from-transparent to-black">
           <h2 class="name">{{ prospect.name }}</h2>
@@ -59,6 +59,7 @@
     props: {
       prospect: Object,
       index: Number,
+      permissionDrag: Boolean,
     },
     data() {
       return {
@@ -80,18 +81,12 @@
         return {
           transform: `rotate(${rotation}deg) translateX(${this.index * 10}px)`,
           filter: `blur(${howBlur}px)`,
-      };
-    },
+        };
+      },
+      imageStyle(){
+      }
     },
     methods: {
-      imageStyle(index) {
-        if (index === this.currentImageIndex) {
-          return {};
-        } else {
-          return {
-          };
-        }
-      },
       resetRotation() {
         const cards = document.querySelectorAll('.prospect-card');
         cards.forEach((card, idx) => {
@@ -105,6 +100,9 @@
         });
       },
       startDragging(event) {
+        if (!this.permissionDrag) {
+          return
+        }
         if (this.isTouchDevice()) {
           event.preventDefault();
           const touch = event.changedTouches[0];

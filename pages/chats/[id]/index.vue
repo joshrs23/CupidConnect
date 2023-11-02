@@ -6,10 +6,10 @@
       <div class="hidden lg:block w-1/6">
         <GeneralMenu />
       </div>
-      <div class="w-1/5">
+      <div class="w-1/6">
         <ChatList />
       </div>
-      <div class="w-4/5">
+      <div class="w-4/6">
         <div class="chat">
           <ChatInfoPanel :user="selectedUser" class="chat-panel"/>
           <div ref="chatHistory" class="chat-history">

@@ -67,7 +67,7 @@ export const useUserStore = defineStore('user', {
           gender: 'Binary',
           description: 'Foodie and movie enthusiast.',
           interests: ['Food', 'Movies', 'Cooking'],
-          profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+          profilePicture: 'http://m.gettywallpapers.com/wp-content/uploads/2023/06/Cute-Anime-Girl-Profile-Picture.jpg',
           images: ['http://m.gettywallpapers.com/wp-content/uploads/2023/06/Cute-Anime-Girl-Profile-Picture.jpg', 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2']
         },
         {
@@ -78,7 +78,7 @@ export const useUserStore = defineStore('user', {
           gender: 'Female',
           description: 'Foodie and movie enthusiast.',
           interests: ['Food', 'Movies', 'Cooking'],
-          profilePicture: 'https://img.freepik.com/free-photo/young-bearded-man-with-striped-shirt_273609-5677.jpg?t=st=1696040619~exp=1696041219~hmac=e9cfe20d0ea8a143729cd601e736143cca6f474428a759006efafeb09e8aea6f',
+          profilePicture: 'https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&q=70&fm=webp',
           images: ['https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&q=70&fm=webp', 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2']
         },
       ]
@@ -92,10 +92,12 @@ export const useUserStore = defineStore('user', {
 
     },
     getArrayOfLikedProspects(){
-
+      var prospects = this.getArrayOfProspects();
+      return prospects;
     }, 
     getArrayOfProspectsWhoLikedUser(){
-
+      var prospects = this.getArrayOfProspects();
+      return prospects;
     },
     logOutUser(){
       localStorage.removeItem('CupidConnectEmail');

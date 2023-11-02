@@ -16,6 +16,7 @@
                 :key="index" 
                 :index="index"
                 :prospect="prospect" 
+                :permission-drag="true"
                 :style="{ 'z-index': (index*-1) }"
                 @dismissed="removeProspect(index)"
               />
@@ -51,7 +52,7 @@
 </style>
 
   <script>
-  import Card from '@/components/general/generalCard.vue'; // Adjust the import path as needed
+  import Card from '@/components/general/generalCard.vue'; 
   import { useUserStore } from '@/stores/users'
 
   export default {
@@ -60,7 +61,7 @@
         activeCardIndex: 0,
         isListVisible: false,
         prospects: [],
-        showProspects: true
+        showProspects: false
       };
     },
     computed: {
@@ -94,6 +95,9 @@
     },
     created() {
       this.prospects = useUserStore().getArrayOfProspects()
+      if(this.prospects){
+        this.showProspects= true;
+      }
     },
     watch: {
       prospects: {

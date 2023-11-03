@@ -1,14 +1,14 @@
 <template>
-    <div class="w-[300px] m-5">
-        <div class="overflow-hidden cursor-pointer w-full h-[400px] rounded-xl relative">
+    <div class="w-[350px]">
+        <div class="overflow-hidden cursor-pointer w-full h-[450px] rounded-xl relative">
             <img
-            :src="prospect.profilePicture"
+            :src="'https://espacionebula.com/img/' + prospect._profilePicture"
             alt="Profile Picture"
             class="object-cover w-full h-full"
             />
             <div class="text-overlay bg-gradient-to-b from-black to-transparent">
-            <h2 class="text-[28px] w-2/3 text-left">{{ prospect.name }}</h2>
-            <p class="text-[64px] w-1/3">{{ prospect.age }}</p>
+            <h2 class="text-[28px] w-2/3 text-left">{{ prospect._fname + ' '+ prospect._lname }}</h2>
+            <p class="text-[64px] w-1/3">{{ getAge(prospect) }}</p>
             </div>
         </div>
         <div class="buttons-overlay">
@@ -34,6 +34,15 @@
                 useUserStore().likeProspectById(this.prospect.id)
                 this.$emit('dismissed');
             },
+            getAge(userUSER){
+                const dob = new Date(userUSER._dob);
+                const today = new Date();
+                const age = today.getFullYear() - dob.getFullYear();
+                if (today.getMonth() < dob.getMonth() || (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())) {
+                age--;
+                }
+                return age;
+            }
         }
     }
 </script>

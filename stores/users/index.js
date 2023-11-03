@@ -24,18 +24,41 @@ export const useUserStore = defineStore('user', {
     dislikeProspectById(id){
       console.log(id + " Is not liked");
     },
-    getUserById(userId){
-      var prospects = this.getArrayOfProspects();
-      const user = prospects.find((prospect) => prospect.userId === userId);
-
-      if (user) {
-        return user;
-      } else {
-        return "User not found";
-      }
+    getUserById(userIdProp){
+      // try {
+      //   const _userId = userIdProp;
+      //   const token = localStorage.getItem("CupidConnectToken");
+      //   const dataf = {
+      //     userId: _userId,
+      //   };
+      //   const response = await axios.post( "https://espacionebula.com:8000/get-user",
+      //     dataf,
+      //     {
+      //       headers: {
+      //         "Access-Control-Allow-Origin": "*",
+      //         Authorization: `Bearer ${token}`,
+      //       },
+      //       mode: "cors",
+      //     }
+      //   );
+      //   const data = response.data;
+      //   if (data.success) {
+      //     return data.user;
+      //   } else {
+      //     console.log(
+      //       "There was an error with the user : " + response.data.error
+      //     );
+      //   }
+      // } catch (error) {
+      //   console.error("Error in fetchUser:", error);
+      // }
     },
-    
+    getAge(user){
+      var age = Date.now() - user._dob;
+      return age;
+    },
     getArrayOfProspects(){
+      
       var prospects = [
         {
           id: 1,

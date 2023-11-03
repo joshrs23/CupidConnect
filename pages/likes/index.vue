@@ -1,12 +1,12 @@
 <template>
-    <div class=" h-screen w-screen text-white flex ">
+    <div class=" h-screen w-screen text-white flex">
         <div class="lg:hidden">
             <GeneralMenuPhone />
         </div>
         <div class="hidden lg:block w-1/6">
             <GeneralMenu />
         </div>
-        <div class="w-full lg:w-5/6 relative">
+        <div class="w-full lg:w-5/6 relative h-full overflow-scroll">
             <ul class="w-full flex justify-center h-fit text-3xl p-5 mt-5">
                 <li class="likesTitle p-5 font-bold cursor-pointer" :style="{ fontWeight: isLikesActive ? 'bold' : 'normal' }">
                     <a @click="likesTabActive(true, false)">
@@ -20,8 +20,9 @@
                     </a>
                 </li>
             </ul>
-            <div v-if="showProspects" class="w-full flex justify-center">
+            <div v-if="showProspects" class="w-full flex justify-center flex-wrap">
                 <PosterCard v-for="(prospect, index) in prospectsToDisplay" 
+                    class="m-1"
                     :key="index" 
                     :index="index"
                     :prospect="prospect" 
@@ -53,6 +54,7 @@
 <script>
 import PosterCard from '@/components/general/generalPosterCard.vue'; 
 import { useUserStore } from '@/stores/users'
+import axios from 'axios';
 
 export default {
     data() {
@@ -67,12 +69,13 @@ export default {
     mounted() {
         
     },
-    created() {
-      this.prospectsLiked = useUserStore().getArrayOfLikedProspects()
+    created: async function () {
+      this.prospectsLiked = await this.getLikedUsers();
+      const v = await this.getLikedUsers();
+      this.showProspects = true;
+
       this.prospectsLikedSent = useUserStore().getArrayOfProspectsWhoLikedUser()
-      if(this.prospectsToDisplay.length >0){
-        this.showProspects = true;
-      }
+
     },
     computed: {
         prospectsToDisplay() {
@@ -89,9 +92,38 @@ export default {
         PosterCard,
     },
     methods: {
-        likesTabActive(likesActive, likeSentActive) {
+        async getLikedUsers(){
+            try {
+            const _userId = localStorage.getItem("CupidConnectId");;
+            const token = localStorage.getItem("CupidConnectToken");
+            const dataf = {
+                userId: _userId,
+            };
+            const response = await axios.post( "https://espacionebula.com:8000/get-user-likes",
+                dataf,
+                {
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    Authorization: `Bearer ${token}`,
+                },
+                mode: "cors",
+                }
+            );
+            const data = response.data;
+            if (data.success) {
+                return data.usersToDisplay;
+            } else {
+                console.log(
+                "There was an error with the user : " + response.data.error
+                );
+            }
+            } catch (error) {
+            console.error("Error in fetchUser:", error);
+            }
+        },
+        async likesTabActive(likesActive, likeSentActive) {
             if(likesActive){
-                this.prospectsLiked = useUserStore().getArrayOfLikedProspects()
+                this.prospectsLiked = await this.getLikedUsers();
                 if(this.prospectsLiked.length >0){
                     this.showProspects = true;
                 }

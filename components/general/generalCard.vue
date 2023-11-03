@@ -59,6 +59,7 @@
 import { useUserStore } from "@/stores/users";
 import { useIdentitiesStore } from "@/stores/identities";
 import { useInterestsStore } from "@/stores/interests";
+import axios from 'axios';
 
 export default {
   props: {
@@ -161,13 +162,11 @@ export default {
       const { clientX, clientY } = event;
       this.handleMove(clientX, clientY);
     },
-
     handleMoveUp() {
       this.startPoint = null;
       document.removeEventListener("mousemove", this.handleMouseMove);
       this.$el.style.transform = "";
     },
-
     handleTouchMove(event) {
       if (!this.startPoint) return;
       const touch = event.changedTouches[0];
@@ -177,18 +176,72 @@ export default {
       const { clientX, clientY } = touch;
       this.handleMove(clientX, clientY);
     },
-
     handleTouchEnd() {
       this.startPoint = null;
       document.removeEventListener("touchmove", this.handleTouchMove);
       this.$el.style.transform = "";
     },
-
-    dismiss(direction) {
+    async dismiss(direction) {
       if (direction == 1) {
-        useUserStore().likeProspectById(this.prospect.id);
+        try {
+          const _userId = localStorage.getItem("CupidConnectId");;
+          const token = localStorage.getItem("CupidConnectToken");
+          const _prospectId = this.prospect._id;
+          const dataf = {
+            liker_userId: _userId,
+            liked_userId: _prospectId,
+          };
+          const response = await axios.post( "https://espacionebula.com:8000/add-like",
+            dataf,
+            {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                Authorization: `Bearer ${token}`,
+              },
+              mode: "cors",
+              }
+          );
+          const data = response.data;
+          if (data.success) {
+            console.log(data);
+          } else {
+              console.log(
+              "There was an error with the user : " + response.data.error
+              );
+          }
+        } catch (error) {
+          console.error("Error in fetchUser:", error);
+        }
       } else if (direction == -1) {
-        useUserStore().dislikeProspectById(this.prospect.id);
+        try {
+          const _userId = localStorage.getItem("CupidConnectId");;
+          const token = localStorage.getItem("CupidConnectToken");
+          const _prospectId = this.prospect._id;
+          const dataf = {
+            disliker_userId: _userId,
+            disliked_userId: _prospectId,
+          };
+          const response = await axios.post( "https://espacionebula.com:8000/add-dislike",
+            dataf,
+            {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                Authorization: `Bearer ${token}`,
+              },
+              mode: "cors",
+              }
+          );
+          const data = response.data;
+          if (data.success) {
+            console.log(data);
+          } else {
+              console.log(
+              "There was an error with the user : " + response.data.error
+              );
+          }
+        } catch (error) {
+          console.error("Error in fetchUser:", error);
+        }
       }
       this.startPoint = null;
       document.removeEventListener("mouseup", this.handleMoveUp);

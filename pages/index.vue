@@ -125,15 +125,13 @@
     },
     created: async function () {
       this.prospects = await this.getLikedUsers();
-      console.log(this.prospects)
-      if(this.prospects){
+      if(this.prospects && this.prospects.length > 0){
         this.showProspects= true;
       }
     },
     watch: {
       prospects: {
         handler(newProspects, oldProspects) {
-          console.log('Prospects changed:', newProspects);
         },
         deep: true,
       },

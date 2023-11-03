@@ -20,8 +20,8 @@
   export default {
     data() {
       return {
-        userIDID : '651903ead60d49cdebd69469',
-        finalUser : null,
+        userIDID : useRoute().params.id,
+        finalUser : '',
       };
     },
     created: async function () {
@@ -39,7 +39,7 @@
           const dataf = {
             userId: _userId,
           };
-          const response = await axios.post( "https://espacionebula.com:8000/get-user",
+          const response = await axios.post( "https://espacionebula.com:8000/get-user-visitor",
             dataf,
             {
               headers: {

@@ -25,13 +25,16 @@
             </label>
           </div>
           <div class="lg:mt-4 mb-10 text-right pr-10">
-            <button type="submit" id="" >
-              <i class="fa-solid fa-arrow-right  fa-2x"></i>
+            <button type="submit" class="border p-2">
+              SAVE 
             </button>
           </div>
           <!-- error -->
-          <div v-if="error" class="text-red-500 text-center my-4">
-            {{ error }}
+          <div v-if="errors.description" class="text-red-500 text-center my-4">
+            {{ errors.description }}
+          </div>
+          <div v-if="save.description" class="text-green-500 text-center my-4">
+              {{ save.description }}
           </div>
         </form>
       </div>
@@ -58,9 +61,12 @@
             </button>
           </div>
           <!-- error -->
-          <div v-if="error" class="text-red-500 text-center my-4">
-            {{ error }}
+          <div v-if="errors.identity" class="text-red-500 text-center my-4">
+            {{ errors.identity }}
           </div>
+          <div v-if="save.identity" class="text-green-500 text-center my-4">
+              {{ save.identity }}
+           </div>
         </form>
       </div>
 
@@ -86,9 +92,12 @@
             </button>
           </div>
           <!-- error -->
-          <div v-if="error" class="text-red-500 text-center my-4">
-            {{ error }}
+          <div v-if="errors.orientation" class="text-red-500 text-center my-4">
+            {{ errors.orientation }}
           </div>
+          <div v-if="save.orientation" class="text-green-500 text-center my-4">
+              {{ save.orientation }}
+           </div>
         </form>
       </div>
 
@@ -113,9 +122,12 @@
               </button>
             </div>
             <!-- error -->
-            <div v-if="error" class="text-red-500 text-center my-4">
-              {{ error }}
+            <div v-if="errors.interests" class="text-red-500 text-center my-4">
+              {{ errors.interests }}
             </div>
+            <div v-if="save.interests" class="text-green-500 text-center my-4">
+              {{ save.interests }}
+           </div>
           </div>
         </form>
       </div>
@@ -136,8 +148,6 @@
                     accept="image/*" 
                     @change="handlePicturesChange">
 
-                    
-
               </div>
               
             </label>
@@ -147,11 +157,11 @@
               </button>
             </div>
             <!-- error -->
-            <div v-if="error" class="text-red-500 text-center my-4">
-              {{ error }}
+            <div v-if="errors.interests" class="text-red-500 text-center my-4">
+              {{ errors.interests }}
             </div>
-            <div v-if="save" class="text-green-500 text-center my-4">
-              {{ save }}
+            <div v-if="save.photos" class="text-green-500 text-center my-4">
+              {{ save.photos }}
             </div>
           </div>
         </form>
@@ -164,7 +174,9 @@
           </button>   
         </div> 
       </div>
-      
+      <div v-if="error" class="text-red-500 text-center my-4">
+              {{ error}}
+      </div>
 
       
     </div>
@@ -231,7 +243,7 @@
             selectedInterests : [],
             pictures: null,
             error : '',
-            save : '',
+
 
             formTypes: {
               DESCRIPTION: 'description',
@@ -240,6 +252,21 @@
               INTERESTS: 'interests',
               PHOTOS: 'photos',
           },
+          errors: {
+          description: '',
+          identity: '',
+          orientation: '',
+          interests: '',
+          photos: '',
+        },
+        save: {
+          description: '',
+          identity: '',
+          orientation: '',
+          interests: '',
+          photos: '',
+        },
+        
           submissionStatus: {
             description: false,
             identity: false,
@@ -321,11 +348,12 @@
                 });
                  if(response.data.success){
 
-                    
+                  this.save.description = "The description was saved successfully";
+                  this.clearErrorMessageAfterDelay();
 
             }else{
 
-                this.error = "There was an error with the description: "+response.data.error;
+                this.errors.description = "There was an error with the description: "+response.data.error;
                 console.log("There was an error with the description: "+response.data.error);
                 this.clearErrorMessageAfterDelay();
 
@@ -336,45 +364,35 @@
 
       verify(formType) {
         
-        if (formType === this.formTypes.DESCRIPTION){
-          const descriptionRegex = /^[a-zA-Z0-9_]{0,100}$/;
-
-
-          if(!descriptionRegex.test(this.description)){
-
-            this.error = "The description cannot be more than 100 alphanumeric characters";
-            console.log("The description cannot be more than 100 alphanumeric characters");
-            return false;
-
-          }
-
+          if (formType === this.formTypes.DESCRIPTION) {
+            const descriptionRegex = /^[a-zA-Z0-9_]{1,100}$/;
+            if (!descriptionRegex.test(this.description)) {
+              this.errors.description = 'The description cannot be more than 100 alphanumeric characters';
+              return false;
+            }
         } else if (formType === this.formTypes.IDENTITY) {
           if (!this.selectedIdentity) {
-            this.error = 'Please select an identity';
-            console.log('Please select an identity');
+            this.errors.identity = 'Please select an identity';
             return false;
           }
         } else if (formType === this.formTypes.ORIENTATION) {
           if (!this.selectedOrientation) {
-            this.error = 'Please select an orientation';
-            console.log('Please select an orientation');
+            this.errors.orientation = 'Please select an orientation';
             return false;
           }
         } else if (formType === this.formTypes.INTERESTS) {
           if (this.selectedInterests.length < 3) {
-            this.error = 'Please select up to 3 interests';
-            console.log('Please select up to 3 interests');
+            this.errors.interests = 'Please select up to 3 interests';
             return false;
           }
         } else if (formType === this.formTypes.PHOTOS) {
-          if (this.pictures == null ) {
-            this.error = 'Please select a photo';
-            console.log('Please select a photo');
+          if (this.pictures == null) {
+            this.errors.photos = 'Please select a photo';
             return false;
           }
         }
-
-        this.error = '';
+        // Clear errors for the current form
+        this.errors[formType.toLowerCase()] = '';
         return true;
       },
     
@@ -383,12 +401,13 @@
       
             setTimeout(() => {
                 this.error = "";
+                this.errors = "";
             }, 5000);
         },
 
     async submitFormIdentity() {
 
-      if(this.verify(FormTypes.IDENTITY)){
+      if(this.verify(this.formTypes.IDENTITY)){
 
         const _userId = localStorage.getItem('CupidConnectId'); 
         const token = localStorage.getItem('CupidConnectToken'); //para verificar id 
@@ -412,16 +431,13 @@
           });
           
           //console.log(response); //debugger;
-          if(response.data.success){
-
-              return true;
-
-          }else{
-
-              this.error = "There was an error changing identity : "+response.data.error;
-              console.log("There was an error changing identity : "+response.data.error);
+          if (response.data.success) {
+            this.save.identity = "The identity was saved successfully";
+            this.clearErrorMessageAfterDelay();
+          } else {
+              this.errors.identity = "There was an error updating your identity : "+response.data.error;
+              console.log("There was an error updating your identity : "+response.data.error);
               this.clearErrorMessageAfterDelay();
-
           }
       
       }
@@ -460,7 +476,7 @@
 
     },
 
-      async submitFormOrientation() {
+      async submitFormOrientation() { 
 
         if(this.verify(this.formTypes.ORIENTATION)){
 
@@ -486,17 +502,14 @@
             });
             
             //console.log(response); debugger;
-            if(response.data.success){
-
-                return true;
-
-            }else{
-
-                this.error = "There was an error changing orientation : "+response.data.error;
-                console.log("There was an error changing orientation : "+response.data.error);
-                this.clearErrorMessageAfterDelay();
-
-            }
+            if (response.data.success) {
+            this.save.orientation = "The orientation was saved successfully";
+            this.clearErrorMessageAfterDelay();
+          } else {
+              this.errors.orientation = "There was an error updating your orientation : "+response.data.error;
+              console.log("There was an error updating your orientation : "+response.data.error);
+              this.clearErrorMessageAfterDelay();
+          }
 
         }
 
@@ -562,17 +575,14 @@
 
           });
           
-          console.log(response);debugger;
-          if(response.data.success){
-
-              return true;
-
-          }else{
-
-              this.error = "There was an error changing interest : "+response.data.error;
-              console.log("There was an error changing interest : "+response.data.error);
+          //console.log(response);debugger;
+          if (response.data.success) {
+            this.save.interests = "The interests were saved successfully";
+            this.clearErrorMessageAfterDelay();
+          } else {
+              this.errors.interests = "There was an error updating your interests : "+response.data.error;
+              console.log("There was an error updating your interests : "+response.data.error);
               this.clearErrorMessageAfterDelay();
-
           }
 
       }
@@ -624,7 +634,7 @@
 
         try {
           const formData = new FormData();
-          const _userId = localStorage.getItem('CupidConnectId');
+          const _userId = localStorage.getItem('CupidConnectId'); 
           const token = localStorage.getItem('CupidConnectToken');
 
           if (!token) {
@@ -648,10 +658,10 @@
           });
 
           if (response.data.success) {
-            this.save = "The photos were uploaded successfully";
+            this.save.photos = "The photos were uploaded successfully";
             this.clearErrorMessageAfterDelay();
           } else {
-              this.error = "There was an error updating photos : "+response.data.error;
+              this.errors.photos = "There was an error updating photos : "+response.data.error;
               console.log("There was an error updating photos : "+response.data.error);
               this.clearErrorMessageAfterDelay();
           }
@@ -689,11 +699,11 @@
             
           if (response.data.success) {
             
-            this.save = "The photos were deleted successfully: ";
+            this.save.photos = "The photos were deleted successfully: ";
             this.clearErrorMessageAfterDelay();
 
           } else {
-              this.error = "There was an error deleting photos : "+response.data.error; 
+              this.errors.photos = "There was an error deleting photos : "+response.data.error; 
               console.log("There was an error deleting photos : "+ response.data.error);
               this.clearErrorMessageAfterDelay();
           }

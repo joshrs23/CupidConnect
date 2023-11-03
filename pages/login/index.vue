@@ -121,12 +121,7 @@
           
           
         },
-        mounted() {
-
-          if(localStorage.getItem('CupidConnectToken')){
-              this.$router.push('/home');
-          }        
-          
+        mounted() { 
         },
         data(){
             return {

@@ -11,7 +11,9 @@
       </div>
       <div class="w-4/6">
         <div class="chat">
-          <ChatInfoPanel :user="selectedUser" class="chat-panel"/>
+          <ChatInfoPanel 
+            class="chat-panel"
+          />
           <div ref="chatHistory" class="chat-history">
             <ChatBubble
               v-for="(message, index) in messages"
@@ -38,7 +40,7 @@
     },
     data() {
       return {
-        selectedUser: null,
+        selectedUser: this.getUserId(),
         messages: [
           { text: 'Hello!', sender: 'user' },
           { text: 'Hi there!', sender: 'friend' },
@@ -47,7 +49,7 @@
           { text: 'What are you up to?', sender: 'friend' },
           { text: 'Just working on a project.', sender: 'user' },
         ],
-        animate: false, // Initial state for animation
+        animate: false, 
       };
     },
     methods: {
@@ -71,9 +73,11 @@
         const chatHistory = this.$refs.chatHistory;
         chatHistory.scrollTop = chatHistory.scrollHeight;
       },
+      getUserId(){
+        return useRoute().params.id;
+      }
     },
     created(){
-        this.selectedUser = useUserStore().getUserById(useRoute().params.id)
     }
   };
   </script>

@@ -194,7 +194,7 @@ export default {
 
       }
       this._username = localStorage.getItem('CupidConnectuser');
-      this.asyncData();
+      this.asyncData();   
   },
   methods: {
 

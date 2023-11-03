@@ -194,7 +194,6 @@ export default {
           this.$router.push('/');
 
       }
-      this._username = localStorage.getItem('CupidConnectuser');
       this.fetchUser();   
   },
   methods: {
@@ -261,6 +260,7 @@ export default {
               const data = response.data;
                 if(data.success){
                   
+                  this._username = data.user._username
                   if (data.user.identities != '') { 
                     this.selectedIdentity = data.user.identities;
                   }

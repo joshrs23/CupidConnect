@@ -16,6 +16,7 @@
                 :key="index" 
                 :index="index"
                 :prospect="prospect" 
+                :permission-drag="true"
                 :style="{ 'z-index': (index*-1) }"
                 @dismissed="removeProspect(index)"
               />
@@ -50,9 +51,10 @@
 
 </style>
 
-  <script>
-  import Card from '@/components/general/generalCard.vue'; // Adjust the import path as needed
+<script>
+  import Card from '@/components/general/generalCard.vue'; 
   import { useUserStore } from '@/stores/users'
+  import axios from 'axios';
 
   export default {
     data() {
@@ -60,7 +62,7 @@
         activeCardIndex: 0,
         isListVisible: false,
         prospects: [],
-        showProspects: true
+        showProspects: false
       };
     },
     computed: {
@@ -70,6 +72,35 @@
       Card,
     },
     methods: {
+      async getLikedUsers(){
+        try {
+          const _userId = localStorage.getItem("CupidConnectId");;
+          const token = localStorage.getItem("CupidConnectToken");
+          const dataf = {
+              userId: _userId,
+          };
+          const response = await axios.post( "https://espacionebula.com:8000/get-user-likes",
+            dataf,
+            {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                Authorization: `Bearer ${token}`,
+              },
+              mode: "cors",
+              }
+          );
+          const data = response.data;
+          if (data.success) {
+            return data.usersToDisplay;
+          } else {
+              console.log(
+              "There was an error with the user : " + response.data.error
+              );
+          }
+        } catch (error) {
+          console.error("Error in fetchUser:", error);
+        }
+      },
       removeProspect(index) {
         this.prospects.splice(index, 1);
         if (this.prospects.length === 0) {
@@ -78,7 +109,7 @@
       },
       showMenu(){
         this.isListVisible = !this.isListVisible;
-    },
+      },
       dislikeProspect() {
         const firstProspectCard = this.$refs.prospectCards[0];
         if (firstProspectCard) {
@@ -92,8 +123,12 @@
         }
       },
     },
-    created() {
-      this.prospects = useUserStore().getArrayOfProspects()
+    created: async function () {
+      this.prospects = await this.getLikedUsers();
+      console.log(this.prospects)
+      if(this.prospects){
+        this.showProspects= true;
+      }
     },
     watch: {
       prospects: {

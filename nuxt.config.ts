@@ -28,7 +28,6 @@ export default ({
     display: 'swap', // Specify your desired display option
   },
   head: {
-    // Add the Google Fonts <link> tag here
     link: [
       {
         rel: 'stylesheet',

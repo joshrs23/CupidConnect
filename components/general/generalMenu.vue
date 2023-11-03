@@ -88,10 +88,8 @@ export default {
         this.isListVisible = !this.isListVisible;
     },
     logout() {
-
         this.userData.logOutUser();
         this.$router.push('/logout');
-
     }
   }
 }

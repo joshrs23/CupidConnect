@@ -1,401 +1,310 @@
 <template>
-  <div class="h-full  w-full  text-white bg-black min-w-screen">
-    <!--"lg:h-full  lg:w-full h-screen w-screen text-white flex"
-    <div class="lg:hidden">
-      <GeneralMenuPhone />
-    </div>
+  <div class="h-full w-screen text-white flex">
     <div class="hidden lg:block w-1/6">
       <GeneralMenu />
-    </div>-->
-    <div class="flex justify-center items-center logoEdit">
-        <h2><img src="@/img/logo.svg" alt="frameIcon" /></h2>
-      </div>
-
-    <div class="grid grid-rows-5 grid-flow-col gap-4 border border mx-10 sm:mx-40 lg:mx-60 ">
-      
-
-      <div class="border-b white">
-        <form @submit.prevent="submitForm">
-          <div class="p-8">
-            <label>
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Welcome to your profile! <br><b>{{_username}}</b> </span>
-              <span class="block text-right lg:text-2xl lg:pr-12 lg:pt-18 pt-12">Here is a quick look to your <b>description</b> of<br>yourself:</span>
-              <textarea rows="4" cols="50" class="text-lg p-4 leading-6  p-10 w-full lg:ml-10 lg:w-11/12   block form-input border-black-300 rounded-3xl mt-5 bg-black border border-gray" type="text" 
-              id="" name="description" required>{{  }}</textarea>
-            </label>
-          </div>
-          <div class="lg:mt-4 mb-10 text-right pr-10">
-            <button type="submit" id="" >
-              <i class="fa-solid fa-arrow-right  fa-2x"></i>
-            </button>
-          </div>
-          <!-- error -->
-          <div v-if="error" class="text-red-500 text-center my-4">
-            {{ error }}
-          </div>
-        </form>
-      </div>
-
-      <div class="border-b">
-        <form @submit.prevent="submitForm">
-          <div  class="p-8">
-            <label class="relative block">
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">How do you <b>identify</b>?</span>
-              <div class="relative flex flex-col lg:flex-row items-baseline  w-full  md:8/12 lg:w-10/12  pt-12">
-                <label class="block text-2xl  lg:text-5xl xl:pl-8 pr-5"><b>I am: </b></label>
-                <label :filterable="true" class="origin-bottom text-2xl lg:text-3xl p-4 w-full  md:6/12 lg:w-8/12  form-input rounded-3xl bg-black border border-gray pl-10 custom-scrollbar-container" type="text" name="description"  required>
-                  {{identitiesData}}
-                </label>
-                <select :filterable="true" class="origin-bottom text-2xl lg:text-3xl p-4 w-full  md:6/12 lg:w-8/12  form-input rounded-3xl bg-black border border-gray pl-10 custom-scrollbar-container" type="text" name="description"  required>
-                  <option value="" disabled selected>Select your identity</option>
-                  <option v-for="identity in identitiesData" :key="identity._id" :value="identity._id" white>
-                    {{ identity.name }}
-                  </option>
-                </select>
+    </div>
+    <div class="mx-10 my-20 sm:mx-40 lg:mx-60">
+      <div class="border-black-300 rounded-3xl mt-5 bg-black border-b border-gray">
+        <div class="px-8">
+          <div class="flex items-center">
+            <div class="pt-10 w-fit lg:w-72 overflow-hidden relative">
+              <div class="w-fit lg:w-72 swiper-container">
+                <div class="swiper-wrapper">
+                  <div v-for="(photo, index) in pictures" :key="index" class="p-15 white swiper-slide">
+                    <img
+                      :src="'https://espacionebula.com/img/' + photo"
+                      alt="Profile photo"
+                      class="rounded-lg"
+                    />
+                  </div>
+                </div>
+                <div class="swiper-button-prev bg-transparent" @click="prevSlide"></div>
+                <div class="swiper-button-next bg-transparent" @click="nextSlide"></div>
               </div>
-            </label>
-          </div>
-          <div class="lg:mt-4 text-right pr-10 xl:pr-52">
-            <button  type="submit">
-              <i class="fa-solid fa-arrow-right  fa-2x"></i>
-            </button>
-          </div>
-          <!-- error -->
-          <div v-if="error" class="text-red-500 text-center my-4">
-            {{ error }}
-          </div>
-        </form>
-      </div>
-
-      <div class="border-b">
-        <form @submit.prevent="submitForm">
-          <div  class="p-8">
-            <label class="">
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Please provide us with your <b>orientation</b>.</span>
-              <div class="block w-full w-full  md:8/12  xl:pl-32 pt-12">
-                <label class="block lg:text-3xl lg:pr-12 lg:pt-18 pt-12">Select an option</label>
-                <select :filterable="true" class="text-2xl lg:text-3xl p-4 w-full  md:6/12 lg:w-8/12  form-input rounded-3xl bg-black border border-gray pl-10 custom-scrollbar-container" type="text"  required>
-                  <option value="" disabled selected>Select your orientation</option>
-                  <option v-for="orientation in orientationData" :key="orientation._id" :value="orientation._id" white>
-                    {{ orientation.name }}
-                  </option>
-                </select>
+              <div class="bg-transparent flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2">
+                <button
+                  v-for="(index) in pictures"
+                  :key="index"
+                  type="button"
+                  class="w-3 h-3 rounded-full"
+                  :aria-current="index === activeIndex"
+                  :aria-label="'Slide ' + (index + 1)"
+                  @click="setActiveIndex(index)"
+                ></button>
               </div>
-            </label>
-          </div>
-          <div class="lg:mt-4 text-right pr-10 xl:pr-52">
-            <button type="submit">
-              <i class="fa-solid fa-arrow-right  fa-2x"></i>
-            </button>
-          </div>
-          <!-- error -->
-          <div v-if="error" class="text-red-500 text-center my-4">
-            {{ error }}
-          </div>
-        </form>
-      </div>
-
-      <div class="border-b">
-        <form @submit.prevent="submitForm">
-          <div class="p-8">
-            <label class="relative block">
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Please provide us with your <b>interests</b>.</span>
-              <div class="block w-full w-full  md:8/12  xl:pl-32 pt-12">
-                <label class="block lg:text-3xl lg:pr-12 lg:pt-18 pt-12">Select up to 3 interests</label>
-                <select :filterable="true" class="text-2xl lg:text-3xl p-4 w-full  md:6/12 lg:w-8/12  form-input rounded-3xl bg-black border border-gray pl-10 custom-scrollbar-container" 
-                  type="text" name="description" vv required multiple>
-                  <option value="" disabled selected>Select your interest</option>
-                  <option v-for="interest in interestsData" :key="interest._id" :value="interest._id" white>
-                    {{ interest.name }}
-                  </option>
-                </select>
-              </div>
-            </label>
-            <div class="lg:mt-4 text-right pr-10 xl:pr-52">
-              <button id="" type="submit">
-                <i class="fa-solid fa-arrow-right  fa-2x"></i>
-              </button>
             </div>
-            <!-- error -->
-            <div v-if="error" class="text-red-500 text-center my-4">
-              {{ error }}
+            <div class="ml-10 mt-10"> 
+              <div class="text-5xl mb-4" type="text">
+                <b>{{_username}}</b>
+              </div>
+              <div class="text-xl p-4 leading-6" type="text">
+                <b>Description:</b>
+                <br>
+                <br>
+                {{description}}
+              </div>
+              <div class="text-xl p-4 leading-6 " type="text" name="description" required>
+                <b>Identity:</b>
+                <span v-for="identity in identitiesData" :key="identity._id" :value="identity._id">
+                  {{ selectedIdentity }}
+                </span>
+              </div>
+              <div class="text-xl p-4 leading-6" type="text">
+                <b>Orientation:</b>
+                <br>
+                <br>
+                {{selectedOrientation}}
+              </div>
+              <div class="text-xl p-4 leading-6" type="text">
+                <b>Interests:</b>
+                <br>
+                <br>
+                {{selectedInterests}}
+              </div>
             </div>
           </div>
-        </form>
+        </div>
+        <div class="text-left text-2xl ml-5 mt-5" v-if="isCurrentUser"> 
+          <button class="bg-black-500 hover:bg-gray-700 text-white font-bold italic py-2 px-4 rounded">
+            Edit Info
+          </button>
+        </div>
       </div>
-
-      <div class="border-b">
-        <form @submit.prevent="submitFormPhotos" enctype="multipart/form-data">
-          <div class="p-8">
-            <label class="relative block">
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Please provide us with your <b>photos</b>.</span>
-              <div class="block w-full w-full  md:8/12  xl:pl-32 pt-12">
-
-                <label for="pictures" class="text-xl border rounded p-2 cursor-pointer bg-black border border-gray hover:bg-gray-500 text-white py-2 px-4 rounded-full inline-flex items-center"> 
-                  <i class="fa-solid fa-images pr-2 fa-lg"></i>
-                    Upload File
-                </label> 
-                <input ref="picturesInput" id="pictures" name="pictures" type="file" multiple 
-                    class="hidden"
-                    accept="image/*" 
-                    @change="handlePicturesChange">
-
-              </div>
-            </label>
-            <div class="lg:mt-4 text-right pr-10 xl:pr-52">
-              <button id="" type="submit">
-                <i class="fa-solid fa-arrow-right  fa-2x"></i>
-              </button>
-            </div>
-            <!-- error -->
-            <div v-if="error" class="text-red-500 text-center my-4">
-              {{ error }}
-            </div>
-          </div>
-        </form>
+      <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800 p-4">
+        <GeneralMenuPhone />
       </div>
-      
-
-      
     </div>
   </div>
 </template>
 
-<style scoped>
 
-  strong, b {
-    font-weight: bold;
-  }
+
+<style scoped>
+strong, b {
+  font-weight: bold;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+color: white; 
+font-size: xx-large;
+font-weight: 1000;
+}
+.swiper-button-prev, .swiper-button-next {
+display: none;
+}
+.swiper-container:hover .swiper-button-prev,
+.swiper-container:hover .swiper-button-next {
+display: block;
+}
 </style>
 <style>
-   
-    .logoEdit {
-   
-    width: 7.5em;
-    height: 7em;
-    margin-left: 20%;
+ 
+  .logoEdit {
+ 
+  width: 7.5em;
+  height: 7em;
+  margin-left: 20%;
 
 
-      @screen md {
-        width: 10em;
-        height: 10em;
-        margin-left: 60%;
+    @screen md {
+      width: 10em;
+      height: 10em;
+      margin-left: 60%;
 
-      }
+    }
 
-      @screen lg {
-        margin-left: 40%;
-        width: 8em;
-        height: 8em;
-      }
+    @screen lg {
+      margin-left: 40%;
+      width: 8em;
+      height: 8em;
+    }
+    
+    @screen xl {
+      margin-left: 45%;
+      width: 15em;
+      height: 15em;
       
-      @screen xl {
-        margin-left: 45%;
-        width: 15em;
-        height: 15em;
-        
-      }
+    }
 
-  }
+}
 
-   
+ 
 
 </style>
 
 
 <script>
-  import axios from 'axios';
-  
-  export default {
 
-    data() {
+import { useUserStore } from '@/stores/users'
+import axios from 'axios';
+import Swiper from 'swiper';
+import 'swiper/swiper-bundle.css';
 
-        return {
-            _username : '',
-            description : '',
-            identitiesData : [],
-            selectedIdentity : null,
-            orientationData : [],
-            selectedOrientation : null,
-            interestsData : [],
-            selectedInterests : null,
-            pictures: [],
-            error : '',
+export default {
 
-            formTypes: {
-              DESCRIPTION: 'description',
-              IDENTITY: 'identity',
-              ORIENTATION: 'orientation',
-              INTERESTS: 'interests',
-              PHOTOS: 'photos',
-          },
-          submissionStatus: {
-            description: false,
-            identity: false,
-            orientation: false,
-            interests: false,
-            
-          },
-      };
+  data() {
 
-    },
-    mounted() {
+      return {
+          _username : '',
+          description : '',
+          identitiesData : [],
+          selectedIdentity : null,
+          orientationData : [],
+          selectedOrientation : null,
+          interestsData : [],
+          selectedInterests : null,
+          pictures: [],
 
+          activeIndex: 0,
+          swiper: null,
+          isCurrentUser: false,
       
+    };
 
-        if(!localStorage.getItem('CupidConnectToken')){
-
-            this.$router.push('/');
-
-        }
-        this._username = localStorage.getItem('CupidConnectuser');
-        this.fetchIdentities();
-        this.fetchOrientations();
-        this.fetchInterests();
-
-      
-    },
-    methods: {
-
-     
-
-      handlePicturesChange(event) {
-
-        this.pictures = event.target.files;
-
+  },
+  mounted() {
+    
+    this.swiper = new Swiper('.swiper-container', {
+      loop: true,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
       },
-
-    clearErrorMessageAfterDelay() {
-      
-            setTimeout(() => {
-                this.error = "";
-            }, 5000);
+      on: {
+        slideChange: () => {
+          this.activeIndex = this.swiper.realIndex;
         },
+      },
+    });
 
+      const _userId = localStorage.getItem('CupidConnectId'); 
+      if (localStorage.getItem('CupidConnectId') === _userId) {
+          this.isCurrentUser = true;  // para ver si es el mismo user 
+      }
 
-    async fetchDescription() {
+      if(!localStorage.getItem('CupidConnectToken')){
 
-          try {
-            
-              const response = await axios.get('https://espacionebula.com:8000/get-description-use', {
+          this.$router.push('/');
 
-                  headers: {
+      }
+      this._username = localStorage.getItem('CupidConnectuser');
+      this.fetchUser();
+      this.fetchInfo();
 
-                    'Access-Control-Allow-Origin': '*',
-                    'Content-Type': 'multipart/form-data',
-                    
-                  },
-                  mode: 'cors',
+    
+  },
+  props: {
+    //pictures: Array, // Array of image URLs
+  },
+  methods: {
 
-              });
-            
-              this.description = response.data.description-use; //debugger;
-              
-            
-          } catch (error) {
+    setActiveIndex(index) {
+      this.activeIndex = index;
+      this.swiper.slideTo(index, 300);
+    },
+    prevSlide() {
+      this.swiper.slidePrev();
+    },
+    nextSlide() {
+      this.swiper.slideNext();
+    },
 
-              console.error('Error in fetchDescription', error);
+    handlePicturesChange(event) {
 
-          }
-
-     },
-
-      async fetchIdentities() {
-
-        try {
-          
-            const response = await axios.get('https://espacionebula.com:8000/get-identities', {
-
-                headers: {
-
-                  'Access-Control-Allow-Origin': '*',
-                  'Content-Type': 'multipart/form-data',
-                  
-                },
-                mode: 'cors',
-
-            });
-          
-            this.identitiesData = response.data.identities; //debugger;
-            
-            if (this.identitiesData.length > 0) { //debugger;
-              this.selectedIdentity = ''; //para que el axios no se coma el option 1 
-            }
-          
-        } catch (error) {
-
-            console.error('Error in fetchIdentities:', error);
-
-        }
+      this.pictures = event.target.files;
 
     },
 
-      async fetchOrientations() {
+  clearErrorMessageAfterDelay() {
+    
+          setTimeout(() => {
+              this.error = "";
+          }, 5000);
+      },
+  
+      fetchInfo() {
+        const userId = localStorage.getItem('CupidConnectId');
+        const userStore = useUserStore(); // Get the store instance
+        const prospects = userStore.getArrayOfProspects();
 
-        try {
-          
-            const response = await axios.get('https://espacionebula.com:8000/get-orientations', {
+        const user = prospects.find((prospect) => prospect.userId === userId);
 
-                headers: {
-
-                  'Access-Control-Allow-Origin': '*',
-                  'Content-Type': 'multipart/form-data',
-                  
-                },
-                mode: 'cors',
-
-            });
-          
-            this.orientationData = response.data.orientations; //debugger;
-            
-            if (this.orientationData.length > 0) { debugger;
-              this.selectedOrientation = ''; //para que el axios no se coma el option 1 
-            }
-          
-        } catch (error) {
-
-            console.error('Error in fetchOrientations:', error);
-
+        if (user) {
+          const description = user.description; 
+          this.selectedIdentity = user.gender;
+          console.log('Description:', description);
+        } else {
+          console.log('User not found');
         }
-
     },
 
-    async fetchInterests() {
+  async fetchUser(){
 
     try {
-      
-        const response = await axios.get('https://espacionebula.com:8000/get-interests', {
+        
+        const _userId = localStorage.getItem('CupidConnectId'); 
+        const token = localStorage.getItem('CupidConnectToken');   
+        const dataf = {
+              userId: _userId,
+          };
 
+        const response = await axios.post('https://espacionebula.com:8000/get-user',dataf, {
+          
+          
             headers: {
 
               'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'multipart/form-data',
+              'Authorization': `Bearer ${token}`,
               
             },
             mode: 'cors',
 
         });
-      
-        this.interestsData = response.data.interests; //debugger;
         
-        if (this.interestsData.length > 0) { //debugger;
-          this.selectedInterests = ''; //para que el axios no se coma el option 1 
+              const data = response.data;
+                
+                if(data.success){
+
+                  if (this.identitiesData.length > 0 && data.user.identities != '') { 
+                    this.selectedIdentity = data.user.identities;
+                  }
+                  if (data.user._description != ''){
+                    this.description = data.user._description; 
+                  }
+                  if (this.orientationData.length > 0 && data.user._orientations != '') { 
+                    this.selectedOrientation = data.user._orientations; 
+                  }
+                  if (this.interestsData.length > 0 && data.user._interests.length > 0) { 
+                    this.selectedInterests = data.user._interests;
+                  }
+                  if (data.user._pictures.length > 0) { 
+                    this.pictures = data.user._pictures; //debugger;
+                  }
+
+                }else{
+
+                  this.error = "There was an error with the user : "+response.data.error;
+                  console.log("There was an error with the user : "+response.data.error);
+                  this.clearErrorMessageAfterDelay();
+
+                };
+          
+            
+          
+        } catch (error) {
+
+            console.error('Error in fetchUser:', error);
+
         }
-      
-    } catch (error) {
 
-        console.error('Error in fetchInterests:', error);
 
-    }
-
-    },
-
-  
   },
+
+
+},
 
 
 }; 
 
 </script>
 
- 

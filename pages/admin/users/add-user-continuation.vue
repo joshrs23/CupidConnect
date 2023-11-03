@@ -290,7 +290,7 @@
                     this.userData.setuser(localStorage.getItem('CupidConnectuser'));
 
                     localStorage.removeItem('CupidConnectFirstRegisterData');
-                    this.$router.push('/profile');
+                    this.$router.push('/profile/validation-1');
 
                 }else{
 

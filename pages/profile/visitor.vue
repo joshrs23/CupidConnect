@@ -1,11 +1,12 @@
 <template>
-    <div class="h-full w-screen text-white flex">
-      <div class="hidden lg:block w-1/6">
-        <GeneralMenu />
-      </div>
-      <div class="mx-10 mb-5 sm:mx-40 lg:mx-60">
-        <div class="border-black-300 rounded-3xl mt-5 bg-black border-b border-gray">
-          <div class="px-8">
+  <div class="h-full w-screen text-white flex">
+    <div class="hidden lg:block w-1/6">
+      <GeneralMenu />
+    </div>
+    <div class="mx-10 my-20 sm:mx-40 lg:mx-60">
+      <div class="border-black-300 rounded-3xl mt-5 bg-black border-b border-gray">
+        <div class="px-8">
+          <div class="flex items-center">
             <div class="pt-10 w-fit lg:w-72 overflow-hidden relative">
               <div class="w-fit lg:w-72 swiper-container">
                 <div class="swiper-wrapper">
@@ -13,7 +14,7 @@
                     <img
                       :src="'https://espacionebula.com/img/' + photo"
                       alt="Profile photo"
-                      class="rounded-lg" 
+                      class="rounded-lg"
                     />
                   </div>
                 </div>
@@ -31,99 +32,112 @@
                   @click="setActiveIndex(index)"
                 ></button>
               </div>
-              
             </div>
-          </div>
-          <div  class="text-5xl p-4 leading-6  lg:m-8 pt-10 w-full lg:ml-2 lg:w-11/12   block " type="text" 
-              > <b>{{_username}}</b>
-        </div>
-          <div class="text-xl p-4 leading-6 text-white p-10 w-full lg:ml-2 lg:w-11/12   block " type="text" 
-              > <b>Description:</b> <br> <br>{{description}}
-          </div>
-        <div  class=" text-xl p-4 leading-6  p-10 w-full lg:ml-2 lg:w-11/12   block " type="text" name="description"  required>
-            <b>Identity:</b> <br> <br>
-            {{getIdentity(selectedIdentity)}}
-        </div>
-        <div class="text-xl p-4 leading-6  p-10 w-full lg:ml-2 lg:w-11/12   block " type="text" 
-              > <b>Orientation:</b> <br> <br>{{getOrientation(selectedOrientation)}}
-        </div>
-        <div class="text-xl p-4 leading-6  p-10 w-full lg:ml-2 lg:w-11/12   block " type="text" 
-              > <b>interests:</b> <br><br><span
+            <div class="ml-10 mt-10"> 
+              <div class="text-5xl mb-4" type="text">
+                <b>{{_username}}</b>
+              </div>
+              <div class="text-xl p-4 leading-6" type="text">
+                <b>Description:</b>
+                <br>
+                <br>
+                {{description}}
+              </div>
+              <div class="text-xl p-4 leading-6 " type="text" >
+                <b>Identity:</b>
+                <br/>
+                <br/>
+                {{getIdentity(selectedIdentity)}}
+              </div>
+              <div class="text-xl p-4 leading-6" type="text">
+                <b>Orientation:</b>
+                <br>
+                <br>
+                {{getOrientation(selectedOrientation)}}
+              </div>
+              <div class="text-xl p-4 leading-6" type="text"> 
+                <b>Interests:</b>
+                <br>
+                <br>
+                  
+                <span
                   v-for="interest in selectedInterests"
                   :key="interest"
                   class="px-2 py-1 rounded-3xl bg-black border border-gray rounded-xl  inline-block"
                 >
                 {{ getInterest(interest) }} </span>
+                <!-- {{getInterest(selectedInterests)}} -->
+              </div>
+            </div>
           </div>
         </div>
-        <div class="text-left text-2xl ">
-        <button class=" bg-black-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-          Edit Info
-        </button>
+        <div class="text-left text-2xl ml-5 mt-5"> 
+          <button class="bg-black-500 hover:bg-gray-700 text-white font-bold italic py-2 px-4 rounded">
+            Edit Info
+          </button>
+        </div>
       </div>
-      </div>
-
-     
       <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800 p-4">
         <GeneralMenuPhone />
       </div>
     </div>
-  </template>
-  
+  </div>
+</template>
+
+
 
 <style scoped>
-  strong, b {
-    font-weight: bold;
-  }
-  .swiper-button-prev::after,
+strong, b {
+  font-weight: bold;
+}
+.swiper-button-prev::after,
 .swiper-button-next::after {
-  color: white; 
-  font-size: xx-large;
-  font-weight: 1000;
+color: white; 
+font-size: xx-large;
+font-weight: 1000;
 }
 .swiper-button-prev, .swiper-button-next {
-  display: none;
+display: none;
 }
 .swiper-container:hover .swiper-button-prev,
 .swiper-container:hover .swiper-button-next {
-  display: block;
+display: block;
 }
 </style>
 <style>
-   
-    .logoEdit {
-   
-    width: 7.5em;
-    height: 7em;
-    margin-left: 20%;
+ 
+  .logoEdit {
+ 
+  width: 7.5em;
+  height: 7em;
+  margin-left: 20%;
 
 
-      @screen md {
-        width: 10em;
-        height: 10em;
-        margin-left: 60%;
+    @screen md {
+      width: 10em;
+      height: 10em;
+      margin-left: 60%;
 
-      }
+    }
 
-      @screen lg {
-        margin-left: 40%;
-        width: 8em;
-        height: 8em;
-      }
+    @screen lg {
+      margin-left: 40%;
+      width: 8em;
+      height: 8em;
+    }
+    
+    @screen xl {
+      margin-left: 45%;
+      width: 15em;
+      height: 15em;
       
-      @screen xl {
-        margin-left: 45%;
-        width: 15em;
-        height: 15em;
-        
-      }
+    }
 
-  }
+}
 
-   
+ 
 
 </style>
-
 
 
 <script>
@@ -156,6 +170,7 @@ export default {
     };
 
   },
+  
   mounted() {
     
     this.swiper = new Swiper('.swiper-container', {
@@ -179,7 +194,7 @@ export default {
 
       }
       this._username = localStorage.getItem('CupidConnectuser');
-      this.fetchUser();
+      this.asyncData();
   },
   methods: {
 
@@ -217,18 +232,27 @@ export default {
       const o = useOrientationsStore().getOrientationsById(this.selectedOrientation);
       return o;
     },
-
-  async fetchUser(){
+  
+    async asyncData({ params }) {
+      
+    // Access the user ID from the URL using params.id
+    const userId = params.id;debugger
+    
+    await this.fetchUser(userId);
+    return {
+      userId,
+    };
+  },
+  async fetchUser(userID){
 
     try {
         
-        const _userId = localStorage.getItem('CupidConnectId'); 
         const token = localStorage.getItem('CupidConnectToken');   
         const dataf = {
-              userId: _userId,
+              userId: userID,
           };
 
-        const response = await axios.post('https://espacionebula.com:8000/get-user',dataf, {
+        const response = await axios.post('https://espacionebula.com:8000/get-user-visitor',dataf, {
           
           
             headers: {
@@ -285,6 +309,3 @@ export default {
 
 </script>
 
-
-
- 

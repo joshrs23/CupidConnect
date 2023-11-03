@@ -15,7 +15,8 @@ export const useInterestsStore = defineStore('interests', {
         try{
             return this.interests.find(interest => interest._id === id).name;
         }catch(error){
-            return;
+            
+            return ;
         }
     }
   },

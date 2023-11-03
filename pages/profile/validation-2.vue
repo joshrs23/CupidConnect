@@ -163,6 +163,12 @@ export default {
         this.error = '';
         return true;
   },
+  clearErrorMessageAfterDelay() {
+      
+      setTimeout(() => {
+          this.error = "";
+      }, 5000);
+  },
 
   async fetchIdentities() {
         

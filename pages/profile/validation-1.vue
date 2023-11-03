@@ -158,6 +158,13 @@ import axios from 'axios';
         return true;
     },
 
+    clearErrorMessageAfterDelay() {
+      
+      setTimeout(() => {
+          this.error = "";
+      }, 5000);
+  },
+
 },
 
 };

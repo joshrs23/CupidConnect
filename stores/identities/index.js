@@ -15,7 +15,12 @@ export const useIdentitiesStore = defineStore('identities', {
         return this.identities
     },
     getIdentitiesById(id){
-      return this.identities.find(identity => identity._id === id).name;
+      try{
+        return this.identities.find(identity => identity._id === id).name;
+    }catch(error){
+        return ;
+    }
+      
     }
   },
 })

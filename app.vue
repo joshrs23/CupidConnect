@@ -31,6 +31,7 @@ useHead({
 <script>
 import { useIdentitiesStore } from "@/stores/identities";
 import { useInterestsStore } from "@/stores/interests";
+import { useOrientationsStore } from "@/stores/orientations";
 import axios from "axios";
 
 export default {
@@ -42,6 +43,10 @@ export default {
     const interests = await this.getInterests();
     if (interests) {
       useInterestsStore().setInterests(interests);
+    }
+    const orientations = await this.getOrientations();
+    if (orientations) {
+      useOrientationsStore().setOrientations(orientations);
     }
   },
   methods: {
@@ -59,6 +64,29 @@ export default {
         const data = response.data;
         if (data.success) {
           return data.identities;
+        } else {
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+        }
+      } catch (error) {
+        console.error("Error in fetchUser:", error);
+      }
+    },
+    async getOrientations() {
+      try {
+        const response = await axios.get(
+          "https://espacionebula.com:8000/get-orientations",
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+            },
+            mode: "cors",
+          }
+        );
+        const data = response.data;
+        if (data.success) {
+          return data.orientations;
         } else {
           console.log(
             "There was an error with the user : " + response.data.error

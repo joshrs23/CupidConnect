@@ -7,10 +7,10 @@
       <div class="border-black-300 rounded-3xl mt-5 bg-black border-b border-gray">
         <div class="px-8">
           <div class="flex items-center">
-            <div class="pt-10 w-fit lg:w-72 overflow-hidden relative">
+            <div class="lg:pt-10 w-fit lg:w-72 overflow-hidden relative">
               <div class="w-fit lg:w-72 swiper-container">
                 <div class="swiper-wrapper">
-                  <div v-for="(photo, index) in pictures" :key="index" class="p-15 white swiper-slide">
+                  <div v-for="(photo, index) in pictures" :key="index" class="lg:p-15 white swiper-slide">
                     <img
                       :src="'https://espacionebula.com/img/' + photo"
                       alt="Profile photo"
@@ -33,7 +33,7 @@
                 ></button>
               </div>
             </div>
-            <div class="ml-10 mt-10"> 
+            <div class="lg:ml-10 lg:mt-10"> 
               <div class="text-5xl mb-4" type="text">
                 <b>{{_username}}</b>
               </div>
@@ -43,28 +43,35 @@
                 <br>
                 {{description}}
               </div>
-              <div class="text-xl p-4 leading-6 " type="text" name="description" required>
+              <div class="text-xl p-4 leading-6 " type="text" >
                 <b>Identity:</b>
-                <span v-for="identity in identitiesData" :key="identity._id" :value="identity._id">
-                  {{ selectedIdentity }}
-                </span>
+                <br/>
+                <br/>
+                {{getIdentity(selectedIdentity)}}
               </div>
               <div class="text-xl p-4 leading-6" type="text">
                 <b>Orientation:</b>
                 <br>
                 <br>
-                {{selectedOrientation}}
+                {{getOrientation(selectedOrientation)}}
               </div>
-              <div class="text-xl p-4 leading-6" type="text">
+              <div class="text-xl p-4 leading-6" type="text"> 
                 <b>Interests:</b>
                 <br>
                 <br>
-                {{selectedInterests}}
+                  
+                <span
+                  v-for="interest in selectedInterests"
+                  :key="interest"
+                  class="px-2 py-1 rounded-3xl bg-black border border-gray rounded-xl  inline-block"
+                >
+                {{ getInterest(interest) }} </span>
+                <!-- {{getInterest(selectedInterests)}} -->
               </div>
             </div>
           </div>
         </div>
-        <div class="text-left text-2xl ml-5 mt-5" v-if="isCurrentUser"> 
+        <div class="text-left text-2xl ml-5 mt-5"> 
           <button class="bg-black-500 hover:bg-gray-700 text-white font-bold italic py-2 px-4 rounded">
             Edit Info
           </button>
@@ -135,7 +142,9 @@ display: block;
 
 <script>
 
-import { useUserStore } from '@/stores/users'
+import { useIdentitiesStore } from "@/stores/identities";
+import { useInterestsStore } from "@/stores/interests";
+import { useOrientationsStore } from "@/stores/orientations";
 import axios from 'axios';
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css';
@@ -157,7 +166,6 @@ export default {
 
           activeIndex: 0,
           swiper: null,
-          isCurrentUser: false,
       
     };
 
@@ -177,10 +185,7 @@ export default {
       },
     });
 
-      const _userId = localStorage.getItem('CupidConnectId'); 
-      if (localStorage.getItem('CupidConnectId') === _userId) {
-          this.isCurrentUser = true;  // para ver si es el mismo user 
-      }
+
 
       if(!localStorage.getItem('CupidConnectToken')){
 
@@ -189,12 +194,6 @@ export default {
       }
       this._username = localStorage.getItem('CupidConnectuser');
       this.fetchUser();
-      this.fetchInfo();
-
-    
-  },
-  props: {
-    //pictures: Array, // Array of image URLs
   },
   methods: {
 
@@ -221,21 +220,16 @@ export default {
               this.error = "";
           }, 5000);
       },
-  
-      fetchInfo() {
-        const userId = localStorage.getItem('CupidConnectId');
-        const userStore = useUserStore(); // Get the store instance
-        const prospects = userStore.getArrayOfProspects();
 
-        const user = prospects.find((prospect) => prospect.userId === userId);
-
-        if (user) {
-          const description = user.description; 
-          this.selectedIdentity = user.gender;
-          console.log('Description:', description);
-        } else {
-          console.log('User not found');
-        }
+    getIdentity(identityId){
+      return useIdentitiesStore().getIdentitiesById(identityId);
+    },
+    getInterest(interestId){
+      return useInterestsStore().getInterestsById(interestId);
+    },
+    getOrientation(){
+      const o = useOrientationsStore().getOrientationsById(this.selectedOrientation);
+      return o;
     },
 
   async fetchUser(){
@@ -262,23 +256,20 @@ export default {
         });
         
               const data = response.data;
-                
                 if(data.success){
-
-                  if (this.identitiesData.length > 0 && data.user.identities != '') { 
+                  
+                  if (data.user.identities != '') { 
                     this.selectedIdentity = data.user.identities;
                   }
                   if (data.user._description != ''){
                     this.description = data.user._description; 
                   }
-                  if (this.orientationData.length > 0 && data.user._orientations != '') { 
+                  if (data.user._orientations != '') { 
                     this.selectedOrientation = data.user._orientations; 
                   }
-                  if (this.interestsData.length > 0 && data.user._interests.length > 0) { 
-                    this.selectedInterests = data.user._interests;
-                  }
+                  this.selectedInterests = data.user._interests;
                   if (data.user._pictures.length > 0) { 
-                    this.pictures = data.user._pictures; //debugger;
+                    this.pictures = data.user._pictures; 
                   }
 
                 }else{

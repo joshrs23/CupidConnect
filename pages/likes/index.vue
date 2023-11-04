@@ -81,6 +81,7 @@ export default {
       } else if (this.isLikesActive) {
         return this.prospectsLiked;
       } else {
+        this.showProspects = false;
         return [];
       }
     },

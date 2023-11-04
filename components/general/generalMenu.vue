@@ -1,26 +1,58 @@
 <template>
   <div class="flex flex-col menuOverall p-4 cont">
     <div class="w-fit mx-auto">
-      <ul class="flex flex-col">
-        <li class="mb-4"><nuxt-link to="/" class="w-3/4"><img :src="logo" class="h-16"/></nuxt-link></li>
-        <li :class="{ 'font-bold': isProfileRoute }"><nuxt-link to="/profile"><i class="fas fa-user"></i> Profile</nuxt-link></li>
-        <li :class="{ 'font-bold': isLikesRoute }"><nuxt-link to="/likes"><i class="fas fa-heart"></i> Likes</nuxt-link></li>
-        <li :class="{ 'font-bold': isChatsRoute }"><nuxt-link to="/chats"><i class="fas fa-comments"></i> Chats</nuxt-link></li>
-        <li :class="{ 'font-bold': isHomeRoute }"><nuxt-link to="/"><i class="fas fa-home"></i> Home</nuxt-link></li>
+      <ul class="flex flex-col items-center">
+        <li class="mb-4">
+          <nuxt-link to="/" class="w-3/4"
+            ><img :src="logo" class="h-24"
+          /></nuxt-link>
+        </li>
+        <li :class="{ 'font-bold': isProfileRoute }">
+          <nuxt-link to="/profile" class="flex items-center">
+            <img
+              :src="'https://espacionebula.com/img/' + userData._profilePicture"
+              alt="Profile"
+              class="w-6 h-6 rounded-full object-cover mr-4 border-2 border-white"
+             />Profile
+          </nuxt-link>
+        </li>
+        <li :class="{ 'font-bold': isLikesRoute }">
+          <nuxt-link to="/likes"><i class="fas fa-heart"></i> Likes</nuxt-link>
+        </li>
+        <li :class="{ 'font-bold': isChatsRoute }">
+          <nuxt-link to="/chats"
+            ><i class="fas fa-comments"></i> Chats</nuxt-link
+          >
+        </li>
+        <li :class="{ 'font-bold': isHomeRoute }">
+          <nuxt-link to="/"><i class="fas fa-home"></i> Home</nuxt-link>
+        </li>
       </ul>
     </div>
     <div class="mx-auto">
-      <button @click="showMenu"> <i class="fa-solid fa-bars"></i> Menu </button>
+      <button @click="showMenu"><i class="fa-solid fa-bars"></i> Menu</button>
       <ul id="hiddenMenu" class="relative">
-        <li v-if="isListVisible && !isLogin" class="hover:font-bold"> <NuxtLink to="Login">LogIn</NuxtLink></li>
-        <li v-if="isListVisible && !isLogin" class="hover:font-bolds"> <NuxtLink to="/admin/users/add-user">SignUp</NuxtLink></li>
-        <li v-if="isListVisible && isLogin" class="hover:font-bold"> <NuxtLink to="logout" @click="logout">Logout</NuxtLink></li>          
-        <li v-if="isListVisible && isLogin" class="hover:font-bold"> <NuxtLink to="/user/DeleteProfile">Delete Profile</NuxtLink></li>   
-        <li v-if="isListVisible && isLogin" class="hover:font-bold"> <NuxtLink to="/user/changePassword">Change Password</NuxtLink></li>  
+        <li v-if="isListVisible && !isLogin" class="hover:font-bold">
+          <NuxtLink to="Login">LogIn</NuxtLink>
+        </li>
+        <li v-if="isListVisible && !isLogin" class="hover:font-bolds">
+          <NuxtLink to="/admin/users/add-user">SignUp</NuxtLink>
+        </li>
+        <li v-if="isListVisible && isLogin" class="hover:font-bold">
+          <NuxtLink to="logout" @click="logout">Logout</NuxtLink>
+        </li>
+        <li v-if="isListVisible && isLogin" class="hover:font-bold">
+          <NuxtLink to="/user/DeleteProfile">Delete Profile</NuxtLink>
+        </li>
+        <li v-if="isListVisible && isLogin" class="hover:font-bold">
+          <NuxtLink to="/user/changePassword">Change Password</NuxtLink>
+        </li>
       </ul>
     </div>
   </div>
 </template>
+
+
 
 <style scoped>
 .cont {
@@ -51,8 +83,9 @@ li a {
 </style>
 
 <script>
-import logo from '@/assets/logoCupid.svg'
-import { useUserStore } from '../../stores/users'
+import logo from "@/assets/logoCupid.svg";
+import { useUserStore } from "../../stores/users";
+import axios from 'axios';
 
 export default {
   data() {
@@ -60,39 +93,72 @@ export default {
       logo: logo,
       isListVisible: false,
       isLogin: false,
-      userData : useUserStore(),
-    }
+      userData: '',
+    };
   },
   mounted() {
-
-        if(localStorage.getItem('CupidConnectToken')){
-            this.isLogin = true;
-        }    
-      
-    },
+    if (localStorage.getItem("CupidConnectToken")) {
+      this.isLogin = true;
+    }
+  },
+  created: async function () {
+    this.userData = await this.fetchUser();
+  },
   computed: {
     isProfileRoute() {
-      return this.$route.path.startsWith('/profile');
+      return this.$route.path.startsWith("/profile");
     },
     isLikesRoute() {
-      return this.$route.path.startsWith('/likes');
+      return this.$route.path.startsWith("/likes");
     },
     isChatsRoute() {
-      return this.$route.path.startsWith('/chats');
+      return this.$route.path.startsWith("/chats");
     },
     isHomeRoute() {
-      return this.$route.path === '/';
+      return this.$route.path === "/";
     },
   },
   methods: {
-      showMenu(){
-
-        this.isListVisible = !this.isListVisible;
+    async fetchUser() {
+      try {
+        const userId = localStorage.getItem("CupidConnectId");
+        const token = localStorage.getItem("CupidConnectToken");
+        const dataf = {
+          userId: userId,
+        };
+        const response = await axios.post(
+          "https://espacionebula.com:8000/get-user",
+          dataf,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${token}`,
+            },
+            mode: "cors",
+          }
+        );
+        const data = response.data;
+        if (data.success) {
+          return data.user;
+        } else {
+          this.error =
+            "There was an error with the user : " + response.data.error;
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+          this.clearErrorMessageAfterDelay();
+        }
+      } catch (error) {
+        console.error("Error in fetchUser:", error);
+      }
+    },
+    showMenu() {
+      this.isListVisible = !this.isListVisible;
     },
     logout() {
-        this.userData.logOutUser();
-        this.$router.push('/logout');
-    }
-  }
-}
+      this.userData.logOutUser();
+      this.$router.push("/logout");
+    },
+  },
+};
 </script>

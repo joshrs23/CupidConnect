@@ -4,13 +4,19 @@
       <GeneralMenu />
     </div>
     <div class="mx-10 my-20 sm:mx-40 lg:mx-60">
-      <div class="border-black-300 rounded-3xl mt-5 bg-black border-b border-gray">
+      <div
+        class="border-black-300 rounded-3xl mt-5 bg-black border-b border-gray"
+      >
         <div class="px-8">
           <div class="flex items-center">
             <div class="pt-10 w-fit lg:w-72 overflow-hidden relative">
               <div class="w-fit lg:w-72 swiper-container">
                 <div class="swiper-wrapper">
-                  <div v-for="(photo, index) in pictures" :key="index" class="p-15 white swiper-slide">
+                  <div
+                    v-for="(photo, index) in pictures"
+                    :key="index"
+                    class="p-15 white swiper-slide"
+                  >
                     <img
                       :src="'https://espacionebula.com/img/' + photo"
                       alt="Profile photo"
@@ -18,12 +24,20 @@
                     />
                   </div>
                 </div>
-                <div class="swiper-button-prev bg-transparent" @click="prevSlide"></div>
-                <div class="swiper-button-next bg-transparent" @click="nextSlide"></div>
+                <div
+                  class="swiper-button-prev bg-transparent"
+                  @click="prevSlide"
+                ></div>
+                <div
+                  class="swiper-button-next bg-transparent"
+                  @click="nextSlide"
+                ></div>
               </div>
-              <div class="bg-transparent flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2">
+              <div
+                class="bg-transparent flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2"
+              >
                 <button
-                  v-for="(index) in pictures"
+                  v-for="index in pictures"
                   :key="index"
                   type="button"
                   class="w-3 h-3 rounded-full"
@@ -33,46 +47,49 @@
                 ></button>
               </div>
             </div>
-            <div class="ml-10 mt-10"> 
+            <div class="ml-10 mt-10">
               <div class="text-5xl mb-4" type="text">
-                <b>{{_username}}</b>
+                <b>{{ _username }}</b>
               </div>
               <div class="text-xl p-4 leading-6" type="text">
                 <b>Description:</b>
-                <br>
-                <br>
-                {{description}}
+                <br />
+                <br />
+                {{ description }}
               </div>
-              <div class="text-xl p-4 leading-6 " type="text" >
+              <div class="text-xl p-4 leading-6" type="text">
                 <b>Identity:</b>
-                <br/>
-                <br/>
-                {{getIdentity(selectedIdentity)}}
+                <br />
+                <br />
+                {{ getIdentity(selectedIdentity) }}
               </div>
               <div class="text-xl p-4 leading-6" type="text">
                 <b>Orientation:</b>
-                <br>
-                <br>
-                {{getOrientation(selectedOrientation)}}
+                <br />
+                <br />
+                {{ getOrientation(selectedOrientation) }}
               </div>
-              <div class="text-xl p-4 leading-6" type="text"> 
+              <div class="text-xl p-4 leading-6" type="text">
                 <b>Interests:</b>
-                <br>
-                <br>
-                  
+                <br />
+                <br />
+
                 <span
                   v-for="interest in selectedInterests"
                   :key="interest"
-                  class="px-2 py-1 rounded-3xl bg-black border border-gray rounded-xl  inline-block"
+                  class="px-2 py-1 rounded-3xl bg-black border border-gray rounded-xl inline-block"
                 >
-                {{ getInterest(interest) }} </span>
+                  {{ getInterest(interest) }}
+                </span>
                 <!-- {{getInterest(selectedInterests)}} -->
               </div>
             </div>
           </div>
         </div>
-        <div class="text-left text-2xl ml-5 mt-5"> 
-          <button class="bg-black-500 hover:bg-gray-700 text-white font-bold italic py-2 px-4 rounded">
+        <div class="text-left text-2xl ml-5 mt-5">
+          <button
+            class="bg-black-500 hover:bg-gray-700 text-white font-bold italic py-2 px-4 rounded"
+          >
             Edit Info
           </button>
         </div>
@@ -87,98 +104,84 @@
 
 
 <style scoped>
-strong, b {
+strong,
+b {
   font-weight: bold;
 }
 .swiper-button-prev::after,
 .swiper-button-next::after {
-color: white; 
-font-size: xx-large;
-font-weight: 1000;
+  color: white;
+  font-size: xx-large;
+  font-weight: 1000;
 }
-.swiper-button-prev, .swiper-button-next {
-display: none;
+.swiper-button-prev,
+.swiper-button-next {
+  display: none;
 }
 .swiper-container:hover .swiper-button-prev,
 .swiper-container:hover .swiper-button-next {
-display: block;
+  display: block;
 }
 </style>
 <style>
- 
-  .logoEdit {
- 
+.logoEdit {
   width: 7.5em;
   height: 7em;
   margin-left: 20%;
 
+  @screen md {
+    width: 10em;
+    height: 10em;
+    margin-left: 60%;
+  }
 
-    @screen md {
-      width: 10em;
-      height: 10em;
-      margin-left: 60%;
+  @screen lg {
+    margin-left: 40%;
+    width: 8em;
+    height: 8em;
+  }
 
-    }
-
-    @screen lg {
-      margin-left: 40%;
-      width: 8em;
-      height: 8em;
-    }
-    
-    @screen xl {
-      margin-left: 45%;
-      width: 15em;
-      height: 15em;
-      
-    }
-
+  @screen xl {
+    margin-left: 45%;
+    width: 15em;
+    height: 15em;
+  }
 }
-
- 
-
 </style>
 
 
 <script>
-
 import { useIdentitiesStore } from "@/stores/identities";
 import { useInterestsStore } from "@/stores/interests";
 import { useOrientationsStore } from "@/stores/orientations";
-import axios from 'axios';
-import Swiper from 'swiper';
-import 'swiper/swiper-bundle.css';
+import axios from "axios";
+import Swiper from "swiper";
+import "swiper/swiper-bundle.css";
 
 export default {
-
   data() {
+    return {
+      _username: "",
+      description: "",
+      identitiesData: [],
+      selectedIdentity: null,
+      orientationData: [],
+      selectedOrientation: null,
+      interestsData: [],
+      selectedInterests: null,
+      pictures: [],
 
-      return {
-          _username : '',
-          description : '',
-          identitiesData : [],
-          selectedIdentity : null,
-          orientationData : [],
-          selectedOrientation : null,
-          interestsData : [],
-          selectedInterests : null,
-          pictures: [],
-
-          activeIndex: 0,
-          swiper: null,
-          
-      
+      activeIndex: 0,
+      swiper: null,
     };
-
   },
-  
+
   mounted() {
-    
-    this.swiper = new Swiper('.swiper-container', {
+    this.swiper = new Swiper(".swiper-container", {
       loop: true,
       navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
       },
       on: {
         slideChange: () => {
@@ -187,17 +190,12 @@ export default {
       },
     });
 
-
-
-      if(!localStorage.getItem('CupidConnectToken')){
-
-          this.$router.push('/');
-
-      }
-      this.fetchUser();   
+    if (!localStorage.getItem("CupidConnectToken")) {
+      this.$router.push("/");
+    }
+    this.fetchUser();
   },
   methods: {
-
     setActiveIndex(index) {
       this.activeIndex = index;
       this.swiper.slideTo(index, 300);
@@ -210,95 +208,78 @@ export default {
     },
 
     handlePicturesChange(event) {
-
       this.pictures = event.target.files;
-
     },
 
-  clearErrorMessageAfterDelay() {
-    
-          setTimeout(() => {
-              this.error = "";
-          }, 5000);
-      },
+    clearErrorMessageAfterDelay() {
+      setTimeout(() => {
+        this.error = "";
+      }, 5000);
+    },
 
-    getIdentity(identityId){
+    getIdentity(identityId) {
       return useIdentitiesStore().getIdentitiesById(identityId);
     },
-    getInterest(interestId){
+    getInterest(interestId) {
       return useInterestsStore().getInterestsById(interestId);
     },
-    getOrientation(){
-      const o = useOrientationsStore().getOrientationsById(this.selectedOrientation);
+    getOrientation() {
+      const o = useOrientationsStore().getOrientationsById(
+        this.selectedOrientation
+      );
       return o;
     },
-  
-    
-  async fetchUser(){
-
-    try {
-      const userId = this.$route.params.userId
-        const token = localStorage.getItem('CupidConnectToken');   
+    async fetchUser() {
+      try {
+        const userId = this.$route.params.userId;
+        const token = localStorage.getItem("CupidConnectToken");
         const dataf = {
-              userId: userId, 
-          };
+          userId: userId,
+        };
 
-          const dd = userId; debugger;
-        const response = await axios.post('https://espacionebula.com:8000/get-user-visitor',dataf, {
-          
-          
+        const dd = userId;
+        debugger;
+        const response = await axios.post(
+          "https://espacionebula.com:8000/get-user-visitor",
+          dataf,
+          {
             headers: {
-
-              'Access-Control-Allow-Origin': '*',
-              'Authorization': `Bearer ${token}`,
-              
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${token}`,
             },
-            mode: 'cors',
+            mode: "cors",
+          }
+        );
 
-        });
-        
-              const data = response.data;
-                if(data.success){
-                  
-                  this._username = data.user._username
-                  if (data.user.identities != '') { 
-                    this.selectedIdentity = data.user.identities;
-                  }
-                  if (data.user._description != ''){
-                    this.description = data.user._description; 
-                  }
-                  if (data.user._orientations != '') { 
-                    this.selectedOrientation = data.user._orientations; 
-                  }
-                  this.selectedInterests = data.user._interests;
-                  if (data.user._pictures.length > 0) { 
-                    this.pictures = data.user._pictures; 
-                  }
-
-                }else{
-
-                  this.error = "There was an error with the user : "+response.data.error;
-                  console.log("There was an error with the user : "+response.data.error);
-                  this.clearErrorMessageAfterDelay();
-
-                };
-          
-            
-          
-        } catch (error) {
-
-            console.error('Error in fetchUser:', error);
-
+        const data = response.data;
+        if (data.success) {
+          this._username = data.user._username;
+          if (data.user.identities != "") {
+            this.selectedIdentity = data.user.identities;
+          }
+          if (data.user._description != "") {
+            this.description = data.user._description;
+          }
+          if (data.user._orientations != "") {
+            this.selectedOrientation = data.user._orientations;
+          }
+          this.selectedInterests = data.user._interests;
+          if (data.user._pictures.length > 0) {
+            this.pictures = data.user._pictures;
+          }
+        } else {
+          this.error =
+            "There was an error with the user : " + response.data.error;
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+          this.clearErrorMessageAfterDelay();
         }
-
-
+      } catch (error) {
+        console.error("Error in fetchUser:", error);
+      }
+    },
   },
-
-
-},
-
-
-}; 
-
+};
 </script>
 

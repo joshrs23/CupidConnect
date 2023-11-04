@@ -1,5 +1,16 @@
 <template>
-  <div class="h-screen w-screen text-white flex">
+  <div class="h-screen w-screen text-white flex relative">
+    <div v-if="showThisCurrentProspect" class="absolute w-full h-full bg-black/80 flex items-center justify-center z-10">
+      <button class="fas fa-arrow-left fa-3x absolute left-0 top-0 m-20" @click="outProspect()" />
+      <Card
+        class="overflow-scroll relative"
+        :key="0"
+        :index="0"
+        :prospect="showThisProspect"
+        :permission-drag="false"
+        @dismissed="removeProspect(index)"
+      />
+    </div>
     <div class="lg:hidden">
       <GeneralMenuPhone />
     </div>
@@ -31,6 +42,7 @@
           :prospect="prospect"
           :isLikesActive="isLikesActive"
           @dismissed="removeProspect(index)"
+          @click="showThisUser(prospect)"
         />
       </div>
       <div v-else class="w-full h-[70%]">
@@ -53,6 +65,7 @@
 
 <script>
 import PosterCard from "@/components/general/generalPosterCard.vue";
+import Card from "@/components/general/generalCard.vue";
 import { useUserStore } from "@/stores/users";
 import axios from "axios";
 
@@ -64,13 +77,15 @@ export default {
       prospectsLiked: [],
       prospectsLikedSent: [],
       showProspects: false,
+      showThisProspect: Object,
+      showThisCurrentProspect: false,
     };
   },
   mounted() {},
   created: async function () {
     this.prospectsLiked = await this.getWhoLikedUsers();
     this.prospectsLikedSent = await this.getLikedByUsers();
-    if(this.prospectsLiked && this.prospectsLiked.length>0){
+    if (this.prospectsLiked && this.prospectsLiked.length > 0) {
       this.showProspects = true;
     }
   },
@@ -88,8 +103,16 @@ export default {
   },
   components: {
     PosterCard,
+    Card,
   },
   methods: {
+    outProspect(){
+      this.showThisCurrentProspect = false;
+    },
+    showThisUser(prospectToShow) {
+      this.showThisProspect = prospectToShow;
+      this.showThisCurrentProspect = true;
+    },
     async getWhoLikedUsers() {
       try {
         const _userId = localStorage.getItem("CupidConnectId");
@@ -125,7 +148,7 @@ export default {
         const _userId = localStorage.getItem("CupidConnectId");
         const token = localStorage.getItem("CupidConnectToken");
         const dataf = {
-            liker_userId: _userId,
+          liker_userId: _userId,
         };
         const response = await axios.post(
           "https://espacionebula.com:8000/get-likes-user",

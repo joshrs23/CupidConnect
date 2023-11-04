@@ -141,6 +141,9 @@ export default {
       document.addEventListener("cancel", this.handleTouchEnd);
     },
     handleMove(x, y) {
+      if (!this.permissionDrag) {
+        return;
+      }
       this.offsetX = x - this.startPoint.x;
       this.offsetY = y - this.startPoint.y;
       const rotate = this.offsetX * 0.1;

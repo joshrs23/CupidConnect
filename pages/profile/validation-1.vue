@@ -4,16 +4,14 @@
           <h2><img src="@/img/logo.svg" alt="frameIcon" /></h2>
         </div>
   
-      <div class="grid grid-rows-1 grid-flow-col gap-4 border border mx-10 sm:mx-40 lg:mx-60 ">
-        
-  
-        <div class="border-b white">
+      <div class="grid grid-rows-1 grid-flow-col gap-4 mx-10 sm:mx-40 lg:mx-60 ">
+        <div class="white">
           <form @submit.prevent="submitFormDescription">
             <div class="p-8">
               <label>
-                <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Hello <b>{{_username}},</b><br>let's complete your profile!</span>
+                <span class="block text-2xl sm:text-m lg:text-5xl">Hello <b>{{_username}},</b><br>let's complete your profile!</span>
                 <span class="block text-right lg:text-2xl lg:pr-12 lg:pt-18 pt-12">First provide us a quick <b>description</b> of<br>yourself:</span>
-                <textarea rows="4" cols="50" class="text-lg p-4 leading-6  p-10 w-full lg:ml-10 lg:w-11/12   block form-input border-black-300 rounded-3xl mt-5 bg-black border border-gray" type="text" 
+                <textarea rows="4" cols="50" class="text-lg p-4 leading-6  p-10 w-full block form-input border-black-300 rounded-3xl mt-5 bg-black border border-gray" type="text" 
                 id="" name="description" v-model="description" required></textarea>
               </label>
             </div>
@@ -22,7 +20,6 @@
                 <i class="fa-solid fa-arrow-right  fa-2x"></i>
               </button>
             </div>
-            <!-- error -->
             <div v-if="error" class="text-red-500 text-center my-4">
               {{ error }}
             </div>

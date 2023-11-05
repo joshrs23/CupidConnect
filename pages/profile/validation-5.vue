@@ -4,10 +4,8 @@
           <h2><img src="@/img/logo.svg" alt="frameIcon" /></h2>
         </div>
   
-      <div class="grid grid-rows grid-flow-col gap-4 border border mx-10 sm:mx-40 lg:mx-60 ">
-        
-  
-        <div class="border-b">
+      <div class="grid grid-rows grid-flow-col gap-4 mx-10 sm:mx-40 lg:mx-60 ">
+        <div class="">
         <form @submit.prevent="submitFormPhotos" enctype="multipart/form-data">
           <div class="p-8">
             <label class="relative block">

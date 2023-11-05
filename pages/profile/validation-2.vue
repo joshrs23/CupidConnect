@@ -4,16 +4,14 @@
         <h2><img src="@/img/logo.svg" alt="frameIcon" /></h2>
       </div>
 
-    <div class="grid grid-rows grid-flow-col gap-4 border border mx-10 sm:mx-40 lg:mx-60 ">
-      
-
-      <div class="border-b ">
+    <div class="grid grid-rows grid-flow-col gap-4 mx-10 sm:mx-30 lg:mx-40 ">
+      <div class=" ">
         <form @submit.prevent="submitFormIdentity">
           <div  class="p-8">
             <label class="relative block">
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">How do you <b>identify</b>?</span>
+              <span class="block text-2xl sm:text-m lg:text-5xl">How do you <b>identify</b>?</span>
               <div class="relative flex flex-col lg:flex-row items-baseline  w-full  md:8/12 lg:w-10/12  pt-12">
-                <label class="block text-2xl  lg:text-5xl xl:pl-8 pr-5"><b>I am: </b></label>
+                <label class="block text-2xl  lg:text-5xl  pr-5"><b>I am: </b></label>
                 <select :filterable="true" class="origin-bottom text-2xl lg:text-3xl p-4 w-full  md:6/12 lg:w-8/12  form-input rounded-3xl bg-black border border-gray pl-10 custom-scrollbar-container" type="text" name="description" v-model="selectedIdentity" required>
                   <option value="" disabled selected>Select your identity</option>
                   <option v-for="identity in identitiesData" :key="identity._id" :value="identity._id" white>

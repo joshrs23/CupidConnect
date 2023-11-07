@@ -70,7 +70,6 @@ export default {
           );
         }
       } catch (error) {
-        console.error("Error in fetchUser:", error);
       }
     },
     async getOrientations() {
@@ -93,7 +92,6 @@ export default {
           );
         }
       } catch (error) {
-        console.error("Error in fetchUser:", error);
       }
     },
     async getInterests() {
@@ -116,7 +114,6 @@ export default {
           );
         }
       } catch (error) {
-        console.error("Error in fetchUser:", error);
       }
     },
   },

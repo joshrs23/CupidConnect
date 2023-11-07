@@ -149,14 +149,13 @@ export default {
           this.clearErrorMessageAfterDelay();
         }
       } catch (error) {
-        console.error("Error in fetchUser:", error);
       }
     },
     showMenu() {
       this.isListVisible = !this.isListVisible;
     },
     logout() {
-      this.userData.logOutUser();
+      useUserStore().logOutUser();
       this.$router.push("/logout");
     },
   },

@@ -98,7 +98,6 @@
               );
           }
         } catch (error) {
-          console.error("Error in fetchUser:", error);
         }
       },
       removeProspect(index) {
@@ -127,6 +126,11 @@
       this.prospects = await this.getLikedUsers();
       if(this.prospects && this.prospects.length > 0){
         this.showProspects= true;
+      }
+    },
+    mounted: function() {
+      if (!localStorage.getItem("CupidConnectToken")) {
+        useRouter().push('/login');
       }
     },
     watch: {

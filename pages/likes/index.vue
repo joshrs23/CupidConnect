@@ -140,7 +140,6 @@ export default {
           );
         }
       } catch (error) {
-        console.error("Error in fetchUser:", error);
       }
     },
     async getLikedByUsers() {
@@ -170,7 +169,6 @@ export default {
           );
         }
       } catch (error) {
-        console.error("Error in fetchUser:", error);
       }
     },
     async likesTabActive(likesActive, likeSentActive) {
@@ -189,7 +187,6 @@ export default {
       this.isLikeSentActive = likeSentActive;
     },
     removeProspect(index) {
-      console.log("aqui");
       this.prospectsToDisplay.splice(index, 1);
       if (this.prospectsToDisplay.length === 0) {
         this.showProspects = false;

@@ -123,10 +123,6 @@ export default {
 
 
 <style>
-/* Reset all styles for all elements */
-/* html, body {
-  overflow: hidden;
-} */
 * {
   margin: 0;
   padding: 0;
@@ -145,7 +141,6 @@ ul,
 ol {
   list-style: none;
 }
-
 .container {
   height: fit-content;
   min-height: 100vh;

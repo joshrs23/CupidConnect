@@ -31,6 +31,10 @@ export default ({
     link: [
       {
         rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css?family=Inter:400,700',
+      },
+      {
+        rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css2?family=Lovers+Quarrel&display=swap',
       },
     ],

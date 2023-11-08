@@ -15,7 +15,7 @@
           class="profile-image"
           :style="imageStyle"
         />
-        <div class="text-overlay bg-gradient-to-b from-transparent to-black">
+        <div class="text-overlay">
           <h2 class="name">{{ prospect._fname }}</h2>
           <p class="age">{{ getAge(prospect) }}</p>
         </div>
@@ -325,6 +325,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  background: linear-gradient(to bottom, transparent, black);
 }
 
 .name {

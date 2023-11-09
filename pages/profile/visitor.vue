@@ -71,11 +71,7 @@
             </div>
           </div>
         </div>
-        <div class="text-left text-2xl ml-5 mt-5"> 
-          <button class="bg-black-500 hover:bg-gray-700 text-white font-bold italic py-2 px-4 rounded">
-            Edit Info
-          </button>
-        </div>
+
       </div>
       <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800 p-4">
         <GeneralMenuPhone />

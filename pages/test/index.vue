@@ -9,20 +9,13 @@
     <div class="w-5/6 flex flex-col items-center mt-10">
       <div class="flex flex items-center">
         <img
-          v-if="userCurrent._profilePicture"
           :src="'https://espacionebula.com/img/' + userCurrent._profilePicture"
-          alt="Profile photo"
-          class="w-48 h-48 m-10 rounded-full object-cover"
-        />
-        <img
-          v-else
-          src="@/assets/dummy-image.jpg"
           alt="Profile photo"
           class="w-48 h-48 m-10 rounded-full object-cover"
         />
         <div>
           <div class="text-2xl">
-            {{ userCurrent._username ?? 'Username Id' }}
+            {{ userCurrent._username }}
           </div>
           <div class="flex">
             <div class="mr-5">
@@ -36,7 +29,7 @@
             </div>
           </div>
           <div class="text-2xl font-bold mt-2">
-            {{ (userCurrent._fname ?? 'First name and') + " " + (userCurrent._lname ?? 'last name.') }}
+            {{ userCurrent._fname + " " + userCurrent._lname }}
           </div>
           <div class="text-md flex">
             {{ getAge(userCurrent) + "&nbsp; years old."}}
@@ -123,6 +116,7 @@ export default {
           );
         }
       } catch (error) {
+        console.error("Error in fetchUser:", error);
       }
     },
     async getWhoLikedUsers() {
@@ -182,7 +176,6 @@ export default {
       } catch (error) {}
     },
     getAge(userUSER) {
-      if(!userUSER) return 0;
       const dob = new Date(userUSER._dob);
       const today = new Date();
       const age = today.getFullYear() - dob.getFullYear();
@@ -259,8 +252,8 @@ export default {
 <style scoped>
 .prospect-card {
   position: relative;
-  width: 300px; 
-  height: 400px; 
+  width: 300px; /* Adjust the width as needed */
+  height: 400px; /* Adjust the height as needed */
   border-radius: 10px;
   margin: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -274,8 +267,9 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.7; 
+  opacity: 0.7; /* Adjust the opacity as needed */
 }
+
 .profile-image {
   width: 100%;
   height: 100%;

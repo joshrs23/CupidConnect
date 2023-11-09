@@ -10,10 +10,20 @@
         <li :class="{ 'font-bold': isProfileRoute }">
           <nuxt-link to="/profile" class="flex items-center">
             <img
+              v-if="userData._profilePicture"
               :src="'https://espacionebula.com/img/' + userData._profilePicture"
-              alt="Profile"
-              class="w-6 h-6 rounded-full object-cover mr-4 border-2 border-white"
-             />Profile
+              alt="Profile photo"
+              class="w-6 h-6 rounded-full object-cover mr-4"
+              :class="{ 'border-2 border-white': isProfileRoute }"
+            />
+            <img
+              v-else
+              src="@/assets/dummy-image.jpg"
+              alt="Profile photo"
+              class="w-6 h-6 rounded-full object-cover mr-4"
+              :class="{ 'border-2 border-white': isProfileRoute }"
+            />
+             Profile
           </nuxt-link>
         </li>
         <li :class="{ 'font-bold': isLikesRoute }">

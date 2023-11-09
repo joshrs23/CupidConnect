@@ -1,19 +1,19 @@
 <template>
-  <div class="h-full w-full text-white bg-black min-w-screen">
-    <div class="flex justify-center items-center logoEdit">
-      <h2><img src="@/img/logo.svg" alt="frameIcon"/></h2>
+  <div class="h-full w-full text-white bg-black min-w-screen flex flex-col items-center">
+    <div class="flex justify-center items-center w-64 lg:m-5">
+      <img src="@/img/logo.svg" alt="frameIcon"/>
     </div>
-    <div class="grid grid-rows grid-flow-col gap-4 mx-10 sm:mx-20 lg:mx-40">
+    <div class="grid grid-rows grid-flow-col gap-4 mx-10 sm:mx-20 lg:mx-40 w-5/6 mt-20">
       <div class="">
         <form @submit.prevent="submitFormInterests">
-          <div class="p-8">
+          <div class="">
             <label class="relative block">
               <span
-                class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28 lg:pt-18"
-                >Please provide us with your <b>interests</b>.</span
+                class="block text-2xl sm:text-m lg:text-5xl"
+                >Talk to us a little bit about you <b>interests</b>:</span
               >
-              <div class="block w-full w-full md:8/12 xl:pl-32 pt-12">
-                <label class="block lg:text-3xl lg:pr-12 lg:pt-18 pt-12"
+              <div class="block w-full w-full md:8/12 pt-12">
+                <label class="block lg:text-3xl lg:pt-18 pt-12"
                   >Select minimum 3 and maximum 10. </label
                 >
                 <label class="text-red-700" v-if="showWarning">You have to select 3 or maximum 10!</label>
@@ -50,13 +50,6 @@
 strong,
 b {
   font-weight: bold;
-}
-</style>
-<style>
-.logoEdit {
-  width: 7.5em;
-  height: 7em;
-  margin-left: 20%;
 }
 </style>
 

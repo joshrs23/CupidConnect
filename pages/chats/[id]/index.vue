@@ -60,13 +60,10 @@
       this.socket = io('https://espacionebula.com:8000');
   
       
-      this.socket.on("join room", socket => {
-        socket.join(this.roomId);
-       
-      }) 
+      this.socket.emit('join room', this.roomId);
+
 
       this.socket.on('chat message', (msg) => {
-
         this.messages.push({
           text: msg.text,
           sender: msg.user,

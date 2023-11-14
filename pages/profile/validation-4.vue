@@ -1,7 +1,8 @@
 <template>
   <div class="h-full w-full text-white bg-black min-w-screen flex flex-col items-center">
+
     <div class="flex justify-center items-center w-64 lg:m-5">
-      <img src="@/img/logo.svg" alt="frameIcon"/>
+      <img src="@/assets/logoCupid.svg" alt="frameIcon"/>
     </div>
     <div class="grid grid-rows grid-flow-col gap-4 mx-10 sm:mx-20 lg:mx-40 w-5/6 mt-20">
       <div class="">

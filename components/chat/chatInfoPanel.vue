@@ -26,7 +26,6 @@
     },
     created: async function () {
       this.finalUser = await this.getUserById(this.userIDID);
-      console.log(this.finalUser);
     },
     props: {
       user: Object, 
@@ -58,7 +57,6 @@
             );
           }
         } catch (error) {
-          console.error("Error in fetchUser:", error);
         }
       },
       getAge(userUSER){

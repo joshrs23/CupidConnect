@@ -1,15 +1,9 @@
-<link href="https://fonts.googleapis.com/css2?family=Lovers+Quarrel&display=swap" rel="stylesheet">
-<link href="../../../assets/styles.css" rel="stylesheet">
-
-
-
-
 <template>
     <div class="container mx-auto mt-4">
   <div class="grid grid-cols-12 gap-5">
 
     <div id="Logo" class="col-span-12 md:col-span-7 bg-black-200 p-4 flex justify-center">
-      <h2 class="text-xl font-semibold"><img src="@/img/logo.svg" alt="frameIcon" /></h2>
+      <h2 class="text-xl font-semibold"><img src="@/assets/logoCupid.svg" alt="frameIcon" /></h2>
     </div>
 
     <div id="content" class="col-span-12 bg-black p-4 lg:border-l white h-full md:col-span-5 md:border-l">
@@ -26,7 +20,7 @@
         <div id="btnLogin" class="flex justify-center items-center mb-4">
           <label class="cursor-pointer">
             <button  type="submit" class="bg-black-200 text-white flex items-center">
-            <img src="@/img/arrow-left.png" alt="arrowIcon" class="mx-2" />
+              <img src="@/public/img/arrow-left.png" alt="arrowIcon" class="mx-2" />
               Log in  
             </button>
           </label>

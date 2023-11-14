@@ -6,7 +6,7 @@
           class="col-span-12 md:col-span-7 bg-black-200 p-4 flex justify-center"
         >
           <h2 class="text-xl font-semibold">
-            <img src="@/img/logo.svg" alt="frameIcon" />
+            <img src="@/assets/logoCupid.svg" alt="frameIcon" />
           </h2>
         </div>
   
@@ -108,7 +108,7 @@
                 required
               />
               <img
-                src="@/img/calendar.png"
+                src="@/public/img/calendar.png"
                 alt="calendarImg"
                 class="col-span-3 mb-2 h-8 w-8"
               />
@@ -121,7 +121,7 @@
   
             <div id="arrow-right" class="mt-4">
               <button type="submit">
-                <img src="@/img/arrow-right.png" alt="arrowImg" />
+                <img src="@/public/img/arrow-right.png" alt="arrowImg" />
                 <nuxt-link to="admin/users/add-user"></nuxt-link>
               </button>
             </div>
@@ -134,7 +134,7 @@
                 @click="goToLogin"
                 class="bg-black-200 text-white flex items-center"
               >
-                <img src="@/img/arrow-left.png" alt="arrowImg" class="mx-2" />
+                <img src="@/public/img/arrow-left.png" alt="arrowImg" class="mx-2" />
                 <nuxt-link to="/Login">Login</nuxt-link>
               </button>
             </label>

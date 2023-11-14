@@ -8,7 +8,7 @@
       <GeneralMenu />
     </div>-->
     <div class="flex justify-center items-center logoEdit">
-        <h2><img src="@/img/logo.svg" alt="frameIcon" /></h2>
+        <h2><img src="@/assets/logoCupid.svg" alt="frameIcon" /></h2>
       </div>
 
     <div class="grid grid-rows-5 grid-flow-col gap-4 border border mx-10 sm:mx-40 lg:mx-60 ">

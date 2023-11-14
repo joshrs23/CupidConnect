@@ -45,7 +45,7 @@
             </div>
             <div id="arrow-right" class="mt-8">
               <button type="submit">
-                <img src="@/img/arrow-right.png" alt="arrowIcon" />
+                <img src="@/public/img/arrow-right.png" alt="arrowIcon" />
               </button>
             </div>
           </form>
@@ -58,7 +58,7 @@
               class="flex items-center"
             >
               <nuxt-link to="admin/users/add-user" id="btnRegister">Register</nuxt-link>
-              <img src="@/img/arrow-right.png" alt="arrowIcon" class="ml-2" />
+              <img src="@/public/img/arrow-right.png" alt="arrowIcon" class="ml-2" />
             </button>
           </label>
         </div>

@@ -59,14 +59,31 @@
     mounted() {
       this.socket = io('https://espacionebula.com:8000');
   
-      this.socket.emit('join room', this.roomId);
-  
+      
+      this.socket.on("join room", socket => {
+        socket.join(this.roomId);
+      })
+
+      const listener = (...args) => {
+  console.log(args);
+}
+this.socket.on('chat message', listener);
+
       this.socket.on('chat message', (msg) => {
-        this.messages.push(msg);
+
+        console.log('aldo');
+        this.messages.push({
+          text: msg.text,
+          sender: msg.user,
+        });
       });
     },
     methods: {
       addMessage(newMessage) {
+        const _userId = localStorage.getItem("CupidConnectId");
+        const msg = { user: _userId, text: newMessage, roomId: this.roomId };
+        console.log(this.socket.emit('chat message', msg));
+        this.newMessage = newMessage;
         this.messages.push({
           text: newMessage,
           sender: 'user',

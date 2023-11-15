@@ -56,29 +56,33 @@
         animate: false, 
       };
     },
-    mounted() {
+    async mounted() {
       this.socket = io('https://espacionebula.com:8000');
-  
-      
-      this.socket.on("join room", socket => {
+      this.roomId = await this.getRoomId();
+      const prueba = this.roomId;
+       this.socket.emit('join room', this.roomId);
+      /*this.socket.on("join room", socket => {debugger;
         socket.join(this.roomId);
        
       }) 
-
-      this.socket.on('chat message', (msg) => {
-
+*/
+      this.socket.on('chat message', (user,text) => {debugger;
+console.log("aqui");
         this.messages.push({
-          text: msg.text,
-          sender: msg.user,
+          text: text,
+          sender: user,
         });
       });
-
+ /*
+      this.socket.on('chat message', (msg) => {debugger;console.log(msg);
+        this.messages.push(msg);
+      });*/
     },
     methods: {
       addMessage(newMessage) {
         const _userId = localStorage.getItem("CupidConnectId");
         const msg = { user: _userId, text: newMessage, roomId: this.roomId };
-        console.log(this.socket.emit('chat message', this.roomId, newMessage));
+        console.log(this.socket.emit('chat message', this.roomId,  _userId, newMessage));
         this.newMessage = newMessage;
         this.messages.push({
           text: newMessage,

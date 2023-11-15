@@ -61,22 +61,15 @@
       this.roomId = await this.getRoomId();
       const prueba = this.roomId;
        this.socket.emit('join room', this.roomId);
-      /*this.socket.on("join room", socket => {debugger;
-        socket.join(this.roomId);
-       
-      }) 
-*/
-      this.socket.on('chat message', (user,text) => {debugger;
-console.log("aqui");
+
+      this.socket.on('chat message', (user,text) => {
+
         this.messages.push({
           text: text,
           sender: user,
         });
       });
- /*
-      this.socket.on('chat message', (msg) => {debugger;console.log(msg);
-        this.messages.push(msg);
-      });*/
+
     },
     methods: {
       addMessage(newMessage) {

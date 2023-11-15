@@ -12,19 +12,23 @@
           v-if="userCurrent._profilePicture"
           :src="'https://espacionebula.com/img/' + userCurrent._profilePicture"
           alt="Profile photo"
-          class="w-48 h-48 m-10 rounded-full object-cover"
+          class="w-64 h-64 m-5 mr-16 rounded-full object-cover"
         />
         <img
           v-else
           src="@/assets/dummy-image.jpg"
           alt="Profile photo"
-          class="w-48 h-48 m-10 rounded-full object-cover"
+          class="w-64 h-64 m-5 mr-16 rounded-full object-cover"
         />
         <div>
-          <div class="text-2xl">
-            {{ userCurrent._username ?? 'Username Id' }}
+          <div class="text-5xl font-bold">
+            {{
+              (userCurrent._fname ?? "First name and") +
+              " " +
+              (userCurrent._lname ?? "last name.")
+            }}
           </div>
-          <div class="flex">
+          <div class="flex mt-5">
             <div class="mr-5">
               {{ prospectsLiked.length + "&nbsp; Likes recieved." }}
             </div>
@@ -35,11 +39,24 @@
               {{ matches.length + "&nbsp; Matches." }}
             </div>
           </div>
-          <div class="text-2xl font-bold mt-2">
-            {{ (userCurrent._fname ?? 'First name and') + " " + (userCurrent._lname ?? 'last name.') }}
+          <div class="text-3xl mt-2  font-bold">
+            {{ getIdentity(userCurrent.identities) }}
           </div>
           <div class="text-md flex">
-            {{ getAge(userCurrent) + "&nbsp; years old."}}
+            {{ getAge(userCurrent) + "&nbsp; years old." }}
+          </div>
+          <div class="pt-5">
+          <span class="text-3xl font-bold">About</span>
+          <div class="text-[20px]">{{ userCurrent._description }}</div>
+        </div>
+          <div class="flex mt-[13px] flex-wrap">
+            <div
+              v-for="(interest, index) in userCurrent._interests"
+              class="border rounded-[90px] border-[#686262] pl-[12px] pr-[12px] mr-[3.5px] ml-[3.5px]"
+              :key="index"
+            >
+              {{ getInterest(interest) }}
+            </div>
           </div>
         </div>
       </div>
@@ -83,7 +100,7 @@ export default {
       _username: "",
       prospectsLiked: [],
       prospectsLikedSent: [],
-      matches: []
+      matches: [],
     };
   },
   mounted() {
@@ -122,8 +139,7 @@ export default {
             "There was an error with the user : " + response.data.error
           );
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     },
     async getWhoLikedUsers() {
       try {
@@ -182,7 +198,7 @@ export default {
       } catch (error) {}
     },
     getAge(userUSER) {
-      if(!userUSER) return 0;
+      if (!userUSER) return 0;
       const dob = new Date(userUSER._dob);
       const today = new Date();
       const age = today.getFullYear() - dob.getFullYear();
@@ -259,8 +275,8 @@ export default {
 <style scoped>
 .prospect-card {
   position: relative;
-  width: 300px; 
-  height: 400px; 
+  width: 300px;
+  height: 400px;
   border-radius: 10px;
   margin: 10px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -274,7 +290,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.7; 
+  opacity: 0.7;
 }
 .profile-image {
   width: 100%;

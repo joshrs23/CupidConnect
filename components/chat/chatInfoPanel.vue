@@ -3,7 +3,7 @@
     <div v-if="showThisCurrentProspect" class="absolute w-full h-full bg-black/80 flex items-center justify-center z-10">
       <button class="fas fa-arrow-left fa-3x absolute left-0 top-0 m-20" @click="showThisUser()" />
       <Card
-        class="overflow-scroll relative"
+        class=" relative"
         :key="0"
         :index="0"
         :prospect="finalUser"

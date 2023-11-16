@@ -18,14 +18,13 @@ export default ({
     '@fortawesome/fontawesome-free/css/all.css',
   ],
   buildModules: [
-    // Add the @nuxtjs/google-fonts module
     '@nuxtjs/google-fonts',
   ],
   googleFonts: {
     families: {
       'Lovers Quarrel': true,
     },
-    display: 'swap', // Specify your desired display option
+    display: 'swap', 
   },
   head: {
     link: [

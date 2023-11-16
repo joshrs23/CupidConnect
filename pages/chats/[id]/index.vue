@@ -12,7 +12,7 @@
       <div class="w-4/6">
         <div class="chat">
           <ChatInfoPanel 
-            class="chat-panel"
+            class="chat-panel" 
           />
           <div ref="chatHistory" class="chat-history">
             <ChatBubble
@@ -33,6 +33,8 @@
   <script>
   import ChatInfoPanel from '@/components/chat/chatInfoPanel.vue'; 
   import { useUserStore } from '@/stores/users'
+  import io from 'socket.io-client'
+  import axios from 'axios';
 
   export default {
     components: {
@@ -40,6 +42,8 @@
     },
     data() {
       return {
+        socket : null,
+        roomId : '',
         selectedUser: this.getUserId(),
         messages: [
           { text: 'Hello!', sender: 'user' },
@@ -52,8 +56,27 @@
         animate: false, 
       };
     },
+    async mounted() {
+      this.socket = io('https://espacionebula.com:8000');
+      this.roomId = await this.getRoomId();
+      const prueba = this.roomId;
+       this.socket.emit('join room', this.roomId);
+
+      this.socket.on('chat message', (user,text) => {
+
+        this.messages.push({
+          text: text,
+          sender: user,
+        });
+      });
+
+    },
     methods: {
       addMessage(newMessage) {
+        const _userId = localStorage.getItem("CupidConnectId");
+        const msg = { user: _userId, text: newMessage, roomId: this.roomId };
+        console.log(this.socket.emit('chat message', this.roomId,  _userId, newMessage));
+        this.newMessage = newMessage;
         this.messages.push({
           text: newMessage,
           sender: 'user',
@@ -75,10 +98,68 @@
       },
       getUserId(){
         return useRoute().params.id;
+      },
+      async getHistory(){
+        try {
+          const _userId = localStorage.getItem("CupidConnectId");
+          const token = localStorage.getItem("CupidConnectToken");
+          const dataf = {
+            userId: _userId,
+            roomId: this.roomId,
+          };
+          const response = await axios.post(
+            "https://espacionebula.com:8000/get-matches",
+            dataf,
+            {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                Authorization: `Bearer ${token}`,
+              },
+              mode: "cors",
+            }
+          );
+          const data = response.data;
+          if (data.success) {
+            return data;
+          }
+        } catch (error) {
+        }
+      },
+      async getRoomId(){
+        try {
+          const _userId = localStorage.getItem("CupidConnectId");
+          const token = localStorage.getItem("CupidConnectToken");
+          
+          const dataf = {
+            userId1: _userId,
+            userId2: this.selectedUser,
+          };
+          const response = await axios.post(
+            "https://espacionebula.com:8000/get-match",
+            dataf,
+            {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                Authorization: `Bearer ${token}`,
+              },
+              mode: "cors",
+            }
+          );
+          const data = response.data;
+          if (data.success) {
+            return data.match._id;
+          } else {
+            console.log(
+              "There was an error with the user : " + response.data.error
+            );
+          }
+        } catch (error) {
+        }
       }
     },
-    created(){
-    }
+    created: async function () {
+      this.roomId = await this.getRoomId();
+    },
   };
   </script>
   
@@ -108,18 +189,14 @@
     display: flex;
     flex-direction: column;
   }
-  
-  /* Define the animation */
   .w-fit {
     transition: opacity 0.5s ease-in-out;
   }
   
-  /* Add animation for user messages */
   .w-fit.user-message {
     animation: fadeInRight 0.5s ease-in-out;
   }
   
-  /* Add animation for friend messages */
   .w-fit.friend-message {
     animation: fadeInLeft 0.5s ease-in-out;
   }

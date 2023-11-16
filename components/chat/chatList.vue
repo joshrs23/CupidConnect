@@ -61,7 +61,6 @@
             );
           }
         } catch (error) {
-          console.error("Error in fetchUser:", error);
         }
       }
     }

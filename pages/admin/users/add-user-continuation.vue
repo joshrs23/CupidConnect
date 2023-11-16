@@ -1,9 +1,3 @@
-<link href="https://fonts.googleapis.com/css2?family=Lovers+Quarrel&display=swap" rel="stylesheet">
-<link href="../../../assets/styles.css" rel="stylesheet">
-
-
-
-
 <template>
 
     <div class="container mx-auto mt-4">
@@ -12,7 +6,7 @@
 
             <div id="Logo" class="col-span-12 md:col-span-7 bg-black-200 p-4 flex justify-center">
 
-                <h2 class="text-xl font-semibold"><img src="@/img/logo.svg" alt="frameIcon" /></h2>
+                <h2 class="text-xl font-semibold"><img src="@/assets/logoCupid.svg" alt="frameIcon" /></h2>
 
             </div>
 
@@ -32,7 +26,7 @@
                             {{ country._name }}
                           </option>
                         </select>
-                        <img src="@/img/arrow-down.png" alt="calendarImg" class="col-span-2 mb-2 h-8 w-8"/>
+                        <img src="@/public/img/arrow-down.png" alt="calendarImg" class="col-span-2 mb-2 h-8 w-8"/>
 
                     </div>
           
@@ -44,7 +38,7 @@
                             {{ province.name }}
                           </option>
                         </select>
-                        <img src="@/img/arrow-down.png" alt="calendarImg" class="col-span-2 mb-2 h-8 w-8"/>
+                        <img src="@/public/img/arrow-down.png" alt="calendarImg" class="col-span-2 mb-2 h-8 w-8"/>
 
                     </div>
 
@@ -56,7 +50,7 @@
                             {{ city.name }}
                           </option>
                         </select>
-                        <img src="@/img/arrow-down.png" alt="calendarImg" class="col-span-2 mb-2 h-8 w-8"/>
+                        <img src="@/public/img/arrow-down.png" alt="calendarImg" class="col-span-2 mb-2 h-8 w-8"/>
 
                     </div>
 
@@ -93,7 +87,7 @@
 
                         <button  type="submit" class="bg-black-200 text-white flex items-center">
 
-                            <img src="@/img/arrow-left.png" alt="arrowIcon" class="mx-2" />
+                            <img src="@/public/img/arrow-left.png" alt="arrowIcon" class="mx-2" />
                             <nuxt-link to="/Login">Login</nuxt-link>
 
                         </button>

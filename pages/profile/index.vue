@@ -124,161 +124,214 @@ display: block;
 
 
 <script>
-
 import { useIdentitiesStore } from "@/stores/identities";
 import { useInterestsStore } from "@/stores/interests";
 import { useOrientationsStore } from "@/stores/orientations";
-import axios from 'axios';
-import Swiper from 'swiper';
-import 'swiper/swiper-bundle.css';
+import axios from "axios";
 
 export default {
-
   data() {
-
-      return {
-          _username : '',
-          description : '',
-          identitiesData : [],
-          selectedIdentity : null,
-          orientationData : [],
-          selectedOrientation : null,
-          interestsData : [],
-          selectedInterests : null,
-          pictures: [],
-
-          activeIndex: 0,
-          swiper: null,
-      
+    return {
+      userCurrent: "",
+      _username: "",
+      prospectsLiked: [],
+      prospectsLikedSent: [],
+      matches: [],
     };
-
   },
   mounted() {
-    
-    this.swiper = new Swiper('.swiper-container', {
-      loop: true,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      on: {
-        slideChange: () => {
-          this.activeIndex = this.swiper.realIndex;
-        },
-      },
-    });
-
-
-
-      if(!localStorage.getItem('CupidConnectToken')){
-
-          this.$router.push('/');
-
-      }
-      this._username = localStorage.getItem('CupidConnectuser');
-      this.fetchUser();
+    this._username = localStorage.getItem("CupidConnectuser");
+    this.fetchUser();
+  },
+  created: async function () {
+    this.prospectsLiked = await this.getWhoLikedUsers();
+    this.prospectsLikedSent = await this.getLikedByUsers();
+    this.matches = await this.getMatches();
   },
   methods: {
-
-    setActiveIndex(index) {
-      this.activeIndex = index;
-      this.swiper.slideTo(index, 300);
+    async getMatches() {
+      try {
+        const _userId = localStorage.getItem("CupidConnectId");
+        const token = localStorage.getItem("CupidConnectToken");
+        const dataf = {
+          userId: _userId,
+        };
+        const response = await axios.post(
+          "https://espacionebula.com:8000/get-matches",
+          dataf,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${token}`,
+            },
+            mode: "cors",
+          }
+        );
+        const data = response.data;
+        if (data.success) {
+          return data.matches;
+        } else {
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+        }
+      } catch (error) {}
     },
-    prevSlide() {
-      this.swiper.slidePrev();
+    async getWhoLikedUsers() {
+      try {
+        const _userId = localStorage.getItem("CupidConnectId");
+        const token = localStorage.getItem("CupidConnectToken");
+        const dataf = {
+          _liked_userId: _userId,
+        };
+        const response = await axios.post(
+          "https://espacionebula.com:8000/get-likes-to-user",
+          dataf,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${token}`,
+            },
+            mode: "cors",
+          }
+        );
+        const data = response.data;
+        if (data.success) {
+          return data.usersWhoLiked;
+        } else {
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+        }
+      } catch (error) {}
     },
-    nextSlide() {
-      this.swiper.slideNext();
+    async getLikedByUsers() {
+      try {
+        const _userId = localStorage.getItem("CupidConnectId");
+        const token = localStorage.getItem("CupidConnectToken");
+        const dataf = {
+          liker_userId: _userId,
+        };
+        const response = await axios.post(
+          "https://espacionebula.com:8000/get-likes-user",
+          dataf,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${token}`,
+            },
+            mode: "cors",
+          }
+        );
+        const data = response.data;
+        if (data.success) {
+          return data.usersWhoILiked;
+        } else {
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+        }
+      } catch (error) {}
     },
-
-    handlePicturesChange(event) {
-
-      this.pictures = event.target.files;
-
+    getAge(userUSER) {
+      if (!userUSER) return 0;
+      const dob = new Date(userUSER._dob);
+      const today = new Date();
+      const age = today.getFullYear() - dob.getFullYear();
+      if (
+        today.getMonth() < dob.getMonth() ||
+        (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())
+      ) {
+        age--;
+      }
+      return age;
     },
-
-  clearErrorMessageAfterDelay() {
-    
-          setTimeout(() => {
-              this.error = "";
-          }, 5000);
-      },
-
-    getIdentity(identityId){
+    getIdentity(identityId) {
       return useIdentitiesStore().getIdentitiesById(identityId);
     },
-    getInterest(interestId){
+    getInterest(interestId) {
       return useInterestsStore().getInterestsById(interestId);
     },
-    getOrientation(){
-      const o = useOrientationsStore().getOrientationsById(this.selectedOrientation);
+    getOrientation() {
+      const o = useOrientationsStore().getOrientationsById(
+        this.selectedOrientation
+      );
       return o;
     },
-
-  async fetchUser(){
-
-    try {
-        
-        const _userId = localStorage.getItem('CupidConnectId'); 
-        const token = localStorage.getItem('CupidConnectToken');   
+    async fetchUser() {
+      try {
+        const _userId = localStorage.getItem("CupidConnectId");
+        const token = localStorage.getItem("CupidConnectToken");
         const dataf = {
-              userId: _userId,
-          };
-
-        const response = await axios.post('https://espacionebula.com:8000/get-user',dataf, {
-          
-          
+          userId: _userId,
+        };
+        const response = await axios.post(
+          "https://espacionebula.com:8000/get-user",
+          dataf,
+          {
             headers: {
-
-              'Access-Control-Allow-Origin': '*',
-              'Authorization': `Bearer ${token}`,
-              
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${token}`,
             },
-            mode: 'cors',
-
-        });
-        
-              const data = response.data;
-                if(data.success){
-                  
-                  if (data.user.identities != '') { 
-                    this.selectedIdentity = data.user.identities;
-                  }
-                  if (data.user._description != ''){
-                    this.description = data.user._description; 
-                  }
-                  if (data.user._orientations != '') { 
-                    this.selectedOrientation = data.user._orientations; 
-                  }
-                  this.selectedInterests = data.user._interests;
-                  if (data.user._pictures.length > 0) { 
-                    this.pictures = data.user._pictures; 
-                  }
-
-                }else{
-
-                  this.error = "There was an error with the user : "+response.data.error;
-                  console.log("There was an error with the user : "+response.data.error);
-                  this.clearErrorMessageAfterDelay();
-
-                };
-          
-            
-          
-        } catch (error) {
-
-            console.error('Error in fetchUser:', error);
-
+            mode: "cors",
+          }
+        );
+        const data = response.data;
+        if (data.success) {
+          if (data.user.identities != "") {
+            this.selectedIdentity = data.user.identities;
+          }
+          if (data.user._description != "") {
+            this.description = data.user._description;
+          }
+          if (data.user._orientations != "") {
+            this.selectedOrientation = data.user._orientations;
+          }
+          this.selectedInterests = data.user._interests;
+          if (data.user._pictures.length > 0) {
+            this.pictures = data.user._pictures;
+          }
+          this.userCurrent = data.user;
+        } else {
+          this.error =
+            "There was an error with the user : " + response.data.error;
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+          this.clearErrorMessageAfterDelay();
         }
-
-
+      } catch (error) {
+        console.error("Error in fetchUser:", error);
+      }
+    },
   },
-
-
-},
-
-
-}; 
-
+};
 </script>
 
+<style scoped>
+.prospect-card {
+  position: relative;
+  width: 300px;
+  height: 400px;
+  border-radius: 10px;
+  margin: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  color: white;
+}
+
+.image-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+}
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+</style>

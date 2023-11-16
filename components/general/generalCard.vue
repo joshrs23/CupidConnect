@@ -83,7 +83,7 @@ export default {
       let howBlur = 3;
       if (this.index == 0) {
         howBlur = 0;
-      }
+      } 
       return {
         transform: `rotate(${rotation}deg) translateX(${this.index * 10}px)`,
         filter: `blur(${howBlur}px)`,

@@ -27,6 +27,9 @@
         <li :class="{ 'font-bold': isHomeRoute }">
           <nuxt-link to="/"><i class="fas fa-home"></i> Home</nuxt-link>
         </li>
+        <li :class="{ 'font-bold': isUsersRoute }">
+          <nuxt-link to="/admin/users"><i class="fa-solid fa-user"></i> Users</nuxt-link>
+        </li>
       </ul>
     </div>
     <div class="mx-auto">
@@ -116,6 +119,9 @@ export default {
     },
     isHomeRoute() {
       return this.$route.path === "/";
+    },
+    isUsersRoute() {
+      return this.$route.path === "/admin/users";
     },
   },
   methods: {

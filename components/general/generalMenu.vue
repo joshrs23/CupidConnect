@@ -131,7 +131,7 @@ export default {
       return this.$route.path === "/";
     },
     isUsersRoute() {
-      return this.$route.path === "/admin/users";
+      return this.$route.path.startsWith("/admin/users");
     },
   },
   methods: {

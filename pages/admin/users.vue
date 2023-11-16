@@ -28,13 +28,17 @@
                     @click="seeMatches(user.id)">
                     <i class="fa-solid fa-people-arrows"></i>
                     <div class="hidden group-hover:block bg-gray-800 text-white text-sm py-1 px-2 rounded absolute bottom-full left-1/2 transform -translate-x-1/2">
-                      This is the description
+                      Press to see matches from user
                     </div>
                   </button> 
                   <button 
-                    class="p-2 mr-[3.5px] ml-[3.5px] rounded-3xl border border-gray rounded-xl"
+                    id="blockButton_" + user.id
+                    class="p-2 mr-[3.5px] ml-[3.5px] rounded-3xl border border-gray rounded-xl relative inline-block group"
                     @click="blockUser(user.id)">
                     <i class="fa-solid fa-user-slash"></i>
+                    <div class="hidden group-hover:block bg-gray-800 text-white text-sm py-1 px-2 rounded absolute bottom-full left-1/2 transform -translate-x-1/2">
+                      Press to block user
+                    </div>
                   </button> 
                 </td>
             </tr>
@@ -69,6 +73,17 @@ export default {
         users : [],
 
         };
+
+    },
+    mounted() {
+
+          
+
+    if(!localStorage.getItem('CupidConnectToken')){
+
+        this.$router.push('/');
+
+    }
 
     },
     
@@ -112,8 +127,33 @@ export default {
         console.error('Error when deleting a user', error);
       }
     },
-    seeMatches(id) {
-      console.log(`Matches from user:  ${id}`);
+    async seeMatches(id) {
+      try {
+        const _userId = localStorage.getItem("CupidConnectId");
+        const token = localStorage.getItem("CupidConnectToken");
+        const dataf = {
+          userId: _userId,
+        };
+        const response = await axios.post(
+          "https://espacionebula.com:8000/get-matches",
+          dataf,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${token}`,
+            },
+            mode: "cors",
+          }
+        );
+        const data = response.data;
+        if (data.success) {
+          return data.matches;
+        } else {
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+        }
+      } catch (error) {}
     },
     async fetchUsers() { 
 

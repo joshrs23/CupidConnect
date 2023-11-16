@@ -3,7 +3,7 @@
     <div v-if="showThisCurrentProspect" class="absolute w-full h-full bg-black/80 flex items-center justify-center z-10">
       <button class="fas fa-arrow-left fa-3x absolute left-0 top-0 m-20" @click="outProspect()" />
       <Card
-        class="overflow-scroll relative"
+        class="relative"
         :key="0"
         :index="0"
         :prospect="showThisProspect"
@@ -17,7 +17,7 @@
     <div class="hidden lg:block w-1/6">
       <GeneralMenu />
     </div>
-    <div class="w-full lg:w-5/6 relative h-full overflow-scroll">
+    <div class="w-full lg:w-5/6 relative h-full overflow-y-scroll no-scrollbar">
       <ul class="w-full flex justify-center h-fit text-3xl p-5 mt-5">
         <li
           class="likesTitle p-5 font-bold cursor-pointer"

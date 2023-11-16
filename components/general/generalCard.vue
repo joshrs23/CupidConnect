@@ -305,7 +305,12 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none; 
+}
+.image-container::-webkit-scrollbar {
+    display: none;
 }
 
 .profile-image {

@@ -19,8 +19,9 @@
               v-for="(message, index) in messages"
               :key="index"
               :message="message"
+              :senderUser = ownUser
               class="w-fit"
-              :user-message="message.sender === 'user'"
+              :user-message="message.sender === ownUser"
               :animate="animate"
             />
           </div>
@@ -45,13 +46,8 @@
         socket : null,
         roomId : '',
         selectedUser: this.getUserId(),
+        ownUser: localStorage.getItem("CupidConnectId"),
         messages: [
-          { text: 'Hello!', sender: 'user' },
-          { text: 'Hi there!', sender: 'friend' },
-          { text: 'How are you?', sender: 'user' },
-          { text: 'I\'m good, thanks!', sender: 'friend' },
-          { text: 'What are you up to?', sender: 'friend' },
-          { text: 'Just working on a project.', sender: 'user' },
         ],
         animate: false, 
       };
@@ -59,22 +55,54 @@
     async mounted() {
       this.socket = io('https://espacionebula.com:8000');
       this.roomId = await this.getRoomId();
-      const prueba = this.roomId;
-       this.socket.emit('join room', this.roomId);
-
+      this.socket.emit('join room', this.roomId);
       this.socket.on('chat message', (user,text) => {
-
         this.messages.push({
           text: text,
           sender: user,
         });
       });
-
+      this.messages = await this.getHistory();
+      console.log(this.messages);
     },
     methods: {
+      async getHistory(){
+        try {
+          const userId = localStorage.getItem("CupidConnectId");
+          const token = localStorage.getItem("CupidConnectToken");
+          const dataf = {
+            matchId: this.roomId,
+            userId: userId,
+          };
+          const response = await axios.post(
+            "https://espacionebula.com:8000/get-message",
+            dataf,
+            {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                Authorization: `Bearer ${token}`,
+              },
+              mode: "cors",
+            }
+            
+          );
+          console.log(dataf);
+
+          const data = response.data;
+          console.log(data);
+          if (data.success) {
+            return data.messages;
+          } else {
+            console.log(
+              "There was an error with the user : " + response.data.error
+            );
+            this.clearErrorMessageAfterDelay();
+          }
+        } catch (error) {
+        }
+      },
       addMessage(newMessage) {
         const _userId = localStorage.getItem("CupidConnectId");
-        const msg = { user: _userId, text: newMessage, roomId: this.roomId };
         console.log(this.socket.emit('chat message', this.roomId,  _userId, newMessage));
         this.newMessage = newMessage;
         this.messages.push({
@@ -87,7 +115,6 @@
         this.$nextTick(() => {
           this.scrollToBottom();
         });
-  
         setTimeout(() => {
           this.animate = false;
         }, 500);
@@ -98,32 +125,6 @@
       },
       getUserId(){
         return useRoute().params.id;
-      },
-      async getHistory(){
-        try {
-          const _userId = localStorage.getItem("CupidConnectId");
-          const token = localStorage.getItem("CupidConnectToken");
-          const dataf = {
-            userId: _userId,
-            roomId: this.roomId,
-          };
-          const response = await axios.post(
-            "https://espacionebula.com:8000/get-matches",
-            dataf,
-            {
-              headers: {
-                "Access-Control-Allow-Origin": "*",
-                Authorization: `Bearer ${token}`,
-              },
-              mode: "cors",
-            }
-          );
-          const data = response.data;
-          if (data.success) {
-            return data;
-          }
-        } catch (error) {
-        }
       },
       async getRoomId(){
         try {
@@ -192,11 +193,9 @@
   .w-fit {
     transition: opacity 0.5s ease-in-out;
   }
-  
   .w-fit.user-message {
     animation: fadeInRight 0.5s ease-in-out;
   }
-  
   .w-fit.friend-message {
     animation: fadeInLeft 0.5s ease-in-out;
   }

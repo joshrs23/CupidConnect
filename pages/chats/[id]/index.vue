@@ -23,6 +23,7 @@
               class="w-fit"
               :user-message="message.sender === ownUser"
               :animate="animate"
+              @mountedChatBubble="scrollToBottom"
             />
           </div>
           <ChatInput @new-message="addMessage" class="chat-input"/>
@@ -61,9 +62,20 @@
           text: text,
           sender: user,
         });
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
+        setTimeout(() => {
+          this.animate = true;
+        }, 500);
       });
       this.messages = await this.getHistory();
-      console.log(this.messages);
+      this.$nextTick(() => {
+        this.scrollToBottom();
+      });
+      setTimeout(() => {
+          this.animate = true;
+      }, 500);
     },
     methods: {
       async getHistory(){
@@ -86,16 +98,11 @@
             }
             
           );
-          console.log(dataf);
 
           const data = response.data;
-          console.log(data);
           if (data.success) {
             return data.messages;
           } else {
-            console.log(
-              "There was an error with the user : " + response.data.error
-            );
             this.clearErrorMessageAfterDelay();
           }
         } catch (error) {
@@ -103,11 +110,10 @@
       },
       addMessage(newMessage) {
         const _userId = localStorage.getItem("CupidConnectId");
-        console.log(this.socket.emit('chat message', this.roomId,  _userId, newMessage));
+        this.socket.emit('chat message', this.roomId,  _userId, newMessage);
         this.newMessage = newMessage;
-  
+
         this.animate = true;
-  
         this.$nextTick(() => {
           this.scrollToBottom();
         });
@@ -146,9 +152,6 @@
           if (data.success) {
             return data.match._id;
           } else {
-            console.log(
-              "There was an error with the user : " + response.data.error
-            );
           }
         } catch (error) {
         }

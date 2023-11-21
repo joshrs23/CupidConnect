@@ -137,6 +137,12 @@ export default {
   line-height: normal;
   font-style: normal;
 }
+*::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
 ul,
 ol {
   list-style: none;

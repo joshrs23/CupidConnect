@@ -1,18 +1,9 @@
 <template>
-  <div class="h-full  w-full  text-white bg-black min-w-screen">
-    <!--"lg:h-full  lg:w-full h-screen w-screen text-white flex"
-    <div class="lg:hidden">
-      <GeneralMenuPhone />
-    </div>
+  <div class="h-full  w-screen  text-white bg-black flex">
     <div class="hidden lg:block w-1/6">
       <GeneralMenu />
-    </div>-->
-    <div class="flex justify-center items-center logoEdit">
-        <h2><img src="@/assets/logoCupid.svg" alt="frameIcon" /></h2>
-      </div>
-
-    <div class="grid grid-rows-5 grid-flow-col gap-4 border border mx-10 sm:mx-40 lg:mx-60 ">
-      
+    </div>
+    <div class="grid grid-rows-5 px-10 sm:px-40 lg:px-60 mt-10 ">
 
       <div class="border-b white">
         <form @submit.prevent="submitFormDescription">
@@ -25,8 +16,8 @@
             </label>
           </div>
           <div class="lg:mt-4 mb-10 text-right pr-10">
-            <button type="submit" class="border p-2">
-              SAVE 
+            <button type="submit">
+              <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
             </button>
           </div>
           <!-- error -->
@@ -57,7 +48,7 @@
           </div>
           <div class="lg:mt-4 text-right pr-10 xl:pr-52">
             <button  type="submit">
-              <i class="fa-solid fa-arrow-right  fa-2x"></i>
+              <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
             </button>
           </div>
           <!-- error -->
@@ -88,7 +79,7 @@
           </div>
           <div class="lg:mt-4 text-right pr-10 xl:pr-52">
             <button type="submit">
-              <i class="fa-solid fa-arrow-right  fa-2x"></i>
+              <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
             </button>
           </div>
           <!-- error -->
@@ -118,7 +109,7 @@
             </label>
             <div class="lg:mt-4 text-right pr-10 xl:pr-52">
               <button id="" type="submit">
-                <i class="fa-solid fa-arrow-right  fa-2x"></i>
+                <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
               </button>
             </div>
             <!-- error -->
@@ -153,7 +144,7 @@
             </label>
             <div class="lg:mt-4 text-right pr-10 xl:pr-52">
               <button id="" type="submit">
-                <i class="fa-solid fa-arrow-right  fa-2x"></i>
+                <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
               </button>
             </div>
             <!-- error -->
@@ -180,6 +171,9 @@
 
       
     </div>
+    <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800 p-4">
+        <GeneralMenuPhone />
+      </div>  
   </div>
 </template>
 
@@ -295,201 +289,121 @@
     methods: {
 
       async fetchData(){
-
         await this.fetchIdentities();
-
-
       },
-
       async submitForm(){
-        
-        const descriptionSuccess = await this.submitFormDescription();
-        const identitySuccess = await this.submitFormIdentity();
-        const orientationSuccess = await this.submitFormOrientation();
-        const interestsSuccess = await this.submitFormInterests();
-
-        this.submissionStatus = descriptionSuccess;
-        this.submissionStatus = identitySuccess;
-        this.submissionStatus = orientationSuccess;
-        this.submissionStatus = interestsSuccess;
-        
-        if (Object.values(this.submissionStatus).every(success => success)){
-
-          this.$router.push('/profile');
-        }
-      },
-      
-      
-        async submitFormDescription() {
           
+          const descriptionSuccess = await this.submitFormDescription();
+          const identitySuccess = await this.submitFormIdentity();
+          const orientationSuccess = await this.submitFormOrientation();
+          const interestsSuccess = await this.submitFormInterests();
 
-            if(this.verify(this.formTypes.DESCRIPTION)){ 
+          this.submissionStatus = descriptionSuccess;
+          this.submissionStatus = identitySuccess;
+          this.submissionStatus = orientationSuccess;
+          this.submissionStatus = interestsSuccess;
+          
+          if (Object.values(this.submissionStatus).every(success => success)){
 
-                const _userId = localStorage.getItem('CupidConnectId'); 
-                const token = localStorage.getItem('CupidConnectToken');
+            this.$router.push('/profile');
+          }
+      },
+      async submitFormDescription() {
+            
 
-                const dataf = {
+              if(this.verify(this.formTypes.DESCRIPTION)){ 
 
-                  userId: _userId,
-                  newDescriptions: this.description, 
+                  const _userId = localStorage.getItem('CupidConnectId'); 
+                  const token = localStorage.getItem('CupidConnectToken');
 
-                };
+                  const dataf = {
 
-                const response = await axios.post('https://espacionebula.com:8000/change-description-user', dataf, {
+                    userId: _userId,
+                    newDescriptions: this.description, 
 
-                 headers: {
+                  };
 
-                        'Access-Control-Allow-Origin': '*',
-                        'Authorization': `Bearer ${token}`,
+                  const response = await axios.post('https://espacionebula.com:8000/change-description-user', dataf, {
 
-                    },
-                    mode: 'cors',
+                  headers: {
 
-                });
-                 if(response.data.success){
+                          'Access-Control-Allow-Origin': '*',
+                          'Authorization': `Bearer ${token}`,
 
-                  this.save.description = "The description was saved successfully";
+                      },
+                      mode: 'cors',
+
+                  });
+                  if(response.data.success){
+
+                    this.save.description = "The description was saved successfully";
+                    this.clearErrorMessageAfterDelay();
+
+              }else{
+
+                  this.errors.description = "There was an error with the description: "+response.data.error;
+                  console.log("There was an error with the description: "+response.data.error);
                   this.clearErrorMessageAfterDelay();
 
-            }else{
-
-                this.errors.description = "There was an error with the description: "+response.data.error;
-                console.log("There was an error with the description: "+response.data.error);
-                this.clearErrorMessageAfterDelay();
-
-            }
-        
-        }
+              }
+          
+          }
       },
-
       verify(formType) {
-        
-          if (formType === this.formTypes.DESCRIPTION) {
-            const descriptionRegex = /^[a-zA-Z0-9_]{1,100}$/;
-            if (!descriptionRegex.test(this.description)) {
-              this.errors.description = 'The description cannot be more than 100 alphanumeric characters';
+          
+            if (formType === this.formTypes.DESCRIPTION) {
+              const descriptionRegex = /^[a-zA-Z0-9_]{1,100}$/;
+              if (!descriptionRegex.test(this.description)) {
+                this.errors.description = 'The description cannot be more than 100 alphanumeric characters';
+                return false;
+              }
+          } else if (formType === this.formTypes.IDENTITY) {
+            if (!this.selectedIdentity) {
+              this.errors.identity = 'Please select an identity';
               return false;
             }
-        } else if (formType === this.formTypes.IDENTITY) {
-          if (!this.selectedIdentity) {
-            this.errors.identity = 'Please select an identity';
-            return false;
-          }
-        } else if (formType === this.formTypes.ORIENTATION) {
-          if (!this.selectedOrientation) {
-            this.errors.orientation = 'Please select an orientation';
-            return false;
-          }
-        } else if (formType === this.formTypes.INTERESTS) {
-          if (this.selectedInterests.length < 3) {
-            this.errors.interests = 'Please select up to 3 interests';
-            return false;
-          }
-        } else if (formType === this.formTypes.PHOTOS) {
-          if (this.pictures == null) {
-            this.errors.photos = 'Please select a photo';
-            return false;
-          }
-        }
-        // Clear errors for the current form
-        this.errors[formType.toLowerCase()] = '';
-        return true;
-      },
-    
-
-    clearErrorMessageAfterDelay() {
-      
-            setTimeout(() => {
-                this.error = "";
-                this.errors = "";
-            }, 5000);
-        },
-
-    async submitFormIdentity() {
-
-      if(this.verify(this.formTypes.IDENTITY)){
-
-        const _userId = localStorage.getItem('CupidConnectId'); 
-        const token = localStorage.getItem('CupidConnectToken'); //para verificar id 
-        //debugger;
-          const dataf = {
-              userId: _userId,
-              newIdentity: this.selectedIdentity,
-
-          };
-
-          const response = await axios.post('https://espacionebula.com:8000/change-identity-user', dataf, {
-
-              headers: {
-
-                  'Access-Control-Allow-Origin': '*',
-                  'Authorization': `Bearer ${token}`,
-
-              },
-              mode: 'cors',
-
-          });
-          
-          //console.log(response); //debugger;
-          if (response.data.success) {
-            this.save.identity = "The identity was saved successfully";
-            this.clearErrorMessageAfterDelay();
-          } else {
-              this.errors.identity = "There was an error updating your identity : "+response.data.error;
-              console.log("There was an error updating your identity : "+response.data.error);
-              this.clearErrorMessageAfterDelay();
-          }
-      
-      }
-
-    },
-
-      async fetchIdentities() {
-        
-        try {
-          
-            const response = await axios.get('https://espacionebula.com:8000/get-identities', {
-
-                headers: {
-
-                  'Access-Control-Allow-Origin': '*',
-                  'Content-Type': 'multipart/form-data',
-                  
-                },
-                mode: 'cors',
-
-            });
-          
-            this.identitiesData = response.data.identities; //debugger;
-            
-            if (this.identitiesData.length > 0) { //debugger;
-              this.selectedIdentity = ''; //para que el axios no se coma el option 1 
+          } else if (formType === this.formTypes.ORIENTATION) {
+            if (!this.selectedOrientation) {
+              this.errors.orientation = 'Please select an orientation';
+              return false;
             }
-            
-          await this.fetchOrientations();
-          
-        } catch (error) {
+          } else if (formType === this.formTypes.INTERESTS) {
+            if (this.selectedInterests.length < 3) {
+              this.errors.interests = 'Please select up to 3 interests';
+              return false;
+            }
+          } else if (formType === this.formTypes.PHOTOS) {
+            if (this.pictures == null) {
+              this.errors.photos = 'Please select a photo';
+              return false;
+            }
+          }
+          // Clear errors for the current form
+          this.errors[formType.toLowerCase()] = '';
+          return true;
+      },
+      clearErrorMessageAfterDelay() {
+        
+              setTimeout(() => {
+                  this.save = "";
+                  this.error = "";
+                  this.errors = "";
+              }, 5000);
+      },
+      async submitFormIdentity() {
 
-            console.error('Error in fetchIdentities:', error);
-
-        }
-
-    },
-
-      async submitFormOrientation() { 
-
-        if(this.verify(this.formTypes.ORIENTATION)){
+        if(this.verify(this.formTypes.IDENTITY)){
 
           const _userId = localStorage.getItem('CupidConnectId'); 
           const token = localStorage.getItem('CupidConnectToken'); //para verificar id 
           //debugger;
             const dataf = {
                 userId: _userId,
-                newOrientations: this.selectedOrientation,
+                newIdentity: this.selectedIdentity,
 
             };
 
-            const response = await axios.post('https://espacionebula.com:8000/change-orientation-user', dataf, {
+            const response = await axios.post('https://espacionebula.com:8000/change-identity-user', dataf, {
 
                 headers: {
 
@@ -501,283 +415,340 @@
 
             });
             
-            //console.log(response); debugger;
+            //console.log(response); //debugger;
             if (response.data.success) {
-            this.save.orientation = "The orientation was saved successfully";
-            this.clearErrorMessageAfterDelay();
-          } else {
-              this.errors.orientation = "There was an error updating your orientation : "+response.data.error;
-              console.log("There was an error updating your orientation : "+response.data.error);
+              this.save.identity = "The identity was saved successfully";
               this.clearErrorMessageAfterDelay();
-          }
-
+            } else {
+                this.errors.identity = "There was an error updating your identity : "+response.data.error;
+                console.log("There was an error updating your identity : "+response.data.error);
+                this.clearErrorMessageAfterDelay();
+            }
+        
         }
 
-    },
-
-
-      async fetchOrientations() {
-
-        try {
+      },
+        async fetchIdentities() {
           
-            const response = await axios.get('https://espacionebula.com:8000/get-orientations', {
+          try {
+            
+              const response = await axios.get('https://espacionebula.com:8000/get-identities', {
+
+                  headers: {
+
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'multipart/form-data',
+                    
+                  },
+                  mode: 'cors',
+
+              });
+            
+              this.identitiesData = response.data.identities; //debugger;
+              
+              if (this.identitiesData.length > 0) { //debugger;
+                this.selectedIdentity = ''; //para que el axios no se coma el option 1 
+              }
+              
+            await this.fetchOrientations();
+            
+          } catch (error) {
+
+              console.error('Error in fetchIdentities:', error);
+
+          }
+
+      },
+        async submitFormOrientation() { 
+
+          if(this.verify(this.formTypes.ORIENTATION)){
+
+            const _userId = localStorage.getItem('CupidConnectId'); 
+            const token = localStorage.getItem('CupidConnectToken'); //para verificar id 
+            //debugger;
+              const dataf = {
+                  userId: _userId,
+                  newOrientations: this.selectedOrientation,
+
+              };
+
+              const response = await axios.post('https://espacionebula.com:8000/change-orientation-user', dataf, {
+
+                  headers: {
+
+                      'Access-Control-Allow-Origin': '*',
+                      'Authorization': `Bearer ${token}`,
+
+                  },
+                  mode: 'cors',
+
+              });
+              
+              //console.log(response); debugger;
+              if (response.data.success) {
+              this.save.orientation = "The orientation was saved successfully";
+              this.clearErrorMessageAfterDelay();
+            } else {
+                this.errors.orientation = "There was an error updating your orientation : "+response.data.error;
+                console.log("There was an error updating your orientation : "+response.data.error);
+                this.clearErrorMessageAfterDelay();
+            }
+
+          }
+
+      },
+        async fetchOrientations() {
+
+          try {
+            
+              const response = await axios.get('https://espacionebula.com:8000/get-orientations', {
+
+                  headers: {
+
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'multipart/form-data',
+                    
+                  },
+                  mode: 'cors',
+
+              });
+            
+              this.orientationData = response.data.orientations; //debugger;
+              
+              if (this.orientationData.length > 0) { //debugger;
+                this.selectedOrientation = ''; //para que el axios no se coma el option 1 
+              }
+
+              
+            await this.fetchInterests();
+            
+          } catch (error) {
+
+              console.error('Error in fetchOrientations:', error);
+
+          }
+
+      },
+      async submitFormInterests() {
+        //debugger
+        if(this.verify(this.formTypes.INTERESTS)){
+
+          const _userId = localStorage.getItem('CupidConnectId'); 
+          const token = localStorage.getItem('CupidConnectToken'); //para verificar id 
+          //debugger;
+            const dataf = {
+                userId: _userId,
+                newInterests: this.selectedInterests,
+
+            };
+
+            const response = await axios.post('https://espacionebula.com:8000/change-interest-user', dataf, {
 
                 headers: {
 
-                  'Access-Control-Allow-Origin': '*',
-                  'Content-Type': 'multipart/form-data',
-                  
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${token}`,
+
                 },
                 mode: 'cors',
 
             });
-          
-            this.orientationData = response.data.orientations; //debugger;
             
-            if (this.orientationData.length > 0) { //debugger;
-              this.selectedOrientation = ''; //para que el axios no se coma el option 1 
+            //console.log(response);debugger;
+            if (response.data.success) {
+              this.save.interests = "The interests were saved successfully";
+              this.clearErrorMessageAfterDelay();
+            } else {
+                this.errors.interests = "There was an error updating your interests : "+response.data.error;
+                console.log("There was an error updating your interests : "+response.data.error);
+                this.clearErrorMessageAfterDelay();
             }
 
-            
-          await this.fetchInterests();
-          
-        } catch (error) {
-
-            console.error('Error in fetchOrientations:', error);
-
         }
 
-    },
-  
-    
-    async submitFormInterests() {
-      //debugger
-      if(this.verify(this.formTypes.INTERESTS)){
-
-        const _userId = localStorage.getItem('CupidConnectId'); 
-        const token = localStorage.getItem('CupidConnectToken'); //para verificar id 
-        //debugger;
-          const dataf = {
-              userId: _userId,
-              newInterests: this.selectedInterests,
-
-          };
-
-          const response = await axios.post('https://espacionebula.com:8000/change-interest-user', dataf, {
-
-              headers: {
-
-                  'Access-Control-Allow-Origin': '*',
-                  'Authorization': `Bearer ${token}`,
-
-              },
-              mode: 'cors',
-
-          });
-          
-          //console.log(response);debugger;
-          if (response.data.success) {
-            this.save.interests = "The interests were saved successfully";
-            this.clearErrorMessageAfterDelay();
-          } else {
-              this.errors.interests = "There was an error updating your interests : "+response.data.error;
-              console.log("There was an error updating your interests : "+response.data.error);
-              this.clearErrorMessageAfterDelay();
-          }
-
-      }
-
-    },
-
-    async fetchInterests() {
-
-    try {
-      
-        const response = await axios.get('https://espacionebula.com:8000/get-interests', {
-
-            headers: {
-
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'multipart/form-data',
-              
-            },
-            mode: 'cors',
-
-        });
-      
-        this.interestsData = response.data.interests; //debugger;
-        
-        if (this.interestsData.length > 0) { //debugger;
-          this.selectedInterests = ''; //para que el axios no se coma el option 1 
-        }
-        
-        await this.fetchUser();
-      
-    } catch (error) {
-
-        console.error('Error in fetchInterests:', error);
-
-    }
-
-    },
-
-    handlePicturesChange(event) {
-    console.log("entro a handle");
-    this.pictures = event.target.files[0];
-
-    },
-
-    async submitFormPhotos() {
-      console.log("entro a submit fotos");
-
-      if(this.verify(this.formTypes.PHOTOS)){
-
-        try {
-          const formData = new FormData();
-          const _userId = localStorage.getItem('CupidConnectId'); 
-          const token = localStorage.getItem('CupidConnectToken');
-
-          if (!token) {
-            console.error('Token de autorización no encontrado en el localStorage');
-            return;
-          }
-
-          formData.append('userId', _userId);
-          formData.append('_profilePicture', this.pictures);
-
-          
-
-          const response = await axios.post('https://espacionebula.com:8000/upload-picture-user', formData, {
-
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'multipart/form-data',
-              'Authorization': `Bearer ${token}`,
-            },
-            mode: 'cors',
-          });
-
-          if (response.data.success) {
-            this.save.photos = "The photos were uploaded successfully";
-            this.clearErrorMessageAfterDelay();
-          } else {
-              this.errors.photos = "There was an error updating photos : "+response.data.error;
-              console.log("There was an error updating photos : "+response.data.error);
-              this.clearErrorMessageAfterDelay();
-          }
-        } catch (error) {
-          console.error('Error in explotó aquí:', error);
-
-        }
-
-      }
-        
-    },
-  
-    async deletePhoto(index) {
-
-        try {
-          
-          const _userId = localStorage.getItem('CupidConnectId');
-          const token = localStorage.getItem('CupidConnectToken');
-          
-
-          const dataf = {
-              userId: _userId,
-              index: index,
-
-          };
-
-          const response = await axios.post('https://espacionebula.com:8000/delete-picture-user', dataf, {
-
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Authorization': `Bearer ${token}`,
-            },
-            mode: 'cors',
-          });
-            
-          if (response.data.success) {
-            
-            this.save.photos = "The photos were deleted successfully: ";
-            this.clearErrorMessageAfterDelay();
-
-          } else {
-              this.errors.photos = "There was an error deleting photos : "+response.data.error; 
-              console.log("There was an error deleting photos : "+ response.data.error);
-              this.clearErrorMessageAfterDelay();
-          }
-        } catch (error) {
-          console.error('Error al eliminar la foto', error);
-        }
-    },
-
-    async fetchUser(){
+      },
+      async fetchInterests() {
 
       try {
-          
-          const _userId = localStorage.getItem('CupidConnectId'); 
-          const token = localStorage.getItem('CupidConnectToken');   
-          const dataf = {
-                userId: _userId,
-            };
+        
+          const response = await axios.get('https://espacionebula.com:8000/get-interests', {
 
-          const response = await axios.post('https://espacionebula.com:8000/get-user',dataf, {
-            
-            
               headers: {
 
                 'Access-Control-Allow-Origin': '*',
-                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
                 
               },
               mode: 'cors',
 
           });
-          
-             const data = response.data;
-              
-              if(data.success){
-
-                if (this.identitiesData.length > 0 && data.user.identities != '') { 
-                  this.selectedIdentity = data.user.identities;
-                }
-                if (data.user._description != ''){
-                  this.description = data.user._description; 
-                }
-                if (this.orientationData.length > 0 && data.user._orientations != '') { 
-                  this.selectedOrientation = data.user._orientations; 
-                }
-                if (this.interestsData.length > 0 && data.user._interests.length > 0) { 
-                  this.selectedInterests = data.user._interests;
-                }
-                if (data.user._pictures.length > 0) { 
-                  this.pictures = data.user._pictures; //debugger;
-                }
-
-              }else{
-
-                this.error = "There was an error with the user : "+response.data.error;
-                console.log("There was an error with the user : "+response.data.error);
-                this.clearErrorMessageAfterDelay();
-
-              };
         
-          //this.identitiesData = response.data.identities; //debugger;
+          this.interestsData = response.data.interests; //debugger;
           
-         
+          if (this.interestsData.length > 0) { //debugger;
+            this.selectedInterests = ''; //para que el axios no se coma el option 1 
+          }
+          
+          await this.fetchUser();
+        
       } catch (error) {
 
-          console.error('Error in fetchUser:', error);
+          console.error('Error in fetchInterests:', error);
 
       }
 
+      },
+      handlePicturesChange(event) {
+      console.log("entro a handle");
+      this.pictures = event.target.files[0];
 
-    },
-  
+      },
+      async submitFormPhotos() {
+        console.log("entro a submit fotos");
+
+        if(this.verify(this.formTypes.PHOTOS)){
+
+          try {
+            const formData = new FormData();
+            const _userId = localStorage.getItem('CupidConnectId'); 
+            const token = localStorage.getItem('CupidConnectToken');
+
+            if (!token) {
+              console.error('Token de autorización no encontrado en el localStorage');
+              return;
+            }
+
+            formData.append('userId', _userId);
+            formData.append('_profilePicture', this.pictures);
+
+            
+
+            const response = await axios.post('https://espacionebula.com:8000/upload-picture-user', formData, {
+
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`,
+              },
+              mode: 'cors',
+            });
+
+            if (response.data.success) {
+              this.save.photos = "The photos were uploaded successfully";
+              this.clearErrorMessageAfterDelay();
+            } else {
+                this.errors.photos = "There was an error updating photos : "+response.data.error;
+                console.log("There was an error updating photos : "+response.data.error);
+                this.clearErrorMessageAfterDelay();
+            }
+          } catch (error) {
+            console.error('Error in explotó aquí:', error);
+
+          }
+
+        }
+          
+      },
+      async deletePhoto(index) {
+
+          try {
+            
+            const _userId = localStorage.getItem('CupidConnectId');
+            const token = localStorage.getItem('CupidConnectToken');
+            
+
+            const dataf = {
+                userId: _userId,
+                index: index,
+
+            };
+
+            const response = await axios.post('https://espacionebula.com:8000/delete-picture-user', dataf, {
+
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': `Bearer ${token}`,
+              },
+              mode: 'cors',
+            });
+              
+            if (response.data.success) {
+              
+              this.save.photos = "The photos were deleted successfully: ";
+              this.clearErrorMessageAfterDelay();
+
+            } else {
+                this.errors.photos = "There was an error deleting photos : "+response.data.error; 
+                console.log("There was an error deleting photos : "+ response.data.error);
+                this.clearErrorMessageAfterDelay();
+            }
+          } catch (error) {
+            console.error('Error al eliminar la foto', error);
+          }
+      },
+      async fetchUser(){
+
+        try {
+            
+            const _userId = localStorage.getItem('CupidConnectId'); 
+            const token = localStorage.getItem('CupidConnectToken');   
+            const dataf = {
+                  userId: _userId,
+              };
+
+            const response = await axios.post('https://espacionebula.com:8000/get-user',dataf, {
+              
+              
+                headers: {
+
+                  'Access-Control-Allow-Origin': '*',
+                  'Authorization': `Bearer ${token}`,
+                  
+                },
+                mode: 'cors',
+
+            });
+            
+              const data = response.data;
+                
+                if(data.success){
+
+                  if (this.identitiesData.length > 0 && data.user.identities != '') { 
+                    this.selectedIdentity = data.user.identities;
+                  }
+                  if (data.user._description != ''){
+                    this.description = data.user._description; 
+                  }
+                  if (this.orientationData.length > 0 && data.user._orientations != '') { 
+                    this.selectedOrientation = data.user._orientations; 
+                  }
+                  if (this.interestsData.length > 0 && data.user._interests.length > 0) { 
+                    this.selectedInterests = data.user._interests;
+                  }
+                  if (data.user._pictures.length > 0) { 
+                    this.pictures = data.user._pictures; //debugger;
+                  }
+
+                }else{
+
+                  this.error = "There was an error with the user : "+response.data.error;
+                  console.log("There was an error with the user : "+response.data.error);
+                  this.clearErrorMessageAfterDelay();
+
+                };
+          
+            //this.identitiesData = response.data.identities; //debugger;
+            
+          
+        } catch (error) {
+
+            console.error('Error in fetchUser:', error);
+
+        }
+
+
+      },
   },
-
-
 };
 
 </script>

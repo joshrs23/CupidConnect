@@ -37,6 +37,9 @@
         <li :class="{ 'font-bold': isHomeRoute }">
           <nuxt-link to="/"><i class="fas fa-home"></i> Home</nuxt-link>
         </li>
+        <li :class="{ 'font-bold': isUsersRoute }">
+          <nuxt-link v-if="(adminView == 9758) && isLogin" to="/admin/user"><i class="fa-solid fa-user"></i> Users</nuxt-link>
+        </li>
       </ul>
     </div>
     <div class="mx-auto">
@@ -104,11 +107,13 @@ export default {
       isListVisible: false,
       isLogin: false,
       userData: '',
+      adminView:false,
     };
   },
   mounted() {
     if (localStorage.getItem("CupidConnectToken")) {
       this.isLogin = true;
+      this.showAdmin();
     }
   },
   created: async function () {
@@ -126,6 +131,9 @@ export default {
     },
     isHomeRoute() {
       return this.$route.path === "/";
+    },
+    isUsersRoute() {
+      return this.$route.path.startsWith("/admin/user");
     },
   },
   methods: {
@@ -168,6 +176,14 @@ export default {
       useUserStore().logOutUser();
       this.$router.push("/logout");
     },
+    showAdmin(){
+
+      if(localStorage.getItem("CupidConnectType")){
+
+        this.adminView = localStorage.getItem("CupidConnectType");
+      }
+      
+    }
   },
 };
 </script>

@@ -143,16 +143,15 @@ import axios from 'axios';
     },
 
     verify() {
+      const descriptionRegex = /^[a-zA-Z0-9\s]{1,100}$/;
       
-        
-        const descriptionRegex = /^[a-zA-Z0-9_]{1,100}$/;
-          if (!descriptionRegex.test(this.description)) {
-            this.error= 'The description cannot be more than 100 alphanumeric characters';
-            return false;
-          }
-      
-          this.error = '';
-        return true;
+      if (!descriptionRegex.test(this.description)) {
+        this.error = 'The description cannot be more than 100 alphanumeric characters';
+        return false;
+      }
+
+      this.error = '';
+      return true;
     },
 
     clearErrorMessageAfterDelay() {

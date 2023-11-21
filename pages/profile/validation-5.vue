@@ -152,23 +152,16 @@
           this.error = '';
           return true;
     },
-    clearErrorMessageAfterDelay() { 
-        
-        setTimeout(() => {
-            this.error = "";
-            this.save = "";
-        }, 5000);
-    },
     handleProfilePicture(event) {
       this.profilePicture = event.target.files[0];
     },
     handlePicturesChange(event) {
       this.pictures = event.target.files[0];
     },
-    async submitForms(){
+    /*async submitForms(){
       await this.submitFormPhotos;
       await this.submitFormProfilePhoto;
-    },
+    },*/
     async submitFormPhotos() {
 
       if(this.verifyPhotos()){
@@ -184,7 +177,7 @@
           }
 
           formData.append('userId', _userId);
-          formData.append('_pictures', this.pictures);
+          formData.append('_profilePicture', this.pictures);
           const p = _pictures; debugger;
           
 
@@ -267,7 +260,7 @@
 
       }
         
-      },
+    },
     async deletePhoto(index) {
 
       try {
@@ -329,17 +322,14 @@
 
           });
           
-            const data = response.data;debugger;
+            const data = response.data; //debugger;
               
               if(data.success){
 
                 if (data.user._pictures.length > 0) { 
                   this.pictures = data.user._pictures; //debugger;
                 }
-                if (data.user._profilePicture.length > 0) { 
-                  this.profilePicture = data.user._profilePicture; //debugger;
-                }
-
+                
               }else{
 
                 this.error = "There was an error with the user : "+response.data.error;
@@ -359,7 +349,13 @@
 
 
     },
-
+    clearErrorMessageAfterDelay() { 
+        
+        setTimeout(() => {
+            this.error = "";
+            this.save = "";
+        }, 5000);
+    },
   
   },
   

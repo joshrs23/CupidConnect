@@ -87,40 +87,6 @@ display: none;
 display: block;
 }
 </style>
-<style>
- 
-  .logoEdit {
- 
-  width: 7.5em;
-  height: 7em;
-  margin-left: 20%;
-
-
-    @screen md {
-      width: 10em;
-      height: 10em;
-      margin-left: 60%;
-
-    }
-
-    @screen lg {
-      margin-left: 40%;
-      width: 8em;
-      height: 8em;
-    }
-    
-    @screen xl {
-      margin-left: 45%;
-      width: 15em;
-      height: 15em;
-      
-    }
-
-}
-
- 
-
-</style>
 
 
 <script>
@@ -242,6 +208,7 @@ export default {
                 if(data.success){
                   if (data.user._username != '') { 
                     this.username = data.user._username
+                    console.log(this.username);
                   }
                   if (data.user.identities != '') { 
                     this.selectedIdentity = data.user.identities;
@@ -256,6 +223,7 @@ export default {
                   if (data.user._pictures.length > 0) { 
                     this.pictures = data.user._pictures; 
                   }
+                  this.userCurrent = data.user;
 
                 }else{
 

@@ -2,7 +2,7 @@
 
 <template>
   <div class="container mx-auto">
-    <div class="grid grid-cols-12 gap-5 h-screen">
+    <div class="grid grid-cols-12 gap-5  h-screen">
       <div
         id="Logo"
         class="col-span-12 bg-black-200 p-4 flex justify-center md:col-span-7"

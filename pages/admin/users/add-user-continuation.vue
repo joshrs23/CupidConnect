@@ -20,7 +20,7 @@
                     <div class="mb-8 grid grid-cols-12 items-center relative">
 
                         
-                        <select v-model="selectedCountry" :filterable="true" class="form-input mt-1 col-span-10 block border-black-300 border-b white" @change="handleSelectChange" required>
+                        <select v-model="selectedCountry" :filterable="true" class="form-input mt-1 col-span-10 block border-black-300 border-b white lg:text-2xl" @change="handleSelectChange" required>
                           <option value="" disabled selected>Select a country</option>
                           <option v-for="country in countriesData" :key="country._id" :value="country._id" white>
                             {{ country._name }}
@@ -32,7 +32,7 @@
           
                     <div class="mb-8 grid grid-cols-12 items-center relative">
 
-                        <select v-model="selectedProvince" :filterable="true" class="form-input mt-1 col-span-10 block border-black-300 border-b white" @change="handleSelectProvinceChange" required>
+                        <select v-model="selectedProvince" :filterable="true" class="form-input mt-1 col-span-10 block border-black-300 border-b white lg:text-2xl" @change="handleSelectProvinceChange" required>
                           <option value="" disabled selected>Select a province</option>
                           <option v-for="province in provincesData" :key="province._id" :value="province._id" white>
                             {{ province.name }}
@@ -44,7 +44,7 @@
 
                     <div class="mb-8 grid grid-cols-12 items-center relative">
 
-                       <select v-model="selectedCity" :filterable="true" class="form-input mt-1 col-span-10 block border-black-300 border-b white" required>
+                       <select v-model="selectedCity" :filterable="true" class="form-input mt-1 col-span-10 block border-black-300 border-b white lg:text-2xl"   required>
                           <option value="" disabled selected>Select a city</option>
                           <option v-for="city in citiesData" :key="city._id" :value="city._id" white>
                             {{ city.name }}
@@ -65,7 +65,7 @@
 
                         
 
-                        <button id="btnFinish" type="submit">
+                        <button class="ml-[60%] lg:ml-[67%] text-3xl" type="submit">
 
                             Finish
 
@@ -88,7 +88,7 @@
                         <button  type="submit" class="bg-black-200 text-white flex items-center">
 
                             <img src="@/public/img/arrow-left.png" alt="arrowIcon" class="mx-2" />
-                            <nuxt-link to="/Login">Login</nuxt-link>
+                            <nuxt-link class="btn" to="/Login">Login</nuxt-link>
 
                         </button>
 
@@ -123,7 +123,9 @@
         background-color: black;
 
     }
-
+    .btn{
+        font-family: 'Lovers Quarrel', serif;
+    }
 
     icon {
 
@@ -143,7 +145,7 @@
 
     #btnFinish{
 
-        margin-left: 53%;
+        margin-left: 65%;
         font-size: 2em;
 
     }
@@ -224,7 +226,7 @@
     },
     mounted() {
 
-        if(localStorage.getItem('CupidConnectToken')){
+        if(!localStorage.getItem('CupidConnectToken')){
 
             this.$router.push('/home');
 

@@ -108,7 +108,7 @@
               </div>
             </label>
             <div class="lg:mt-4 text-right pr-10 xl:pr-52">
-              <button id="" type="submit">
+              <button type="submit">
                 <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
               </button>
             </div>
@@ -352,7 +352,7 @@
       verify(formType) {
           
             if (formType === this.formTypes.DESCRIPTION) {
-              const descriptionRegex = /^[a-zA-Z0-9_]{1,100}$/;
+              const descriptionRegex = /^[a-zA-Z0-9\s]{1,100}$/;
               if (!descriptionRegex.test(this.description)) {
                 this.errors.description = 'The description cannot be more than 100 alphanumeric characters';
                 return false;

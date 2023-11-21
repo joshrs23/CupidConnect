@@ -30,7 +30,7 @@
               type="email"
               id="email"
               name="email"
-              class="form-input mt-1 block w-10/12 border-black-300 border-b white"
+              class="form-input mt-1 block w-10/12 border-black-300 border-b white text-lg"
               placeholder="Email"
               v-model="email"
               required
@@ -42,7 +42,7 @@
               type="text"
               id="username"
               name="username"
-              class="form-input mt-1 block w-10/12 border-black-300 border-b white"
+              class="form-input mt-1 block w-10/12 border-black-300 border-b white text-lg"
               placeholder="Username"
               v-model="username"
               required
@@ -54,7 +54,7 @@
               type="password"
               id="password"
               name="password"
-              class="form-input mt-1 block w-10/12 border-black-300 border-b white"
+              class="form-input mt-1 block w-10/12 border-black-300 border-b white text-lg"
               placeholder="Password"
               v-model="password"
               required
@@ -66,7 +66,7 @@
               type="password"
               id="confirmationPassword"
               name="confirmationPassword"
-              class="form-input mt-1 block w-10/12 border-black-300 border-b white"
+              class="form-input mt-1 block w-10/12 border-black-300 border-b white text-lg"
               placeholder="Confirm Password"
               v-model="confirmPassword"
               required
@@ -78,7 +78,7 @@
               type="text"
               id="firstName"
               name="firstName"
-              class="form-input mt-1 block w-10/12 border-black-300 border-b white"
+              class="form-input mt-1 block w-10/12 border-black-300 border-b white text-lg"
               placeholder="First name"
               v-model="firstName"
               required
@@ -90,7 +90,7 @@
               type="text"
               id="lastName"
               name="lastName"
-              class="form-input mt-1 block w-10/12 border-black-300 border-b white"
+              class="form-input mt-1 block w-10/12 border-black-300 border-b white text-lg"
               placeholder="Last name"
               v-model="lastName"
               required
@@ -102,7 +102,7 @@
               type="date"
               id="birthDate"
               name="birthDate"
-              class="form-input col-span-9 block border-black-300 border-b white"
+              class="form-input col-span-9 block border-black-300 border-b white text-lg"
               placeholder="Date of birth"
               v-model="birthDate"
               required
@@ -122,20 +122,20 @@
           <div id="arrow-right" class="mt-4">
             <button type="submit">
 <img src="@/public/img/arrow-right.png" alt="arrowImg" />
-              <nuxt-link to="admin/users/add-user"></nuxt-link>
+              <nuxt-link to="admin/users/add-user-continuation"></nuxt-link>
             </button>
           </div>
         </form>
 
-        <div id="btnLogin" class="flex justify-center items-center mb-4">
+        <div class="flex justify-center items-center mb-4 btnLogin">
           <label class="cursor-pointer">
             <button
               type="submit"
               @click="goToLogin"
               class="bg-black-200 text-white flex items-center"
             >
-<img src="@/public/img/arrow-left.png" alt="arrowImg" class="mx-2" />
-              <nuxt-link to="/Login">Login</nuxt-link>
+<img src="@/public/img/arrow-left.png" alt="arrowImg" class="mx-2 " />
+              <nuxt-link class="btn" to="/Login">Login</nuxt-link>
             </button>
           </label>
         </div>
@@ -174,8 +174,14 @@ icon {
 #arrow-right {
   margin-left: 76%;
 }
+.btnStyleLogin{
+  font-family: "Lovers Quarrel", serif;
 
-#btnLogin {
+}
+.btn{
+  font-family: "Lovers Quarrel", serif;
+}
+.btnLogin {
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -38,7 +38,7 @@
           <nuxt-link to="/"><i class="fas fa-home"></i> Home</nuxt-link>
         </li>
         <li :class="{ 'font-bold': isUsersRoute }">
-          <nuxt-link to="/admin/users"><i class="fa-solid fa-user"></i> Users</nuxt-link>
+          <nuxt-link to="/admin/user"><i class="fa-solid fa-user"></i> Users</nuxt-link>
         </li>
       </ul>
     </div>
@@ -131,7 +131,7 @@ export default {
       return this.$route.path === "/";
     },
     isUsersRoute() {
-      return this.$route.path.startsWith("/admin/users");
+      return this.$route.path.startsWith("/admin/user");
     },
   },
   methods: {

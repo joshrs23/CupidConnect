@@ -105,10 +105,6 @@
         const _userId = localStorage.getItem("CupidConnectId");
         console.log(this.socket.emit('chat message', this.roomId,  _userId, newMessage));
         this.newMessage = newMessage;
-        this.messages.push({
-          text: newMessage,
-          sender: 'user',
-        });
   
         this.animate = true;
   

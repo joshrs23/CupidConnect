@@ -160,7 +160,7 @@
           <button @click="deletePhoto(index)" class=" absolute">
               <i class="fa-solid fa-circle-xmark fa-2x"></i>
             </button>
-          <div class="sm:w-64 sm:h-64 lg:w-80 lg:h-80  rounded-lg p-2 custom-rounded">
+          <div class="sm:w-64 sm:h-64 lg:w-80 lg:h-80  rounded-lg p-5 custom-rounded">
             <img :src="'https://espacionebula.com/img/' + photo" alt="Profile photo"  class="w-full h-full object-cover" loading="lazy"/>
           </div>
  
@@ -173,7 +173,7 @@
 
       
     </div>
-    <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800 p-4">
+    <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800">
         <GeneralMenuPhone />
       </div>  
   </div>

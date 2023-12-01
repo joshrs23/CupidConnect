@@ -74,7 +74,7 @@ export default {
   },
   methods: {
     verify() {
-      if (this.interestSelected.length < 3) {
+      if (this.interestSelected.length < 1 || this.interestSelected.length > 3) {
         this.showWarning = true;
         return false;
       }
@@ -142,7 +142,7 @@ export default {
         var element = document.getElementById(interestName._id);
         element.style.backgroundColor = "transparent";
       }else{
-        if(this.interestSelected.length == 3){
+        if(this.interestSelected.length  == 3){
           this.showWarning = true;
           return;
         }

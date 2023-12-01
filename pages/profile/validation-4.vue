@@ -15,9 +15,9 @@
               >
               <div class="block w-full w-full md:8/12 pt-12">
                 <label class="block lg:text-3xl lg:pt-18 pt-12"
-                  >Select minimum 3 and maximum 10. </label
+                  >Select minimum 1 and maximum 3. </label
                 >
-                <label class="text-red-700" v-if="showWarning">You have to select 3 or maximum 10!</label>
+                <label class="text-red-700" v-if="showWarning">You have to select 1 or maximum 3!</label>
                 <div class="flex flex-wrap">
                   <div
                     class="p-2 m-2 border-2 rounded-full border-[#686262] cursor-pointer"
@@ -142,7 +142,7 @@ export default {
         var element = document.getElementById(interestName._id);
         element.style.backgroundColor = "transparent";
       }else{
-        if(this.interestSelected.length == 10){
+        if(this.interestSelected.length == 3){
           this.showWarning = true;
           return;
         }

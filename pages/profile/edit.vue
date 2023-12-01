@@ -9,7 +9,7 @@
         <form @submit.prevent="submitFormDescription">
           <div class="p-8">
             <label>
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Hello <b>{{_username}},</b><br>let's complete your profile!</span>
+              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Hello <b>{{username}},</b><br>let's complete your profile!</span>
               <span class="block text-right lg:text-2xl lg:pr-12 lg:pt-18 pt-12">First provide us a quick <b>description</b> of<br>yourself:</span>
               <textarea rows="4" cols="50" class="text-lg p-4 leading-6  p-10 w-full lg:ml-10 lg:w-11/12   block form-input border-black-300 rounded-3xl mt-5 bg-black border border-gray" type="text" 
               id="" name="description" v-model="description" required></textarea>
@@ -196,7 +196,7 @@
     data() {
 
         return {
-            _username : '',
+            username : '',
             description : '',
             identitiesData : [],
             selectedIdentity : '',
@@ -250,7 +250,6 @@
             this.$router.push('/');
 
         }
-        this._username = localStorage.getItem('CupidConnectuser');
         this.fetchData();
         
 
@@ -735,7 +734,9 @@
               const data = response.data;
                 
                 if(data.success){
-
+                  if (data.user._username != '') { 
+                    this.username = data.user._username;
+                  }
                   if (this.identitiesData.length > 0 && data.user.identities != '') { 
                     this.selectedIdentity = data.user.identities;
                   }

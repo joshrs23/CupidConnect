@@ -104,7 +104,7 @@ export default {
     getAge(userUSER) {
       const dob = new Date(userUSER._dob);
       const today = new Date();
-      const age = today.getFullYear() - dob.getFullYear();
+      var age = today.getFullYear() - dob.getFullYear();
       if (
         today.getMonth() < dob.getMonth() ||
         (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())

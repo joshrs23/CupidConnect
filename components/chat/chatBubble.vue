@@ -1,5 +1,5 @@
 <template>
-    <div :class="['chat-bubble', message.sender === 'user' ? 'user-message' : 'friend-message']">
+    <div :class="['chat-bubble', message.sender === senderUser ? 'user-message' : 'friend-message']">
       <p class="message" v-html="formattedMessage"></p>
     </div>
   </template>
@@ -11,6 +11,7 @@
         type: Object,
         required: true,
       },
+      senderUser: String,
     },
     computed: {
       formattedMessage() {

@@ -2,6 +2,7 @@
   <div class="w-[350px]">
     <div
       class="overflow-hidden cursor-pointer w-full h-[450px] rounded-xl relative"
+      @click="showPicture"
     >
       <img
         :src="'https://espacionebula.com/img/' + prospect._profilePicture"
@@ -17,7 +18,7 @@
     </div>
     <div class="buttons-overlay">
       <button class="fas fa-times fa-3x" @click="dislikeProspect" />
-      <button
+      <button 
         v-if="isLikesActive"
         class="fas fa-heart fa-3x"
         @click="likeProspect"
@@ -36,6 +37,9 @@ export default {
     isLikesActive: Boolean,
   },
   methods: {
+    showPicture(){
+      this.$emit("show");
+    },
     async dislikeProspect() {
       try {
           const _userId = localStorage.getItem("CupidConnectId");;

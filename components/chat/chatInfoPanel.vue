@@ -20,6 +20,7 @@
           <h2 class="text-5xl font-semibold text-white">{{ finalUser._fname }}</h2>
           <i class="text-gray-500 fa-solid fa-id-badge m-2 text-lg" @click="showThisUser()" />
         </div>
+        <i class="fa-solid fa-x text-gray-500" @click="eliminateMatch()"></i>
         <p class="text-gray-500 text-7xl font-bold">{{ getAge(finalUser) }}</p>
       </div>
     </div>
@@ -50,6 +51,37 @@ export default {
     user: Object,
   },
   methods: {
+    async eliminateMatch(){
+      const confirmed = window.confirm("Are you sure you want to unmatch?");
+      if (confirmed) {
+        try {
+          const userId = localStorage.getItem("CupidConnectId");
+          const token = localStorage.getItem("CupidConnectToken");
+          const dataf = {
+            userId1: userId,
+            userId2: this.finalUser
+          };
+          const response = await axios.post(
+            "https://espacionebula.com:8000/delete-match",
+            dataf,
+            {
+              headers: {
+                "Access-Control-Allow-Origin": "*",
+                Authorization: `Bearer ${token}`,
+              },
+              mode: "cors",
+            }
+          );
+          const data = response.data;
+          if (data.success) {
+            this.$router.push({ name: 'chats' });
+          } else {
+            this.clearErrorMessageAfterDelay();
+          }
+        } catch (error) {
+        }
+      }
+    },
     showThisUser() {
       this.showThisCurrentProspect = !this.showThisCurrentProspect;
     },
@@ -74,9 +106,6 @@ export default {
         if (data.success) {
           return data.user;
         } else {
-          console.log(
-            "There was an error with the user : " + response.data.error
-          );
         }
       } catch (error) {
       }

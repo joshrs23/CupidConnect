@@ -42,7 +42,7 @@
           :prospect="prospect"
           :isLikesActive="isLikesActive"
           @dismissed="removeProspect(index)"
-          @click="showThisUser(prospect)"
+          @show="showThisUser(prospect)"
         />
       </div>
       <div v-else class="w-full h-[70%]">

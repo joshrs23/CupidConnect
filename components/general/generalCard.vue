@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="index <= 5" 
     class="card"
     @mousedown="startDragging"
     @touchstart="startDragging"

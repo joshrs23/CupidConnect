@@ -5,11 +5,11 @@
     <div class="grid grid-cols-12 gap-5  h-screen">
       <div
         id="Logo"
-        class="col-span-12 bg-black-200 p-4 flex justify-center md:col-span-7"
+        class="col-span-12 bg-black-200 p-4 flex justify-center md:col-span-7 hidden sm:hidden md:grid"
       >
-          <img src="@/assets/logoCupid.svg" class="h-128" alt="frameIcon" />
+        <img src="@/assets/logoCupid.svg" class="h-128" alt="frameIcon" />
       </div>
-      <div id="content" class="col-span-12 bg-black p-4 lg:border-l white h-full md:col-span-5 md:border-l flex flex-col justify-between">
+      <div class="col-span-12 bg-black p-4 lg:border-l white h-full md:col-span-5 md:border-l flex flex-col justify-between">
         <div>
           <h2
             id="Login"
@@ -58,7 +58,6 @@
               class="flex items-center"
             >
               <nuxt-link to="admin/users/add-user" id="btnRegister">Register</nuxt-link>
-              <!--<img src="@/public/img/arrow-right.png" alt="arrowIcon" class="ml-2" />-->
             </button>
           </label>
         </div>
@@ -70,10 +69,7 @@
 
 <style>
 #content {
-  margin-left: 5%;
-  @screen lg {
-    margin-left: 23%;
-  }
+
 }
 #arrow-right {
   margin-left: 76%;

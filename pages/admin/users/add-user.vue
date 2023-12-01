@@ -236,8 +236,8 @@ export default {
       this.$router.go("/Login");
     },
 
-    async submitForm() { debugger;
-      if (this.verify()) { debugger;
+    async submitForm() { 
+      if (this.verify()) { 
         localStorage.removeItem("CupidConnectFirstRegisterData");
 
         const data = {
@@ -253,6 +253,7 @@ export default {
 
         localStorage.setItem("CupidConnectFirstRegisterData", serializedData);
         this.$router.push("/admin/users/add-user-continuation");
+
       } else {
         this.clearErrorMessageAfterDelay();
       }

@@ -146,7 +146,7 @@ import axios from 'axios';
       const descriptionRegex = /^[a-zA-Z0-9\s]{1,100}$/;
       
       if (!descriptionRegex.test(this.description)) {
-        this.error = 'The description cannot be more than 100 alphanumeric characters';
+        this.error = 'The description cannot be more than 100 alphanumeric characters and differents signs!';
         return false;
       }
 

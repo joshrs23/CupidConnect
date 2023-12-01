@@ -226,7 +226,7 @@
     },
     mounted() {
 
-        if(!localStorage.getItem('CupidConnectToken')){
+        if(localStorage.getItem('CupidConnectToken')){
 
             this.$router.push('/home');
 
@@ -276,7 +276,7 @@
                 
                 //console.log(response); debugger;
                 if(response.data.success){
-                    debugger; 
+                    //debugger; 
                     localStorage.setItem('CupidConnectToken', response.data.token);
                     localStorage.setItem('CupidConnectEmail', response.data.user._email);
                     localStorage.setItem('CupidConnectuser', response.data.user._username);

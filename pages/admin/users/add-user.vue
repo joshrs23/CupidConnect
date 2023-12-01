@@ -121,8 +121,10 @@
 
           <div id="arrow-right" class="mt-4">
             <button type="submit">
-<img src="@/public/img/arrow-right.png" alt="arrowImg" />
-              <nuxt-link to="admin/users/add-user-continuation"></nuxt-link>
+              <img src="@/public/img/arrow-right.png" alt="arrowImg" />
+
+              <!--<nuxt-link to="/add-user-continuation">
+             </nuxt-link>-->
             </button>
           </div>
         </form>
@@ -234,8 +236,8 @@ export default {
       this.$router.go("/Login");
     },
 
-    async submitForm() {
-      if (this.verify()) {
+    async submitForm() { debugger;
+      if (this.verify()) { debugger;
         localStorage.removeItem("CupidConnectFirstRegisterData");
 
         const data = {

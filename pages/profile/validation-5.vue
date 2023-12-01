@@ -23,11 +23,12 @@
               </div>                    
             </label>
             <div class="text-center">
-              <button class="lg:mt-4 border border rounded p-4 text-2xl text-center" type="submit">
+              <button class="lg:mt-4  border border rounded p-4 text-2xl text-center" type="submit">
                 Save photo
               </button>
             </div>
           </div>
+
         </form>
         <div class="lg:mt-4 text-right pr-10 xl:pr-52">
             <NuxtLink to="/">
@@ -67,42 +68,37 @@
   strong, b {
     font-weight: bold;
   }
+  .logoEdit {
+   
+   width: 7.5em;
+   height: 7em;
+   margin-left: 20%;
+ 
+ 
+     @screen md {
+       width: 10em;
+       height: 10em;
+       margin-left: 60%;
+ 
+     }
+ 
+     @screen lg {
+       margin-left: 40%;
+       width: 8em;
+       height: 8em;
+     }
+     
+     @screen xl {
+       margin-left: 45%;
+       width: 15em;
+       height: 15em;
+       
+     }
+ 
+ }
+ 
   </style>
-  <style>
-   
-    .logoEdit {
-   
-    width: 7.5em;
-    height: 7em;
-    margin-left: 20%;
-  
-  
-      @screen md {
-        width: 10em;
-        height: 10em;
-        margin-left: 60%;
-  
-      }
-  
-      @screen lg {
-        margin-left: 40%;
-        width: 8em;
-        height: 8em;
-      }
-      
-      @screen xl {
-        margin-left: 45%;
-        width: 15em;
-        height: 15em;
-        
-      }
-  
-  }
-  
-   
-  
-  </style>
-  
+
   
   
   <script>
@@ -115,7 +111,7 @@
   
         return {
             pictures: null,
-            profilePicture : null,
+            newPictures: [],
             error : '',
             save : '',
       };
@@ -128,13 +124,12 @@
             this.$router.push('/');
   
         }
-        this._username = localStorage.getItem('CupidConnectuser');
         this.fetchPhotos();
   
     },
     methods: {
   
-    verifyPhotos() {
+    verify() {
         
         if (this.pictures == null) {
             this.error = 'Please select a photo';
@@ -143,28 +138,12 @@
           this.error = '';
           return true;
     },
-    verifyProfilePhoto() {
-
-          if(this.profilePicture == null){
-          this.error = 'Please select a profile photo';
-            return false;
-        }
-          this.error = '';
-          return true;
-    },
-    handleProfilePicture(event) {
-      this.profilePicture = event.target.files[0];
-    },
     handlePicturesChange(event) {
       this.pictures = event.target.files[0];
     },
-    /*async submitForms(){
-      await this.submitFormPhotos;
-      await this.submitFormProfilePhoto;
-    },*/
     async submitFormPhotos() {
 
-      if(this.verifyPhotos()){
+      if(this.verify()){
 
         try {
           const formData = new FormData();
@@ -178,7 +157,6 @@
 
           formData.append('userId', _userId);
           formData.append('_profilePicture', this.pictures);
-          const p = _pictures; debugger;
           
 
           const response = await axios.post('https://espacionebula.com:8000/upload-picture-user', formData, {
@@ -190,71 +168,22 @@
             },
             mode: 'cors',
           });
-
+          
           if (response.data.success) { 
             
-            this.save = "The photo has been saved";
+            const newPhotoFileName = response.data.fileName;
+            this.newPictures.push(newPhotoFileName); 
+            this.save = 'The photo has been saved';
             this.clearErrorMessageAfterDelay();
-            location.reload();
-
+            await this.fetchPhotos();
+            
           } else {
               this.error = "There was an error updating photos : "+response.data.error;
               console.log("There was an error updating photos : "+response.data.error);
               this.clearErrorMessageAfterDelay();
-              location.reload();
           }
         } catch (error) {
           console.error('Error in submitPhotos aquí:', error);
-
-        }
-
-      }
-        
-    },
-    async submitFormProfilePhoto() {
-
-      if(this.verifyProfilePhoto()){
-
-        try {
-          const formData = new FormData();
-          const _userId = localStorage.getItem('CupidConnectId'); 
-          const token = localStorage.getItem('CupidConnectToken');
-
-          if (!token) {
-            console.error('Token de autorización no encontrado en el localStorage');
-            return;
-          }
-
-          formData.append('userId', _userId);
-          formData.append('_profilePicture', this.profilePicture);
-
-          
-
-          const response = await axios.post('https://espacionebula.com:8000/upload-picture-user', formData, {
-
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'multipart/form-data',
-              'Authorization': `Bearer ${token}`,
-            },
-            mode: 'cors',
-          });
-            
-          if (response.data.success) { 
-            const data = response.data.success; debugger;
-            
-            this.save = "The photo has been saved";
-            this.clearErrorMessageAfterDelay();
-            location.reload();
-
-          } else {
-              this.error = "There was an error updating photos : "+response.data.error;
-              console.log("There was an error updating photos : "+response.data.error);
-              this.clearErrorMessageAfterDelay();
-              location.reload();
-          }
-        } catch (error) {
-          console.error('Error in explotó aquí:', error);
 
         }
 
@@ -283,20 +212,19 @@
           },
           mode: 'cors',
         });
-          
+
         if (response.data.success) {
-          
           this.pictures.splice(index, 1); // Remove the deleted photo from the pictures array
-          this.errors.photos = "The photos were deleted successfully: ";
+          this.save = "The photos were deleted successfully: ";
           this.clearErrorMessageAfterDelay();
 
         } else {
-            this.errors.photos = "There was an error deleting photos : "+response.data.error; 
+            this.error = "There was an error deleting photos : "+response.data.error; 
             console.log("There was an error deleting photos : "+ response.data.error);
             this.clearErrorMessageAfterDelay();
         }
       } catch (error) {
-        console.error('Error al eliminar la foto', error);
+        //console.error('Error al eliminar la foto', error);
       }
     },
     async fetchPhotos(){

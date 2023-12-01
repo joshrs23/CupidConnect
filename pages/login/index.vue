@@ -58,7 +58,7 @@
               class="flex items-center"
             >
               <nuxt-link to="admin/users/add-user" id="btnRegister">Register</nuxt-link>
-              <img src="@/public/img/arrow-right.png" alt="arrowIcon" class="ml-2" />
+              <!--<img src="@/public/img/arrow-right.png" alt="arrowIcon" class="ml-2" />-->
             </button>
           </label>
         </div>

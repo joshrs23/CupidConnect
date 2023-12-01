@@ -1,301 +1,285 @@
 <template>
-  <div class="h-screen w-screen text-white flex relative">
-    <div class="lg:hidden">
-      <GeneralMenuPhone />
-    </div>
-    <div class="hidden lg:block w-1/6">
-      <GeneralMenu />
-    </div>
-    <div class="w-5/6 flex flex-col items-center mt-10">
-      <div class="flex flex items-center">
-        <img
-          v-if="userCurrent._profilePicture"
-          :src="'https://espacionebula.com/img/' + userCurrent._profilePicture"
-          alt="Profile photo"
-          class="w-64 h-64 m-5 mr-16 rounded-full object-cover"
-        />
-        <img
-          v-else
-          src="@/assets/dummy-image.jpg"
-          alt="Profile photo"
-          class="w-64 h-64 m-5 mr-16 rounded-full object-cover"
-        />
-        <div>
-          <div class="text-5xl font-bold">
-            {{
-              (userCurrent._fname ?? "First name and") +
-              " " +
-              (userCurrent._lname ?? "last name.")
-            }}
-          </div>
-          <div class="flex mt-5">
-            <div class="mr-5">
-              {{ prospectsLiked.length + "&nbsp; Likes recieved." }}
-            </div>
-            <div class="mr-5 ml-5">
-              {{ prospectsLikedSent.length + "&nbsp; Likes sent." }}
-            </div>
-            <div class="mr-5 ml-5">
-              {{ matches.length + "&nbsp; Matches." }}
-            </div>
-          </div>
-          <div class="text-3xl mt-2  font-bold">
-            {{ getIdentity(userCurrent.identities) }}
-          </div>
-          <div class="text-md flex">
-            {{ getAge(userCurrent) + "&nbsp; years old." }}
-          </div>
-          <div class="pt-5">
-          <span class="text-3xl font-bold">About</span>
-          <div class="text-[20px]">{{ userCurrent._description }}</div>
-        </div>
-          <div class="flex mt-[13px] flex-wrap">
-            <div
-              v-for="(interest, index) in userCurrent._interests"
-              class="border rounded-[90px] border-[#686262] pl-[12px] pr-[12px] mr-[3.5px] ml-[3.5px]"
-              :key="index"
-            >
-              {{ getInterest(interest) }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="mt-10 w-5/6 flex items-center justify-center">
-        <div
-          class="prospect-card"
-          v-for="(image, index) in userCurrent._pictures"
-          :key="index"
-        >
-          <img
-            :src="'https://espacionebula.com/img/' + image"
-            alt="Profile Picture"
-            class="profile-image flex flex-wrap"
-            :style="imageStyle"
-          />
-        </div>
-        <div
-          v-if="
-            userCurrent._pictures &&
-            Object.keys(userCurrent._pictures).length < 5
-          "
-          class="prospect-card border-2 border-[#686262] flex justify-center items-center"
-        >
-          <i class="fa-solid fa-plus text-7xl text-[#686262]"></i>
+  <div class="h-full w-screen text-white flex">
+  <div class="hidden lg:block w-1/6">
+    <GeneralMenu />
+  </div>
+  
+  <div class="row">
+  <div class="col-12 col-md-8"><span>.col-12 .col-md-8</span></div>
+  <div class="col-6 col-md-4"><span>.col-6 .col-md-4</span></div>
+</div>
+
+  <div id="users-table" :class="{ 'modal-active': showModal }" class="overflow-x-auto overflow-y-auto max-h-screen">
+      <table class="xl:m-32 hover:table-fixed text-xl ">
+        <caption class="text-3xl">List of all users</caption>
+          <thead class="underline-offset-4 white">
+            <tr class="">
+                <th class="p-10" >Username</th>
+                <th class="p-10">First Name</th>
+                <th class="p-10">Last Name</th>
+                <th class="p-10">Email</th>
+                <th class="p-10">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr class="text-center  " v-for="user in users" :key="user._id">
+              <td>{{ user._username }}</td>
+              <td>{{ user._fname }}</td>
+              <td>{{ user._lname }}</td>
+              <td class="">{{ user._email }}</td>
+              <td class="pl-5">
+                <button 
+                  :id="'seeMatches' + user._id"
+                  class="p-2 mr-[3.5px] ml-[3.5px] rounded-3xl border border-gray rounded-xl relative inline-block group" 
+                  @click="seeMatches(user._id)">
+                  <i class="fa-solid fa-people-arrows"></i>
+                  <div class="hidden group-hover:block bg-gray-800 text-white text-sm py-1 px-2 rounded absolute bottom-full left-1/2 transform -translate-x-1/2">
+                    Press to see matches from user
+                  </div>
+                </button> 
+                <button 
+                  :id="'blockButton_' + user._id"
+                  class="p-2 mr-[3.5px] ml-[3.5px] rounded-3xl border border-gray rounded-xl relative inline-block group"
+                  @click="blockUser(user._id)">
+                  <i class="fa-solid fa-user-slash"></i>
+                  <div 
+                  class="hidden group-hover:block bg-gray-800 text-white text-sm py-1 px-2 rounded absolute bottom-full left-1/2 transform -translate-x-1/2">
+                    Press to block user
+                  </div>
+                </button> 
+              </td>
+          </tr>
+          </tbody>
+      </table>
+      <div  v-if="showModal" 
+      class="modal border border p-10 fixed mt-0 lg:top-1/2 lg:left-1/2 transform lg:-translate-x-1/2 -translate-y-1/2 bg-black text-white z-10 rounded-2xl">
+        <div class="modal-content hover:table-fixed text-xl overflow-y-auto max-h-screen">
+          <span class="close" @click="closeModal"></span>
+            <table>
+              <caption class="text-3xl">List of all matches</caption>
+                <thead class="underline-offset-4 white">
+                  <tr>
+                    <th class="p-10">Username</th>
+                    <th class="p-10">First Name</th>
+                    <th class="p-10">Last Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="text-center" v-for="match in matches">
+                      <td> {{ match._username }} </td>
+                      <td class="pt-3">  {{ match._fname }} </td>
+                      <td class="pt-3">  {{ match._lname }} </td> 
+                  </tr>
+              </tbody>
+            </table>
+            <button 
+                  class="bottom-0 left-0 pt-8 mb-0 pl-0"
+                  @click="closeModal()">
+                  <i class="fa-solid fa-arrow-left fa-xl"></i>
+            </button> 
         </div>
       </div>
+      <div v-if="error" class="text-red-500 text-center my-4">
+            {{ error}}
     </div>
   </div>
+  
+  <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800 z-10">
+      <GeneralMenuPhone />
+    </div>
+</div>
 </template>
 
+<style scoped>
+.modal-active {
+  backdrop-filter: blur(10px);
+}
+
+.modal-content {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+</style>
+
+
 <script>
-import { useIdentitiesStore } from "@/stores/identities";
-import { useInterestsStore } from "@/stores/interests";
-import { useOrientationsStore } from "@/stores/orientations";
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   data() {
-    return {
-      userCurrent: "",
-      _username: "",
-      prospectsLiked: [],
-      prospectsLikedSent: [],
-      matches: [],
-    };
+
+  return {
+      username : '',
+      description : '',
+      identitiesData : [],
+      selectedIdentity : null,
+      orientationData : [],
+      selectedOrientation : null,
+      interestsData : [],
+      selectedInterests : null,
+      pictures: [],
+      error : '',
+      showModal : false,
+      
+      users : [],
+      matches : [],
+
+      };
+
   },
   mounted() {
-    this._username = localStorage.getItem("CupidConnectuser");
-    this.fetchUser();
+
+        
+
+  if(!localStorage.getItem('CupidConnectToken')){
+
+      this.$router.push('/');
+
+  }
+  this.fetchUsers();
+
   },
-  created: async function () {
-    this.prospectsLiked = await this.getWhoLikedUsers();
-    this.prospectsLikedSent = await this.getLikedByUsers();
-    this.matches = await this.getMatches();
+  
+
+methods: { 
+  clearErrorMessageAfterDelay() {
+      
+      setTimeout(() => {
+          this.error = "";
+      }, 5000);
   },
-  methods: {
-    async getMatches() {
-      try {
-        const _userId = localStorage.getItem("CupidConnectId");
-        const token = localStorage.getItem("CupidConnectToken");
-        const dataf = {
-          userId: _userId,
-        };
-        const response = await axios.post(
-          "https://espacionebula.com:8000/get-matches",
-          dataf,
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              Authorization: `Bearer ${token}`,
-            },
-            mode: "cors",
-          }
-        );
-        const data = response.data;
-        if (data.success) {
-          return data.matches;
-        } else {
-          console.log(
-            "There was an error with the user : " + response.data.error
-          );
-        }
-      } catch (error) {}
-    },
-    async getWhoLikedUsers() {
-      try {
-        const _userId = localStorage.getItem("CupidConnectId");
-        const token = localStorage.getItem("CupidConnectToken");
-        const dataf = {
-          _liked_userId: _userId,
-        };
-        const response = await axios.post(
-          "https://espacionebula.com:8000/get-likes-to-user",
-          dataf,
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              Authorization: `Bearer ${token}`,
-            },
-            mode: "cors",
-          }
-        );
-        const data = response.data;
-        if (data.success) {
-          return data.usersWhoLiked;
-        } else {
-          console.log(
-            "There was an error with the user : " + response.data.error
-          );
-        }
-      } catch (error) {}
-    },
-    async getLikedByUsers() {
-      try {
-        const _userId = localStorage.getItem("CupidConnectId");
-        const token = localStorage.getItem("CupidConnectToken");
-        const dataf = {
-          liker_userId: _userId,
-        };
-        const response = await axios.post(
-          "https://espacionebula.com:8000/get-likes-user",
-          dataf,
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              Authorization: `Bearer ${token}`,
-            },
-            mode: "cors",
-          }
-        );
-        const data = response.data;
-        if (data.success) {
-          return data.usersWhoILiked;
-        } else {
-          console.log(
-            "There was an error with the user : " + response.data.error
-          );
-        }
-      } catch (error) {}
-    },
-    getAge(userUSER) {
-      if (!userUSER) return 0;
-      const dob = new Date(userUSER._dob);
-      const today = new Date();
-      const age = today.getFullYear() - dob.getFullYear();
-      if (
-        today.getMonth() < dob.getMonth() ||
-        (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())
-      ) {
-        age--;
+  closeModal() {
+    this.showModal = false;
+    const usersTable = document.getElementById('users-table');
+    if (usersTable) {
+      usersTable.style.backdropFilter = 'none';
+    }
+  },
+  async blockUser(id) {
+    try {
+      
+      const _userId = localStorage.getItem('CupidConnectId');
+      const token = localStorage.getItem('CupidConnectToken');
+      debugger;
+
+      const dataf = {
+        userId: _userId,
+        userId2: id,
+      };
+
+      const response = await axios.post('https://espacionebula.com:8000/delete-user-admin', dataf, {
+
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${token}`,
+        },
+        mode: 'cors',
+      });
+        
+      if (response.data.success) {
+        
+        console.log(`The user has been blocked: ${id}`);
+        this.fetchUsers();
+        
+
+      } else {
+        this.error = "Error when blocking a user : "+response.data.error;
+        console.log('Error when blocking a user', error);
+        this.clearErrorMessageAfterDelay();
+          
       }
-      return age;
-    },
-    getIdentity(identityId) {
-      return useIdentitiesStore().getIdentitiesById(identityId);
-    },
-    getInterest(interestId) {
-      return useInterestsStore().getInterestsById(interestId);
-    },
-    getOrientation() {
-      const o = useOrientationsStore().getOrientationsById(
-        this.selectedOrientation
-      );
-      return o;
-    },
-    async fetchUser() {
-      try {
-        const _userId = localStorage.getItem("CupidConnectId");
-        const token = localStorage.getItem("CupidConnectToken");
-        const dataf = {
-          userId: _userId,
-        };
-        const response = await axios.post(
-          "https://espacionebula.com:8000/get-user",
-          dataf,
-          {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-              Authorization: `Bearer ${token}`,
-            },
-            mode: "cors",
-          }
-        );
-        const data = response.data;
-        if (data.success) {
-          if (data.user.identities != "") {
-            this.selectedIdentity = data.user.identities;
-          }
-          if (data.user._description != "") {
-            this.description = data.user._description;
-          }
-          if (data.user._orientations != "") {
-            this.selectedOrientation = data.user._orientations;
-          }
-          this.selectedInterests = data.user._interests;
-          if (data.user._pictures.length > 0) {
-            this.pictures = data.user._pictures;
-          }
-          this.userCurrent = data.user;
-        } else {
-          this.error =
-            "There was an error with the user : " + response.data.error;
-          console.log(
-            "There was an error with the user : " + response.data.error
-          );
-          this.clearErrorMessageAfterDelay();
-        }
-      }catch (error) {
-        console.error("Error in fetchUser:", error);
-      }
-    },
+    } catch (error) {
+      console.error('Error when blocking a user', error);
+    }
   },
+  async seeMatches(id) {
+    try {
+      
+      const _userId = localStorage.getItem('CupidConnectId');
+      const token = localStorage.getItem('CupidConnectToken');
+
+      const dataf = {
+        userId: _userId,
+        userId2: id,
+      };
+
+      const response = await axios.post('https://espacionebula.com:8000/get-all-matches', dataf, {
+
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Authorization': `Bearer ${token}`,
+        },
+        mode: 'cors',
+      });
+      const data = response.data;
+        
+      if (data.success) {
+
+        this.showModal = true;
+        this.matches = data.matches;
+        
+        console.log(`The admin can see the matches: ${id}`);
+        
+
+      } else {
+
+        this.error = "Error when trying to see the matches : "+response.data.error;
+        console.log('Error when trying to see the matches', error);
+        this.clearErrorMessageAfterDelay();
+          
+      }
+    } catch (error) {
+      console.error('Error when trying to see the matches', error);
+    }
+  },
+  async fetchUsers(){
+
+    try {
+        
+        const _userId = localStorage.getItem('CupidConnectId'); 
+        const token = localStorage.getItem('CupidConnectToken');   
+        const dataf = {
+              userId: _userId,
+          };
+
+        const response = await axios.post('https://espacionebula.com:8000/get-all-users',dataf, {
+          
+          
+            headers: {
+
+              'Access-Control-Allow-Origin': '*',
+              'Authorization': `Bearer ${token}`,
+              
+            },
+            mode: 'cors',
+
+        });
+        
+          const data = response.data;
+            
+            if(data.success){
+
+              this.users = data.users;
+              this.username = data._username;
+
+            }else{
+
+              this.error = "There was an error with the user : "+response.data.error;
+              console.log("There was an error with the user : "+response.data.error);
+              this.clearErrorMessageAfterDelay();
+
+            };
+                
+      
+    } catch (error) {
+
+        console.error('Error in fetchUser:', error);
+
+    }
+
+
+  },
+
+},
 };
 </script>
-
-<style scoped>
-.prospect-card {
-  position: relative;
-  width: 300px;
-  height: 400px;
-  border-radius: 10px;
-  margin: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  color: white;
-}
-
-.image-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.7;
-}
-.profile-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-}
-</style>

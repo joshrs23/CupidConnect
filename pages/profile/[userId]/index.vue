@@ -1,179 +1,87 @@
 <template>
-  <div class="h-full  w-screen  text-white bg-black flex">
-    <div class="hidden lg:block w-1/6">
+  <div class="h-full w-screen text-white flex">
+    <div class="hidden lg:block w-[25.53rem]">
       <GeneralMenu />
     </div>
-    <div class="grid grid-rows-5 px-10 sm:px-40 lg:px-60 mt-10 ">
-
-      <div class="border-b white">
-        <form @submit.prevent="submitFormDescription">
-          <div class="p-8">
-            <label>
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Hello <b>{{_username}},</b><br>let's complete your profile!</span>
-              <span class="block text-right lg:text-2xl lg:pr-12 lg:pt-18 pt-12">First provide us a quick <b>description</b> of<br>yourself:</span>
-              <textarea rows="4" cols="50" class="text-lg p-4 leading-6  p-10 w-full lg:ml-10 lg:w-11/12   block form-input border-black-300 rounded-3xl mt-5 bg-black border border-gray" type="text" 
-              id="" name="description" v-model="description" required></textarea>
-            </label>
+    <div class="w-5/6 flex flex-col items-center mt-10 ">
+      <div class="lg:flex flex items-center flex-wrap xl:ml-0 ml-[30%]">
+        <img
+          v-if="profilePicture"
+          :src="'https://espacionebula.com/img/' + profilePicture"
+          alt="Profile photo"
+          class="lg:w-64 h-[10rem] lg:h-64 lg:m-5 mr-16 rounded-full object-cover"
+        />
+        <img
+          v-else``
+          src="@/assets/dummy-image.jpg"
+          alt="Profile photo"
+          class="lg:w-64 h-[10rem] lg:h-64 lg:m-5 mr-16 rounded-full object-cover"
+        />
+        <div>
+          <div class="text-3xl lg:text-5xl font-bold">
+            {{ (fullname ?? "Full name")}}
           </div>
-          <div class="lg:mt-4 mb-10 text-right pr-10">
-            <button type="submit">
-              <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
-            </button>
+          <div class="flex-wrap md:flex mt-5">
+            <div class="mr-5">
+              {{ prospectsLiked.length + "&nbsp; Likes recieved." }}
+            </div>
+            <div class="mr-5 ml-5">
+              {{ prospectsLikedSent.length + "&nbsp; Likes sent." }}
+            </div>
+            <div class="mr-5 ml-5">
+              {{ matches.length + "&nbsp; Matches." }}
+            </div>
           </div>
-          <!-- error -->
-          <div v-if="errors.description" class="text-red-500 text-center my-4">
-            {{ errors.description }}
+          <div class="text-3xl mt-2  font-bold">
+            {{ getIdentity(identities) }}
           </div>
-          <div v-if="save.description" class="text-green-500 text-center my-4">
-              {{ save.description }}
+          <div class="text-md flex">
+            {{ getAge(userCurrent) + "&nbsp; years old." }}
           </div>
-        </form>
+          <div class="pt-5">
+          <span class="text-3xl font-bold">About</span>
+          <div class="text-[20px]">{{ description }}</div>
+        </div>
+          <div class="flex mt-[13px] flex-wrap">
+            <div
+              v-for="(interest, index) in selectedInterests"
+              class="border rounded-[90px] border-[#686262] pl-[12px] pr-[12px] mr-[3.5px] ml-[3.5px]"
+              :key="index"
+            >
+              {{ getInterest(interest) }}
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="border-b">
-        <form @submit.prevent="submitFormIdentity">
-          <div  class="p-8">
-            <label class="relative block">
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">How do you <b>identify</b>?</span>
-              <div class="relative flex flex-col lg:flex-row items-baseline  w-full  md:8/12 lg:w-10/12  pt-12">
-                <label class="block text-2xl  lg:text-5xl xl:pl-8 pr-5"><b>I am: </b></label>
-                <select :filterable="true" class="origin-bottom text-2xl lg:text-3xl p-4 w-full  md:6/12 lg:w-8/12  form-input rounded-3xl bg-black border border-gray pl-10 custom-scrollbar-container" type="text" name="description" v-model="selectedIdentity" required>
-                  <option value="" disabled selected>Select your identity</option>
-                  <option v-for="identity in identitiesData" :key="identity._id" :value="identity._id" white>
-                    {{ identity.name }}
-                  </option>
-                </select>
+      <div class=" w-[70%] sm:w-[30%] md:w-[40%] lg:w-[35%] mt-5 mb-5 ">
+          <div class="lg:pt-10 overflow-hidden relative">
+            <div class="swiper-container">
+              <div class="swiper-wrapper">
+                <div v-for="(photo, index) in pictures" :key="index" class=" lg:p-15 white swiper-slide">
+                  <img :src="'https://espacionebula.com/img/' + photo" alt="Profile photo" class="rounded-lg" />
+                </div>
               </div>
-            </label>
-          </div>
-          <div class="lg:mt-4 text-right pr-10 xl:pr-52">
-            <button  type="submit">
-              <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
-            </button>
-          </div>
-          <!-- error -->
-          <div v-if="errors.identity" class="text-red-500 text-center my-4">
-            {{ errors.identity }}
-          </div>
-          <div v-if="save.identity" class="text-green-500 text-center my-4">
-              {{ save.identity }}
-           </div>
-        </form>
-      </div>
-
-      <div class="border-b">
-        <form @submit.prevent="submitFormOrientation">
-          <div  class="p-8">
-            <label class="">
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Please provide us with your <b>orientation</b>.</span>
-              <div class="block w-full w-full  md:8/12  xl:pl-32 pt-12">
-                <label class="block lg:text-3xl lg:pr-12 lg:pt-18 pt-12">Select an option</label>
-                <select :filterable="true" class="text-2xl lg:text-3xl p-4 w-full  md:6/12 lg:w-8/12  form-input rounded-3xl bg-black border border-gray pl-10 custom-scrollbar-container" type="text" v-model="selectedOrientation" required>
-                  <option value="" disabled selected>Select your orientation</option>
-                  <option v-for="orientation in orientationData" :key="orientation._id" :value="orientation._id" white>
-                    {{ orientation.name }}
-                  </option>
-                </select>
-              </div>
-            </label>
-          </div>
-          <div class="lg:mt-4 text-right pr-10 xl:pr-52">
-            <button type="submit">
-              <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
-            </button>
-          </div>
-          <!-- error -->
-          <div v-if="errors.orientation" class="text-red-500 text-center my-4">
-            {{ errors.orientation }}
-          </div>
-          <div v-if="save.orientation" class="text-green-500 text-center my-4">
-              {{ save.orientation }}
-           </div>
-        </form>
-      </div>
-
-      <div class="border-b">
-        <form @submit.prevent="submitFormInterests">
-          <div class="p-8">
-            <label class="relative block">
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Please provide us with your <b>interests</b>.</span>
-              <div class="block w-full w-full  md:8/12  xl:pl-32 pt-12">
-                <label class="block lg:text-3xl lg:pr-12 lg:pt-18 pt-12">Select up to 3 interests</label>
-                <select :filterable="true" class="text-2xl lg:text-3xl p-4 w-full  md:6/12 lg:w-8/12  form-input rounded-3xl bg-black border border-gray pl-10 custom-scrollbar-container" 
-                  type="text" name="description" v-model="selectedInterests" required multiple>
-                  <option v-for="interest in interestsData" :key="interest._id" :value="interest._id" white>
-                    {{ interest.name }}
-                  </option>
-                </select>
-              </div>
-            </label>
-            <div class="lg:mt-4 text-right pr-10 xl:pr-52">
-              <button id="" type="submit">
-                <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
-              </button>
+              <div class="swiper-button-prev bg-transparent" @click="prevSlide"></div>
+              <div class="swiper-button-next bg-transparent" @click="nextSlide"></div>
             </div>
-            <!-- error -->
-            <div v-if="errors.interests" class="text-red-500 text-center my-4">
-              {{ errors.interests }}
-            </div>
-            <div v-if="save.interests" class="text-green-500 text-center my-4">
-              {{ save.interests }}
-           </div>
-          </div>
-        </form>
-      </div>
-
-      <div class="border-b">
-        <form @submit.prevent="submitFormPhotos" enctype="multipart/form-data">
-          <div class="p-8">
-            <label class="relative block">
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Please provide us with your <b>photos</b>.</span>
-              <div class="block w-full w-full  md:8/12  xl:pl-32 pt-12">
-
-                <label for="pictures" class="text-xl border rounded p-2 cursor-pointer bg-black border border-gray hover:bg-gray-500 text-white py-2 px-4 rounded-full inline-flex items-center"> 
-                  <i class="fa-solid fa-images pr-2 fa-lg"></i>
-                    Upload File
-                </label> 
-                <input ref="picturesInput" id="pictures" name="pictures" type="file" 
-                    class="hidden"
-                    accept="image/*" 
-                    @change="handlePicturesChange">
-
-              </div>
-              
-            </label>
-            <div class="lg:mt-4 text-right pr-10 xl:pr-52">
-              <button id="" type="submit">
-                <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
-              </button>
-            </div>
-            <!-- error -->
-            <div v-if="errors.interests" class="text-red-500 text-center my-4">
-              {{ errors.interests }}
-            </div>
-            <div v-if="save.photos" class="text-green-500 text-center my-4">
-              {{ save.photos }}
+            <div class="bg-transparent flex absolute bottom-5 left-1/2 z-30 space-x-3 -translate-x-1/2">
+              <button
+                v-for="(index) in pictures"
+                :key="index"
+                type="button"
+                class="w-3 h-3 rounded-full"
+                :aria-current="index === activeIndex"
+                :aria-label="'Slide ' + (index + 1)"
+                @click="setActiveIndex(index)"
+              ></button>
             </div>
           </div>
-        </form>
-        <div v-for="(photo, index) in pictures" :key="index" >
-          <div class="w-72 h-72 p-10 rounded">
-            <img :src="'https://espacionebula.com/img/' + photo" alt="Profile photo" />
-          </div>
-          <button @click="deletePhoto(index)" class="text-red-500">
-            <i class="fa-solid fa-circle-xmark  fa-2x"></i>
-          </button>   
-        </div> 
-      </div>
-      <div v-if="error" class="text-red-500 text-center my-4">
-              {{ error}}
-      </div>
-
-      
+        </div>
     </div>
-    <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800 p-4">
+    
+    <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800 z-10">
         <GeneralMenuPhone />
-      </div>  
+      </div>
   </div>
 </template>
 
@@ -188,6 +96,7 @@ strong, b {
 color: white; 
 font-size: xx-large;
 font-weight: 1000;
+
 }
 .swiper-button-prev, .swiper-button-next {
 display: none;
@@ -197,7 +106,6 @@ display: none;
 display: block;
 }
 </style>
-
 
 
 <script>
@@ -214,7 +122,7 @@ export default {
   data() {
 
       return {
-          _username : '',
+          username : '',
           description : '',
           identitiesData : [],
           selectedIdentity : null,
@@ -223,41 +131,53 @@ export default {
           interestsData : [],
           selectedInterests : null,
           pictures: [],
+          profilePicture : '',
+          fullname : '',
+          prospectsLiked: [],
+          prospectsLikedSent: [],
+          matches: [],
+          userId : this.$route.params.userId,
 
           activeIndex: 0,
           swiper: null,
-          
       
     };
 
   },
-  
   mounted() {
-    
-    this.swiper = new Swiper('.swiper-container', {
-      loop: true,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      on: {
-        slideChange: () => {
-          this.activeIndex = this.swiper.realIndex;
-        },
-      },
-    });
-
-
 
       if(!localStorage.getItem('CupidConnectToken')){
 
           this.$router.push('/');
 
       }
-      this.fetchUser();   
+      this.fetchDataAndInitializeSwiper();
+  },
+  created: async function () {
+    this.prospectsLiked = await this.getWhoLikedUsers();
+    this.prospectsLikedSent = await this.getLikedByUsers();
+    this.matches = await this.getMatches();
   },
   methods: {
 
+    async fetchDataAndInitializeSwiper() {
+        await this.fetchUser(); 
+        this.initSwiper();
+    },
+    initSwiper() {
+      this.swiper = new Swiper('.swiper-container', {
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        on: {
+          slideChange: () => {
+            this.activeIndex = this.swiper.realIndex;
+          },
+        },
+      });
+    },
     setActiveIndex(index) {
       this.activeIndex = index;
       this.swiper.slideTo(index, 300);
@@ -268,20 +188,114 @@ export default {
     nextSlide() {
       this.swiper.slideNext();
     },
-
     handlePicturesChange(event) {
 
       this.pictures = event.target.files;
 
     },
-
-  clearErrorMessageAfterDelay() {
+    clearErrorMessageAfterDelay() {
     
           setTimeout(() => {
               this.error = "";
           }, 5000);
-      },
-
+    },
+    async getMatches() {
+      try {
+        const _userId = localStorage.getItem("CupidConnectId");
+        const token = localStorage.getItem("CupidConnectToken");
+        const dataf = {
+          userId: userId,
+        };
+        const response = await axios.post(
+          "https://espacionebula.com:8000/get-user-visitor",
+          dataf,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${token}`,
+            },
+            mode: "cors",
+          }
+        );
+        const data = response.data;
+        if (data.success) {
+          return data.matches;
+        } else {
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+        }
+      } catch (error) {}
+    },
+    async getWhoLikedUsers() {
+      try {
+        const _userId = localStorage.getItem("CupidConnectId");
+        const token = localStorage.getItem("CupidConnectToken");
+        const dataf = {
+          _liked_userId: _userId,
+        };
+        const response = await axios.post(
+          "https://espacionebula.com:8000/get-likes-to-user",
+          dataf,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${token}`,
+            },
+            mode: "cors",
+          }
+        );
+        const data = response.data;
+        if (data.success) {
+          return data.usersWhoLiked;
+        } else {
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+        }
+      } catch (error) {}
+    },
+    async getLikedByUsers() {
+      try {
+        const _userId = localStorage.getItem("CupidConnectId");
+        const token = localStorage.getItem("CupidConnectToken");
+        const dataf = {
+          liker_userId: _userId,
+        };
+        const response = await axios.post(
+          "https://espacionebula.com:8000/get-likes-user",
+          dataf,
+          {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              Authorization: `Bearer ${token}`,
+            },
+            mode: "cors",
+          }
+        );
+        const data = response.data;
+        if (data.success) {
+          return data.usersWhoILiked;
+        } else {
+          console.log(
+            "There was an error with the user : " + response.data.error
+          );
+        }
+      } catch (error) {}
+    },
+    getAge(userUSER) {
+      if (!userUSER) return 0;
+      const dob = new Date(userUSER._dob);
+      const today = new Date();
+      const age = today.getFullYear() - dob.getFullYear();
+      if (
+        today.getMonth() < dob.getMonth() ||
+        (today.getMonth() === dob.getMonth() && today.getDate() < dob.getDate())
+      ) {
+        age--;
+      }
+      return age;
+    },
     getIdentity(identityId){
       return useIdentitiesStore().getIdentitiesById(identityId);
     },
@@ -292,73 +306,77 @@ export default {
       const o = useOrientationsStore().getOrientationsById(this.selectedOrientation);
       return o;
     },
-  
-    
-  async fetchUser(){
+    async fetchUser(){
 
-    try {
-      const userId = this.$route.params.userId
-        const token = localStorage.getItem('CupidConnectToken');   
-        const dataf = {
-              userId: userId, 
-          };
-
-          const dd = userId; debugger;
-        const response = await axios.post('https://espacionebula.com:8000/get-user-visitor',dataf, {
+      try {
           
-          
-            headers: {
+          const userId = this.$route.params.userId
+          const token = localStorage.getItem('CupidConnectToken');   
+          const dataf = {
+                userId: userId,
+            };
 
-              'Access-Control-Allow-Origin': '*',
-              'Authorization': `Bearer ${token}`,
-              
-            },
-            mode: 'cors',
-
-        });
-        
-              const data = response.data;
-                if(data.success){
-                  
-                  this._username = data.user._username
-                  if (data.user.identities != '') { 
-                    this.selectedIdentity = data.user.identities;
-                  }
-                  if (data.user._description != ''){
-                    this.description = data.user._description; 
-                  }
-                  if (data.user._orientations != '') { 
-                    this.selectedOrientation = data.user._orientations; 
-                  }
-                  this.selectedInterests = data.user._interests;
-                  if (data.user._pictures.length > 0) { 
-                    this.pictures = data.user._pictures; 
-                  }
-
-                }else{
-
-                  this.error = "There was an error with the user : "+response.data.error;
-                  console.log("There was an error with the user : "+response.data.error);
-                  this.clearErrorMessageAfterDelay();
-
-                };
-          
+          const response = await axios.post('https://espacionebula.com:8000/get-user-visitor',dataf, {
             
+            
+              headers: {
+
+                'Access-Control-Allow-Origin': '*',
+                'Authorization': `Bearer ${token}`,
+                
+              },
+              mode: 'cors',
+
+          });
           
-        } catch (error) {
+                const data = response.data;
+                  if(data.success){
+                    if (data.user._username != '') { 
+                      this.username = data.user._username
+                      console.log(this.username);
+                    }
+                    if (data.user._fname != '' && data.user._lname != '') { 
+                      this.fullname = data.user._fname + " " +  data.user._lname
+                      console.log(this.fullname);
+                    }
+                    if (data.user._profilePicture != '') { 
+                      this.profilePicture = data.user._profilePicture 
+                      console.log(this.profilePicture);
+                    }
+                    if (data.user.identities != '') { 
+                      this.selectedIdentity = data.user.identities;
+                    }
+                    if (data.user._description != ''){
+                      this.description = data.user._description; 
+                    }
+                    if (data.user._orientations != '') {  
+                      this.selectedOrientation = data.user._orientations; 
+                    }
+                    this.selectedInterests = data.user._interests;
+                    if (data.user._pictures.length > 0) { 
+                      this.pictures = data.user._pictures; 
+                    }
+                    this.userCurrent = data.user;
 
-            console.error('Error in fetchUser:', error);
+                  }else{
 
-        }
+                    this.error = "There was an error with the user : "+response.data.error;
+                    console.log("There was an error with the user : "+response.data.error);
+                    this.clearErrorMessageAfterDelay();
+
+                  };
+            
+              
+            
+          } catch (error) {
+
+              console.error('Error in fetchUser:', error);
+
+          }
 
 
+    },
   },
-
-
-},
-
-
 }; 
-
 </script>
 

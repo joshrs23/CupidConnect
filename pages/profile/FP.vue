@@ -3,7 +3,7 @@
     <div class="hidden lg:block w-1/6">
       <GeneralMenu />
     </div>
-    <div class="grid grid-rows-5 px-10 sm:px-40 lg:px-60 mt-10 ">
+    <div class="grid grid-rows-5 lg:px-10 sm:px-40 lg:px-60 mt-10 ">
 
       <div class="border-b white">
         <form @submit.prevent="submitFormDescription">
@@ -29,7 +29,7 @@
           </div>
         </form>
       </div>
-
+      
       <div class="border-b">
         <form @submit.prevent="submitFormIdentity">
           <div  class="p-8">
@@ -51,7 +51,7 @@
               <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
             </button>
           </div>
-          <!-- error -->
+         
           <div v-if="errors.identity" class="text-red-500 text-center my-4">
             {{ errors.identity }}
           </div>
@@ -82,7 +82,6 @@
               <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
             </button>
           </div>
-          <!-- error -->
           <div v-if="errors.orientation" class="text-red-500 text-center my-4">
             {{ errors.orientation }}
           </div>
@@ -96,15 +95,23 @@
         <form @submit.prevent="submitFormInterests">
           <div class="p-8">
             <label class="relative block">
-              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Please provide us with your <b>interests</b>.</span>
+              <span class="block text-2xl sm:text-m lg:text-5xl lg:pl-25 xl:px-28  lg:pt-18">Talk to us a little bit about you <b>interests</b>:</span>
               <div class="block w-full w-full  md:8/12  xl:pl-32 pt-12">
-                <label class="block lg:text-3xl lg:pr-12 lg:pt-18 pt-12">Select up to 3 interests</label>
-                <select :filterable="true" class="text-2xl lg:text-3xl p-4 w-full  md:6/12 lg:w-8/12  form-input rounded-3xl bg-black border border-gray pl-10 custom-scrollbar-container" 
-                  type="text" name="description" v-model="selectedInterests" required multiple>
-                  <option v-for="interest in interestsData" :key="interest._id" :value="interest._id" white>
+                <label class="block lg:text-3xl lg:pr-12 lg:pt-18 pt-12">Select minimum of 1 and maximum 3.</label>
+                <label class="text-red-700" v-if="showWarning">Select a minimum of 1 and up to 3!</label>
+                <div class="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 text-center">
+                  <div
+                    class="p-2 m-2 border-2 rounded-full border-[#686262] inline-block cursor-pointer"
+                    v-for="interest in interestsData"
+                    :id="interest._id"
+                    :key="interest._id"
+                    :value="interest._id"
+                    
+                    @click="changeInterestStatus(interest)"
+                  >
                     {{ interest.name }}
-                  </option>
-                </select>
+                  </div>
+                </div>
               </div>
             </label>
             <div class="lg:mt-4 text-right pr-10 xl:pr-52">
@@ -112,7 +119,6 @@
                 <i class="fa-solid fa-cloud-arrow-down fa-2x"></i> 
               </button>
             </div>
-            <!-- error -->
             <div v-if="errors.interests" class="text-red-500 text-center my-4">
               {{ errors.interests }}
             </div>
@@ -173,7 +179,7 @@
 
       
     </div>
-    <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800 p-4">
+    <div class="lg:hidden fixed left-0 right-0 bottom-0 bg-gray-800">
         <GeneralMenuPhone />
       </div>  
   </div>
@@ -204,6 +210,7 @@
             selectedOrientation : null,
             interestsData : [],
             selectedInterests : [],
+            interestSelected : [],
             pictures: null,
             newPictures: [],
             error : '',
@@ -338,8 +345,8 @@
               return false;
             }
           } else if (formType === this.formTypes.INTERESTS) {
-            if (this.selectedInterests.length < 3) {
-              this.errors.interests = 'Please select up to 3 interests';
+            if (this.selectedInterests.length < 3 && this.selectedInterests.length > 0) {
+              this.errors.interests = 'Select a minimum of 1 and up to 3!';
               return false;
             }
           } else if (formType === this.formTypes.PHOTOS) {
@@ -366,7 +373,7 @@
 
           const _userId = localStorage.getItem('CupidConnectId'); 
           const token = localStorage.getItem('CupidConnectToken'); //para verificar id 
-          //debugger;
+          //;
             const dataf = {
                 userId: _userId,
                 newIdentity: this.selectedIdentity,
@@ -385,7 +392,7 @@
 
             });
             
-            //console.log(response); //debugger;
+            //console.log(response); //;
             if (response.data.success) {
               this.save.identity = "The identity was saved successfully";
               this.clearErrorMessageAfterDelay();
@@ -398,7 +405,7 @@
         }
 
       },
-        async fetchIdentities() {
+      async fetchIdentities() {
           
           try {
             
@@ -414,9 +421,9 @@
 
               });
             
-              this.identitiesData = response.data.identities; //debugger;
+              this.identitiesData = response.data.identities; //;
               
-              if (this.identitiesData.length > 0) { //debugger;
+              if (this.identitiesData.length > 0) { //;
                 this.selectedIdentity = ''; //para que el axios no se coma el option 1 
               }
               
@@ -429,13 +436,13 @@
           }
 
       },
-        async submitFormOrientation() { 
+      async submitFormOrientation() { 
 
           if(this.verify(this.formTypes.ORIENTATION)){
 
             const _userId = localStorage.getItem('CupidConnectId'); 
             const token = localStorage.getItem('CupidConnectToken'); //para verificar id 
-            //debugger;
+            //;
               const dataf = {
                   userId: _userId,
                   newOrientations: this.selectedOrientation,
@@ -454,7 +461,7 @@
 
               });
               
-              //console.log(response); debugger;
+              //console.log(response); ;
               if (response.data.success) {
               this.save.orientation = "The orientation was saved successfully";
               this.clearErrorMessageAfterDelay();
@@ -467,7 +474,7 @@
           }
 
       },
-        async fetchOrientations() {
+      async fetchOrientations() {
 
           try {
             
@@ -483,9 +490,9 @@
 
               });
             
-              this.orientationData = response.data.orientations; //debugger;
+              this.orientationData = response.data.orientations; //;
               
-              if (this.orientationData.length > 0) { //debugger;
+              if (this.orientationData.length > 0) { //;
                 this.selectedOrientation = ''; //para que el axios no se coma el option 1 
               }
 
@@ -500,12 +507,12 @@
 
       },
       async submitFormInterests() {
-        //debugger
+        //
         if(this.verify(this.formTypes.INTERESTS)){
 
           const _userId = localStorage.getItem('CupidConnectId'); 
           const token = localStorage.getItem('CupidConnectToken'); //para verificar id 
-          //debugger;
+          //;
             const dataf = {
                 userId: _userId,
                 newInterests: this.selectedInterests,
@@ -524,7 +531,7 @@
 
             });
             
-            //console.log(response);debugger;
+            //console.log(response);;
             if (response.data.success) {
               this.save.interests = "The interests were saved successfully";
               this.clearErrorMessageAfterDelay();
@@ -536,6 +543,28 @@
 
         }
 
+      },
+      changeInterestStatus(interestName){
+        
+        const index = this.selectedInterests.indexOf(interestName._id); debugger;
+        console.log(index);
+        console.log(interestName);
+        if (index !== -1) {//debugger;
+          this.errors.interests = false;
+          this.selectedInterests.splice(index, 1);
+          var element = document.getElementById(interestName._id);
+          element.style.backgroundColor = "transparent";
+        }else{
+          if(this.selectedInterests.length == 3){
+            this.errors.interests = 'Select a minimum of 1 and up to 3!';
+            this.clearErrorMessageAfterDelay();
+            return;
+          }
+          this.errors.interests = false;
+          this.selectedInterests.push(interestName);
+          var element = document.getElementById(interestName._id);
+          element.style.backgroundColor = "#686262";
+        }
       },
       async fetchInterests() {
 
@@ -553,11 +582,11 @@
 
           });
         
-          this.interestsData = response.data.interests; //debugger;
+          this.interestsData = response.data.interests; //;
           
-          if (this.interestsData.length > 0) { //debugger;
+          /*if (this.interestsData.length > 0) { //;
             this.selectedInterests = ''; //para que el axios no se coma el option 1 
-          }
+          }*/
           
           await this.fetchUser();
         
@@ -571,6 +600,56 @@
       handlePicturesChange(event) {
       console.log("entro a handle");
       this.pictures = event.target.files[0];
+
+      },
+      async fetchPhotos(){
+
+          try {
+              
+              const _userId = localStorage.getItem('CupidConnectId'); 
+              const token = localStorage.getItem('CupidConnectToken');   
+              const dataf = {
+                    userId: _userId,
+                };
+
+              const response = await axios.post('https://espacionebula.com:8000/get-user',dataf, {
+                
+                
+                  headers: {
+
+                    'Access-Control-Allow-Origin': '*',
+                    'Authorization': `Bearer ${token}`,
+                    
+                  },
+                  mode: 'cors',
+
+              });
+              
+                const data = response.data; //;
+                  
+                  if(data.success){
+
+                    if (data.user._pictures.length > 0) { 
+                      this.pictures = data.user._pictures; //;
+                    }
+                    
+                  }else{
+
+                    this.error = "There was an error with the user : "+response.data.error;
+                    console.log("There was an error with the user : "+response.data.error);
+                    this.clearErrorMessageAfterDelay();
+
+                  };
+            
+              //this.identitiesData = response.data.identities; //;
+              
+            
+          } catch (error) {
+
+              console.error('Error in fetchUser:', error);
+
+          }
+
 
       },
       async submitFormPhotos() {
@@ -609,7 +688,6 @@
               this.save.photos = "The photos were uploaded successfully";
               this.clearErrorMessageAfterDelay();
               await this.fetchPhotos();
-              
             } else {
                 this.errors.photos = "There was an error updating photos : "+response.data.error;
                 console.log("There was an error updating photos : "+response.data.error);
@@ -622,56 +700,6 @@
 
         }
           
-      },
-      async fetchPhotos(){
-
-        try {
-            
-            const _userId = localStorage.getItem('CupidConnectId'); 
-            const token = localStorage.getItem('CupidConnectToken');   
-            const dataf = {
-                  userId: _userId,
-              };
-
-            const response = await axios.post('https://espacionebula.com:8000/get-user',dataf, {
-              
-              
-                headers: {
-
-                  'Access-Control-Allow-Origin': '*',
-                  'Authorization': `Bearer ${token}`,
-                  
-                },
-                mode: 'cors',
-
-            });
-            
-              const data = response.data; //;
-                
-                if(data.success){
-
-                  if (data.user._pictures.length > 0) { 
-                    this.pictures = data.user._pictures; //;
-                  }
-                  
-                }else{
-
-                  this.error = "There was an error with the user : "+response.data.error;
-                  console.log("There was an error with the user : "+response.data.error);
-                  this.clearErrorMessageAfterDelay();
-
-                };
-          
-            //this.identitiesData = response.data.identities; //;
-            
-          
-        } catch (error) {
-
-            console.error('Error in fetchUser:', error);
-
-        }
-
-
       },
       async deletePhoto(index) {
 
@@ -700,6 +728,7 @@
               this.pictures.splice(index, 1); 
               this.save.photos = "The photos were deleted successfully: ";
               this.clearErrorMessageAfterDelay();
+
             } else {
                 this.errors.photos = "There was an error deleting photos : "+response.data.error; 
                 console.log("There was an error deleting photos : "+ response.data.error);
@@ -746,10 +775,15 @@
                     this.selectedOrientation = data.user._orientations; 
                   }
                   if (this.interestsData.length > 0 && data.user._interests.length > 0) { 
-                    this.selectedInterests = data.user._interests;
+                    this.selectedInterests = data.user._interests; 
+                    this.selectedInterests.forEach(interest => {
+                    var element = document.getElementById(interest);
+                    element.style.backgroundColor = "#686262";
+                  });
+                    
                   }
                   if (data.user._pictures.length > 0) { 
-                    this.pictures = data.user._pictures; //debugger;
+                    this.pictures = data.user._pictures; 
                   }
 
                 }else{
@@ -760,7 +794,7 @@
 
                 };
           
-            //this.identitiesData = response.data.identities; //debugger;
+            //this.identitiesData = response.data.identities; //;
             
           
         } catch (error) {

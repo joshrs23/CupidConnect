@@ -107,11 +107,6 @@
               v-model="birthDate"
               required
             />
-<img
-              src="@/public/img/calendar.png"
-              alt="calendarImg"
-              class="col-span-3 mb-2 h-8 w-8"
-            />
           </div>
 
           <!-- error -->
@@ -131,14 +126,7 @@
 
         <div class="flex justify-center items-center mb-4 btnLogin">
           <label class="cursor-pointer">
-            <button
-              type="submit"
-              @click="goToLogin"
-              class="bg-black-200 text-white flex items-center"
-            >
-<img src="@/public/img/arrow-left.png" alt="arrowImg" class="mx-2 " />
               <nuxt-link class="btn" to="/Login">Login</nuxt-link>
-            </button>
           </label>
         </div>
       </div>

@@ -337,7 +337,7 @@
               return false;
             }
           } else if (formType === this.formTypes.INTERESTS) {
-            if (this.selectedInterests.length < 3) {
+            if (this.selectedInterests.length >= 4) {
               this.errors.interests = 'Please select up to 3 interests';
               return false;
             }

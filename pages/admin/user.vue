@@ -46,8 +46,8 @@
             </tr>
             </tbody>
         </table>
-        <div  v-if="showModal" 
-        class="modal border border p-10 fixed mt-0 lg:top-1/2 lg:left-1/2 transform lg:-translate-x-1/2 -translate-y-1/2 bg-black text-white z-10 rounded-2xl">
+        <div  v-if="showModal " 
+        class="fixed inset-0 flex items-center justify-center w-fit mt-96 md:mt-0 modal border border p-10 fixed mt-0 lg:top-1/2 lg:left-1/2 transform lg:-translate-x-1/2 -translate-y-1/2 bg-black text-white z-10 rounded-2xl">
           <div class="modal-content hover:table-fixed text-xl overflow-y-auto max-h-screen">
             <span class="close" @click="closeModal"></span>
               <table>
